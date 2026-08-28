@@ -5,45 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- iOS Full-screen Web App Capability -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Universal Orlando">
-    <meta name="theme-color" content="#0b1120">
-    <title>Universal Orlando Resort: Master Itinerary & Visual Route Map</title>
+    <meta name="theme-color" content="#ffffff">
+    <title>Universal Orlando Master Plan & Visual Guide</title>
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome icons CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Plus Jakarta Sans / Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0b1120;
-            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            -webkit-tap-highlight-color: transparent;
         }
-        
+
         .map-container {
             position: relative;
             width: 100%;
-            height: 60vh;
-            min-height: 350px;
-            max-height: 480px;
-            background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%);
+            height: 58vh;
+            min-height: 380px;
+            max-height: 520px;
+            background: #f1f5f9;
             border-radius: 1rem;
             overflow: hidden;
-            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+            border: 1px solid #e2e8f0;
         }
 
         .map-grid {
-            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 28px 28px;
+            background-image: 
+                linear-gradient(rgba(100, 116, 139, 0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(100, 116, 139, 0.07) 1px, transparent 1px);
+            background-size: 24px 24px;
         }
 
         @keyframes pinPulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
-            70% { transform: scale(1.15); box-shadow: 0 0 0 12px rgba(59, 130, 246, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.6); }
+            70% { transform: scale(1.18); box-shadow: 0 0 0 14px rgba(37, 99, 235, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
         }
 
         .active-pin {
@@ -51,562 +59,707 @@
             z-index: 40 !important;
         }
 
-        .glass-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #0b1120;
+            background: #f1f5f9;
+            border-radius: 4px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 3px;
+            background: #cbd5e1;
+            border-radius: 4px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #475569;
+            background: #94a3b8;
+        }
+
+        /* Smooth tab transition */
+        .tab-btn.active {
+            background-color: #2563eb;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+        .tab-btn:not(.active) {
+            background-color: #ffffff;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+        .tab-btn:not(.active):hover {
+            background-color: #f8fafc;
+            color: #1e293b;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col custom-scrollbar">
+<body class="min-h-screen flex flex-col custom-scrollbar bg-slate-50 text-slate-800">
 
-    <!-- Top Navigation Header -->
-    <header class="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
-            <div class="flex items-center space-x-3">
-                <div class="bg-gradient-to-tr from-blue-600 to-indigo-600 p-2.5 rounded-xl shadow-lg shadow-blue-500/20 text-white font-black text-lg">
+    <!-- Top Sticky Header -->
+    <header class="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3.5">
+            
+            <!-- Logo / Trip Info -->
+            <div class="flex items-center space-x-3.5">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold text-lg shadow-md shadow-blue-500/20">
                     <i class="fa-solid fa-compass"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg sm:text-xl font-bold text-white tracking-tight flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
-                        Universal Orlando Master Plan & Visual Guide
-                        <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30">Aug 28 – Sep 02, 2026</span>
-                    </h1>
-                    <p class="text-xs text-slate-400">Deep & Nishita • Motion-Sickness Curated • Express Pass Sat Aug 29</p>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <h1 class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
+                            Universal Orlando Master Plan
+                        </h1>
+                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                            Aug 28 – Sep 02, 2026
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-500 font-medium mt-0.5 flex items-center gap-1.5 flex-wrap">
+                        <span><i class="fa-solid fa-user-group text-blue-500 mr-1"></i>Deep & Nishita</span>
+                        <span>•</span>
+                        <span><i class="fa-solid fa-heart-pulse text-emerald-500 mr-1"></i>Motion-Sickness Curated</span>
+                        <span>•</span>
+                        <span><i class="fa-solid fa-bolt text-amber-500 mr-1"></i>Express Pass Sat Aug 29</span>
+                    </p>
                 </div>
             </div>
 
-            <!-- View Switcher Tabs -->
-            <div class="flex items-center gap-1.5 bg-slate-950 p-1.5 rounded-xl border border-slate-800 w-full sm:w-auto overflow-x-auto">
-                <button onclick="setViewMode('itinerary')" id="viewTab-itinerary" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-blue-600 text-white shadow">
+            <!-- View Switcher -->
+            <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200 w-full md:w-auto overflow-x-auto">
+                <button onclick="setViewMode('itinerary')" id="viewTab-itinerary" class="flex-1 md:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 bg-blue-600 text-white shadow-sm">
                     <i class="fa-solid fa-list-check"></i> Master Itinerary & POVs
                 </button>
-                <button onclick="setViewMode('map')" id="viewTab-map" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-slate-200">
+                <button onclick="setViewMode('map')" id="viewTab-map" class="flex-1 md:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900">
                     <i class="fa-solid fa-map-location-dot"></i> Interactive Route Maps
                 </button>
+                <button onclick="setViewMode('safety')" id="viewTab-safety" class="flex-1 md:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900">
+                    <i class="fa-solid fa-shield-heart"></i> Safety Guide
+                </button>
             </div>
+
         </div>
     </header>
 
+    <!-- Main Container -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
-        <!-- Quick Stats Top Banner -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-            <div class="glass-card p-3.5 rounded-xl flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-base">
+        <!-- Quick Summary Metrics Banner -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+            <div class="bg-white p-4 rounded-xl border border-slate-200/90 shadow-sm flex items-center space-x-3.5">
+                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg border border-emerald-100 flex-shrink-0">
                     <i class="fa-solid fa-shield-heart"></i>
                 </div>
                 <div>
                     <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Motion Safety</div>
-                    <div class="text-xs sm:text-sm font-bold text-emerald-300">0 Inversion Coasters</div>
+                    <div class="text-xs sm:text-sm font-extrabold text-slate-800">0 Inversions Coasters</div>
                 </div>
             </div>
 
-            <div class="glass-card p-3.5 rounded-xl flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-base">
+            <div class="bg-white p-4 rounded-xl border border-slate-200/90 shadow-sm flex items-center space-x-3.5">
+                <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-lg border border-amber-100 flex-shrink-0">
                     <i class="fa-solid fa-motorcycle"></i>
                 </div>
                 <div>
                     <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Hagrid's Strategy</div>
-                    <div class="text-xs sm:text-sm font-bold text-amber-300">Rope Drop #1 Priority</div>
+                    <div class="text-xs sm:text-sm font-extrabold text-slate-800">Rope Drop Priority #1</div>
                 </div>
             </div>
 
-            <div class="glass-card p-3.5 rounded-xl flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-base">
+            <div class="bg-white p-4 rounded-xl border border-slate-200/90 shadow-sm flex items-center space-x-3.5">
+                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-lg border border-blue-100 flex-shrink-0">
                     <i class="fa-solid fa-bolt"></i>
                 </div>
                 <div>
                     <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Express Pass</div>
-                    <div class="text-xs sm:text-sm font-bold text-blue-300">Active Saturday Aug 29</div>
+                    <div class="text-xs sm:text-sm font-extrabold text-slate-800">Active Sat Aug 29</div>
                 </div>
             </div>
 
-            <div class="glass-card p-3.5 rounded-xl flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-base">
-                    <i class="fa-solid fa-cloud-bolt"></i>
+            <div class="bg-white p-4 rounded-xl border border-slate-200/90 shadow-sm flex items-center space-x-3.5">
+                <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg border border-indigo-100 flex-shrink-0">
+                    <i class="fa-solid fa-cloud-sun"></i>
                 </div>
                 <div>
-                    <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Rain & Heat Plan</div>
-                    <div class="text-xs sm:text-sm font-bold text-cyan-300">Indoor 1-4 PM Buffer</div>
+                    <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Heat & Rain Plan</div>
+                    <div class="text-xs sm:text-sm font-extrabold text-slate-800">1:00 – 4:00 PM Indoor</div>
                 </div>
             </div>
         </div>
 
-        <!-- VIEW 1: SINGLE STATIC MASTER ITINERARY WITH POV LINKS -->
+        <!-- ========================================================================= -->
+        <!-- VIEW 1: MASTER ITINERARY WITH EMBEDDED POV VIDEOS & TIMELINES -->
+        <!-- ========================================================================= -->
         <div id="section-itinerary" class="space-y-6">
 
-            <!-- Park Operating Hours Summary Table -->
-            <div class="glass-card p-5 rounded-2xl">
-                <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
-                    <h2 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-calendar-days text-blue-400"></i> Park Schedule & Opening Hours
-                    </h2>
-                    <span class="text-xs text-slate-400">Resort: Omni ChampionsGate</span>
+            <!-- Park Schedule & Operating Hours Overview Card -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-3.5 mb-3.5 border-b border-slate-100 gap-2">
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-calendar-days text-blue-600"></i> Trip Overview & Park Operating Hours
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Hotel Resort Base: Omni ChampionsGate (Free parking with shuttle/Uber access)</p>
+                    </div>
+                    <span class="text-xs font-semibold px-3 py-1 rounded-lg bg-slate-100 text-slate-700 border border-slate-200">
+                        <i class="fa-solid fa-hotel mr-1 text-slate-500"></i> Omni ChampionsGate
+                    </span>
                 </div>
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs border-collapse">
                         <thead>
-                            <tr class="bg-slate-900/80 text-slate-400 uppercase text-[10px] font-semibold border-b border-slate-800">
-                                <th class="py-2.5 px-3">Date</th>
-                                <th class="py-2.5 px-3">Destination</th>
-                                <th class="py-2.5 px-3">Park Hours</th>
-                                <th class="py-2.5 px-3">Target Arrival</th>
-                                <th class="py-2.5 px-3">Queue Key Strategy</th>
+                            <tr class="bg-slate-50 text-slate-500 uppercase text-[10px] font-bold border-b border-slate-200">
+                                <th class="py-3 px-3.5 rounded-l-lg">Date</th>
+                                <th class="py-3 px-3.5">Destination Park</th>
+                                <th class="py-3 px-3.5">Park Hours</th>
+                                <th class="py-3 px-3.5">Target Arrival</th>
+                                <th class="py-3 px-3.5 rounded-r-lg">Key Queue & Park Strategy</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-800/60 text-slate-200">
-                            <tr>
-                                <td class="py-3 px-3 font-semibold text-blue-300">Sat, Aug 29</td>
-                                <td class="py-3 px-3 font-bold text-white">Islands of Adventure & Universal Studios</td>
-                                <td class="py-3 px-3">9:00 AM – 9:00 PM (IOA) / 5:00 PM (USF)</td>
-                                <td class="py-3 px-3 text-amber-300 font-semibold">8:00 AM (Rope Drop)</td>
-                                <td class="py-3 px-3 text-slate-300">Rope Drop Hagrid's Standby $\rightarrow$ Express Pass for remainder</td>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr class="hover:bg-slate-50/70 transition">
+                                <td class="py-3.5 px-3.5 font-bold text-blue-600 whitespace-nowrap">
+                                    <span class="px-2 py-0.5 rounded bg-blue-50 border border-blue-200">Sat, Aug 29</span>
+                                </td>
+                                <td class="py-3.5 px-3.5 font-bold text-slate-900">Islands of Adventure & Universal Studios</td>
+                                <td class="py-3.5 px-3.5 whitespace-nowrap">9:00 AM – 9:00 PM (IOA) / 5:00 PM (USF)</td>
+                                <td class="py-3.5 px-3.5 text-amber-700 font-bold whitespace-nowrap">8:00 AM (Rope Drop)</td>
+                                <td class="py-3.5 px-3.5 text-slate-600">Rope drop Hagrid's via Standby $\rightarrow$ Use Express Pass for rest of rides</td>
                             </tr>
-                            <tr>
-                                <td class="py-3 px-3 font-semibold text-teal-300">Sun, Aug 30</td>
-                                <td class="py-3 px-3 font-bold text-white">Universal Volcano Bay</td>
-                                <td class="py-3 px-3">10:00 AM – 6:00 PM</td>
-                                <td class="py-3 px-3 text-amber-300 font-semibold">9:30 AM</td>
-                                <td class="py-3 px-3 text-slate-300">Tap wearable TapuTapu band into Krakatau Aqua Coaster immediately</td>
+                            <tr class="hover:bg-slate-50/70 transition">
+                                <td class="py-3.5 px-3.5 font-bold text-teal-600 whitespace-nowrap">
+                                    <span class="px-2 py-0.5 rounded bg-teal-50 border border-teal-200">Sun, Aug 30</span>
+                                </td>
+                                <td class="py-3.5 px-3.5 font-bold text-slate-900">Universal Volcano Bay Water Theme Park</td>
+                                <td class="py-3.5 px-3.5 whitespace-nowrap">10:00 AM – 6:00 PM</td>
+                                <td class="py-3.5 px-3.5 text-amber-700 font-bold whitespace-nowrap">9:30 AM</td>
+                                <td class="py-3.5 px-3.5 text-slate-600">Immediately tap TapuTapu band into Krakatau Aqua Coaster $\rightarrow$ Lazy River</td>
                             </tr>
-                            <tr>
-                                <td class="py-3 px-3 font-semibold text-indigo-300">Mon, Aug 31</td>
-                                <td class="py-3 px-3 font-bold text-white">Resort Pool Rest / CityWalk Dining</td>
-                                <td class="py-3 px-3">8:00 AM – 12:00 AM (CityWalk)</td>
-                                <td class="py-3 px-3 text-slate-400">Flexible</td>
-                                <td class="py-3 px-3 text-slate-300">Mid-trip rest day; recharge before Epic Universe</td>
+                            <tr class="hover:bg-slate-50/70 transition">
+                                <td class="py-3.5 px-3.5 font-bold text-indigo-600 whitespace-nowrap">
+                                    <span class="px-2 py-0.5 rounded bg-indigo-50 border border-indigo-200">Mon, Aug 31</span>
+                                </td>
+                                <td class="py-3.5 px-3.5 font-bold text-slate-900">Omni Resort Rest & CityWalk Dining</td>
+                                <td class="py-3.5 px-3.5 whitespace-nowrap">8:00 AM – 12:00 AM (CityWalk)</td>
+                                <td class="py-3.5 px-3.5 text-slate-500 whitespace-nowrap">Flexible / Afternoon</td>
+                                <td class="py-3.5 px-3.5 text-slate-600">Resort pool & lazy river day; recharge energy before Epic Universe</td>
                             </tr>
-                            <tr>
-                                <td class="py-3 px-3 font-semibold text-purple-300">Tue, Sep 01</td>
-                                <td class="py-3 px-3 font-bold text-white">Universal Epic Universe</td>
-                                <td class="py-3 px-3">9:00 AM – 9:00 PM</td>
-                                <td class="py-3 px-3 text-amber-300 font-semibold">8:15 AM</td>
-                                <td class="py-3 px-3 text-slate-300">Rope drop Super Nintendo World $\rightarrow$ Dark Universe $\rightarrow$ Harry Potter Paris</td>
+                            <tr class="hover:bg-slate-50/70 transition">
+                                <td class="py-3.5 px-3.5 font-bold text-purple-600 whitespace-nowrap">
+                                    <span class="px-2 py-0.5 rounded bg-purple-50 border border-purple-200">Tue, Sep 01</span>
+                                </td>
+                                <td class="py-3.5 px-3.5 font-bold text-slate-900">Universal Epic Universe (Brand New)</td>
+                                <td class="py-3.5 px-3.5 whitespace-nowrap">9:00 AM – 9:00 PM</td>
+                                <td class="py-3.5 px-3.5 text-amber-700 font-bold whitespace-nowrap">8:15 AM (Rope Drop)</td>
+                                <td class="py-3.5 px-3.5 text-slate-600">Rope drop Super Nintendo World $\rightarrow$ Dark Universe $\rightarrow$ Harry Potter Paris</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- DAY 1: IOA & USF Complete Flow With Video POVs -->
-            <div class="glass-card p-5 rounded-2xl border-l-4 border-blue-500 space-y-4">
-                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+            <!-- DAY 1: Islands of Adventure & Universal Studios Florida -->
+            <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-blue-600 space-y-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-3.5 border-b border-slate-100 gap-2">
                     <div>
-                        <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30">Day 1 • Sat, Aug 29</span>
-                        <h2 class="text-base font-bold text-white mt-1">Islands of Adventure (AM) $\rightarrow$ Universal Studios Florida (PM)</h2>
+                        <span class="text-[11px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                            Day 1 • Saturday, Aug 29
+                        </span>
+                        <h2 class="text-lg font-bold text-slate-900 mt-1">
+                            Islands of Adventure (AM) $\rightarrow$ Universal Studios Florida (PM)
+                        </h2>
                     </div>
-                    <span class="text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 px-3 py-1 rounded-lg font-semibold">
-                        <i class="fa-solid fa-bolt mr-1"></i> Express Pass Active
+                    <span class="text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 px-3 py-1 rounded-lg font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-bolt text-amber-500"></i> Express Pass Active (Both Parks)
                     </span>
                 </div>
 
-                <!-- Attractions Cards Grid with Embedded Video Links -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                <!-- Attractions Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     
                     <!-- 1. Hagrid's -->
-                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-black text-blue-400">01 • 9:00 AM</span>
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Must-Do (Low Risk)</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">01 • 9:00 AM</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                    Must-Do (Low Risk)
+                                </span>
                             </div>
-                            <h3 class="text-sm font-bold text-white">Hagrid’s Motorbike Adventure</h3>
-                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
-                                Islands of Adventure (Hogsmeade). Smooth outdoor steel coaster, zero inversions, maximum airflow. Standby line only.
+                            <h3 class="text-sm font-bold text-slate-900">Hagrid’s Motorbike Adventure</h3>
+                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                                Islands of Adventure (Hogsmeade). Ultra-smooth outdoor steel coaster, zero inversions, high airflow. Standby line only.
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-[11px] text-amber-300 font-semibold"><i class="fa-solid fa-person-walking mr-1"></i> Walk via Seuss</span>
-                            <a href="https://www.youtube.com/watch?v=TdGbsggU2dg" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-2.5 py-1 rounded-lg border border-red-500/30 font-semibold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube"></i> Watch POV
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-[11px] text-amber-700 font-semibold"><i class="fa-solid fa-person-walking mr-1"></i> Walk via Seuss</span>
+                            <a href="https://www.youtube.com/watch?v=TdGbsggU2dg" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
                             </a>
                         </div>
                     </div>
 
                     <!-- 2. Flight of the Hippogriff -->
-                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-black text-blue-400">02 • 10:15 AM</span>
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">Express Pass</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">02 • 10:15 AM</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+                                    Express Pass
+                                </span>
                             </div>
-                            <h3 class="text-sm font-bold text-white">Flight of the Hippogriff</h3>
-                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                            <h3 class="text-sm font-bold text-slate-900">Flight of the Hippogriff</h3>
+                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
                                 Islands of Adventure (Hogsmeade). Gentle family outdoor coaster with scenic views of Hogwarts Castle.
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-[11px] text-slate-400"><i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> Low Motion</span>
-                            <a href="https://www.youtube.com/watch?v=fX0qMRx4Ufs" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-2.5 py-1 rounded-lg border border-red-500/30 font-semibold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube"></i> Watch POV
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-circle-check mr-1"></i> Gentle / Family</span>
+                            <a href="https://www.youtube.com/watch?v=fX0qMRx4Ufs" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
                             </a>
                         </div>
                     </div>
 
                     <!-- 3. Hogwarts Castle Walkthrough -->
-                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-black text-amber-400">03 • 10:45 AM</span>
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Walking Tour (Safe)</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-amber-700 bg-amber-100/60 px-2 py-0.5 rounded-md">03 • 10:45 AM</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
+                                    Walking Tour Only
+                                </span>
                             </div>
-                            <h3 class="text-sm font-bold text-white">Hogwarts Castle Tour</h3>
-                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                            <h3 class="text-sm font-bold text-slate-900">Hogwarts Castle Tour</h3>
+                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
                                 Hogsmeade. Skip robotic ride vehicle (Forbidden Journey). Ask entrance team member for non-riding Castle Walkthrough.
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-[11px] text-slate-400"><i class="fa-solid fa-ban text-red-400 mr-1"></i> Ride Vehicle Skipped</span>
-                            <a href="https://www.youtube.com/watch?v=1YXiSQmCoNg" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-2.5 py-1 rounded-lg border border-red-500/30 font-semibold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube"></i> Watch Tour
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-[11px] text-rose-600 font-semibold"><i class="fa-solid fa-ban mr-1"></i> Skip Robotic Ride</span>
+                            <a href="https://www.youtube.com/watch?v=1YXiSQmCoNg" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch Tour
                             </a>
                         </div>
                     </div>
 
                     <!-- 4. Jurassic Park River Adventure -->
-                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-black text-blue-400">04 • 11:30 AM</span>
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">Express Pass</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">04 • 11:30 AM</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+                                    Express Pass
+                                </span>
                             </div>
-                            <h3 class="text-sm font-bold text-white">Jurassic Park River Adventure</h3>
-                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
-                                Islands of Adventure. Gentle scenic raft boat through animatronic dinosaurs with a single smooth water splash drop.
+                            <h3 class="text-sm font-bold text-slate-900">Jurassic Park River Adventure</h3>
+                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                                Islands of Adventure. Scenic water boat ride through animatronic dinosaurs with a single smooth water splash drop.
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-[11px] text-slate-400"><i class="fa-solid fa-water text-cyan-400 mr-1"></i> Light Splash</span>
-                            <a href="https://www.youtube.com/watch?v=CHvejAdOGe8" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-2.5 py-1 rounded-lg border border-red-500/30 font-semibold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube"></i> Watch POV
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-[11px] text-cyan-700 font-semibold"><i class="fa-solid fa-water mr-1"></i> Light Splash</span>
+                            <a href="https://www.youtube.com/watch?v=CHvejAdOGe8" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
                             </a>
                         </div>
                     </div>
 
                     <!-- 5. Skull Island Reign of Kong -->
-                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-black text-blue-400">05 • 12:15 PM</span>
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">Express Pass</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">05 • 12:15 PM</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+                                    Express Pass
+                                </span>
                             </div>
-                            <h3 class="text-sm font-bold text-white">Skull Island: Reign of Kong</h3>
-                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
-                                Islands of Adventure. Large open-sided safari truck traveling through animatronics and 3D immersive screens.
+                            <h3 class="text-sm font-bold text-slate-900">Skull Island: Reign of Kong</h3>
+                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                                Islands of Adventure. Large open-sided safari truck traveling through animatronics and 3D screens.
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-[11px] text-slate-400"><i class="fa-solid fa-shield text-emerald-400 mr-1"></i> Moderate/Gentle</span>
-                            <a href="https://www.youtube.com/watch?v=FwWrkJlmBc0" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-2.5 py-1 rounded-lg border border-red-500/30 font-semibold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube"></i> Watch POV
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-shield mr-1"></i> Moderate/Gentle</span>
+                            <a href="https://www.youtube.com/watch?v=FwWrkJlmBc0" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
                             </a>
                         </div>
                     </div>
 
-                    <!-- 6. Hogwarts Express -->
-                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition">
+                    <!-- 6. Hogwarts Express (Train Transfer) -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-black text-blue-400">06 • 1:15 PM</span>
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Park-to-Park Train</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">06 • 1:15 PM</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                    Park-to-Park Train
+                                </span>
                             </div>
-                            <h3 class="text-sm font-bold text-white">Hogwarts Express (IOA $\rightarrow$ USF)</h3>
-                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
-                                Hogsmeade Station to King's Cross. Smooth authentic locomotive cabin connecting you directly into Universal Studios.
+                            <h3 class="text-sm font-bold text-slate-900">Hogwarts Express (IOA $\rightarrow$ USF)</h3>
+                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                                Hogsmeade to King's Cross. Smooth authentic locomotive cabin connecting you directly into Universal Studios Florida for lunch.
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-[11px] text-emerald-400 font-semibold"><i class="fa-solid fa-check mr-1"></i> 0 Motion Risk</span>
-                            <a href="https://www.youtube.com/watch?v=IKZ6mSo6G04" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-2.5 py-1 rounded-lg border border-red-500/30 font-semibold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube"></i> Watch POV
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-check mr-1"></i> 0 Motion Risk</span>
+                            <a href="https://www.youtube.com/watch?v=IKZ6mSo6G04" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
                             </a>
                         </div>
                     </div>
 
                     <!-- 7. Escape from Gringotts -->
-                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-black text-blue-400">07 • 2:30 PM</span>
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Caution / Modified</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">07 • 2:30 PM</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
+                                    Caution / Pro Strategy
+                                </span>
                             </div>
-                            <h3 class="text-sm font-bold text-white">Harry Potter & Escape from Gringotts</h3>
-                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                            <h3 class="text-sm font-bold text-slate-900">Harry Potter & Escape from Gringotts</h3>
+                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
                                 USF (Diagon Alley). Indoor multi-dimensional coaster. (Pro tip: Slide 3D glasses off during projection screens if needed).
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-[11px] text-slate-400"><i class="fa-solid fa-glasses mr-1"></i> Glasses Off Option</span>
-                            <a href="https://www.youtube.com/watch?v=N8FSuOjoy8w" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-2.5 py-1 rounded-lg border border-red-500/30 font-semibold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube"></i> Watch POV
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-[11px] text-amber-700 font-semibold"><i class="fa-solid fa-glasses mr-1"></i> Glasses Off Option</span>
+                            <a href="https://www.youtube.com/watch?v=N8FSuOjoy8w" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
                             </a>
                         </div>
                     </div>
 
                     <!-- 8. Revenge of the Mummy -->
-                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-black text-blue-400">08 • 3:30 PM</span>
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">Express Pass</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">08 • 3:30 PM</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+                                    Express Pass
+                                </span>
                             </div>
-                            <h3 class="text-sm font-bold text-white">Revenge of the Mummy</h3>
-                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
-                                USF (New York). Smooth indoor dark coaster with sudden stops and physical fire/animatronics. No inversions.
+                            <h3 class="text-sm font-bold text-slate-900">Revenge of the Mummy</h3>
+                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                                USF (New York). Smooth indoor dark coaster with sudden stops and physical fire animatronics. No inversions.
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-[11px] text-slate-400"><i class="fa-solid fa-snowflake mr-1"></i> AC Indoor Haven</span>
-                            <a href="https://www.youtube.com/watch?v=WYI4ljAx4lk" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-2.5 py-1 rounded-lg border border-red-500/30 font-semibold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube"></i> Watch POV
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-[11px] text-cyan-700 font-semibold"><i class="fa-solid fa-snowflake mr-1"></i> AC Indoor Haven</span>
+                            <a href="https://www.youtube.com/watch?v=WYI4ljAx4lk" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
                             </a>
                         </div>
                     </div>
 
                     <!-- 9. Bourne Stuntacular -->
-                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-black text-blue-400">09 • 4:15 PM</span>
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Must-Do Show</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">09 • 4:15 PM</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                    Must-Do Show
+                                </span>
                             </div>
-                            <h3 class="text-sm font-bold text-white">The Bourne Stuntacular</h3>
-                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
-                                USF (Hollywood). High-tech live action theater with physical stunts and colossal 130-foot LED screen.
+                            <h3 class="text-sm font-bold text-slate-900">The Bourne Stuntacular</h3>
+                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                                USF (Hollywood). High-tech live action stunt show with real performers and massive 130-foot LED screen.
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-[11px] text-emerald-400 font-semibold"><i class="fa-solid fa-couch mr-1"></i> Seated Theater</span>
-                            <a href="https://www.youtube.com/watch?v=wZCxiXCNzCI" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-2.5 py-1 rounded-lg border border-red-500/30 font-semibold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube"></i> Watch Show
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-couch mr-1"></i> Seated AC Theater</span>
+                            <a href="https://www.youtube.com/watch?v=wZCxiXCNzCI" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch Show
                             </a>
                         </div>
                     </div>
+
                 </div>
             </div>
 
             <!-- DAY 2: Universal Volcano Bay -->
-            <div class="glass-card p-5 rounded-2xl border-l-4 border-teal-500 space-y-4">
-                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+            <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-teal-600 space-y-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-3.5 border-b border-slate-100 gap-2">
                     <div>
-                        <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-teal-500/20 text-teal-400 border border-teal-500/30">Day 2 • Sun, Aug 30</span>
-                        <h2 class="text-base font-bold text-white mt-1">Universal Volcano Bay Water Theme Park</h2>
+                        <span class="text-[11px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">
+                            Day 2 • Sunday, Aug 30
+                        </span>
+                        <h2 class="text-lg font-bold text-slate-900 mt-1">Universal Volcano Bay Water Theme Park</h2>
                     </div>
-                    <span class="text-xs bg-teal-950 text-teal-300 border border-teal-800 px-3 py-1 rounded-lg font-semibold">
-                        <i class="fa-solid fa-wrist-watch mr-1"></i> TapuTapu Virtual Queue
+                    <span class="text-xs bg-teal-50 text-teal-700 border border-teal-200 px-3 py-1 rounded-lg font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-water text-teal-600"></i> TapuTapu Virtual Queue
                     </span>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     
                     <!-- Krakatau Aqua Coaster -->
-                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-black text-teal-400">Priority #1</span>
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Smooth Water Coaster</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-teal-700 bg-teal-100/60 px-2 py-0.5 rounded-md">Priority #1</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                    Smooth Water Coaster
+                                </span>
                             </div>
-                            <h3 class="text-sm font-bold text-white">Krakatau Aqua Coaster</h3>
-                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                            <h3 class="text-sm font-bold text-slate-900">Krakatau Aqua Coaster</h3>
+                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
                                 4-person canoe propelled uphill by magnets through volcano chutes. Very gentle on motion sickness.
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-[11px] text-amber-300 font-semibold"><i class="fa-solid fa-clock mr-1"></i> Tap at 10:00 AM</span>
-                            <a href="https://www.youtube.com/watch?v=j6LmQlUPwT4" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-2.5 py-1 rounded-lg border border-red-500/30 font-semibold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube"></i> Watch POV
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-[11px] text-amber-700 font-semibold"><i class="fa-solid fa-clock mr-1"></i> Tap at 10:00 AM</span>
+                            <a href="https://www.youtube.com/watch?v=j6LmQlUPwT4" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
                             </a>
                         </div>
                     </div>
 
                     <!-- Kopiko Wai Winding River -->
-                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-black text-teal-400">Continuous Entry</span>
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Lazy River</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-teal-700 bg-teal-100/60 px-2 py-0.5 rounded-md">Continuous Entry</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                    Lazy River
+                                </span>
                             </div>
-                            <h3 class="text-sm font-bold text-white">Kopiko Wai Winding River</h3>
-                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                            <h3 class="text-sm font-bold text-slate-900">Kopiko Wai Winding River</h3>
+                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
                                 Ultra-calm floating tube river winding through tropical vegetation and glowing stargazing caves under Krakatau volcano.
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-[11px] text-emerald-400 font-semibold"><i class="fa-solid fa-check mr-1"></i> Zero Sickness</span>
-                            <a href="https://www.youtube.com/watch?v=0VSJFI6pCU0" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-2.5 py-1 rounded-lg border border-red-500/30 font-semibold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube"></i> Watch POV
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-check mr-1"></i> Zero Sickness</span>
+                            <a href="https://www.youtube.com/watch?v=0VSJFI6pCU0" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
                             </a>
                         </div>
                     </div>
 
                     <!-- TeAwa The Fearless River -->
-                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-black text-teal-400">Continuous Entry</span>
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">Active Torrent</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-teal-700 bg-teal-100/60 px-2 py-0.5 rounded-md">Continuous Entry</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+                                    Active Torrent
+                                </span>
                             </div>
-                            <h3 class="text-sm font-bold text-white">TeAwa The Fearless River</h3>
-                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                            <h3 class="text-sm font-bold text-slate-900">TeAwa The Fearless River</h3>
+                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
                                 Fast-paced whitewater river with rolling swells and rapid currents (life vests required). Smooth, thrilling, and safe.
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-[11px] text-slate-400"><i class="fa-solid fa-vest mr-1"></i> Vests Provided</span>
-                            <span class="text-xs text-slate-400 font-medium px-2 py-0.5 bg-slate-800 rounded">Volcano Base</span>
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-[11px] text-slate-600 font-semibold"><i class="fa-solid fa-vest mr-1"></i> Vests Provided</span>
+                            <span class="text-xs text-slate-500 font-medium px-2.5 py-0.5 bg-slate-200/80 rounded-md">Volcano Base</span>
                         </div>
                     </div>
+
                 </div>
             </div>
 
-            <!-- DAY 3: Universal Epic Universe -->
-            <div class="glass-card p-5 rounded-2xl border-l-4 border-purple-500 space-y-4">
-                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+            <!-- DAY 3: Omni ChampionsGate Rest & CityWalk Dining -->
+            <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-indigo-600 space-y-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-3.5 border-b border-slate-100 gap-2">
                     <div>
-                        <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/30">Day 3 • Tue, Sep 01</span>
-                        <h2 class="text-base font-bold text-white mt-1">Universal Epic Universe (Brand New Theme Park)</h2>
+                        <span class="text-[11px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
+                            Day 3 • Monday, Aug 31
+                        </span>
+                        <h2 class="text-lg font-bold text-slate-900 mt-1">Resort Relaxation & CityWalk Evening Dining</h2>
                     </div>
-                    <span class="text-xs bg-purple-950 text-purple-300 border border-purple-800 px-3 py-1 rounded-lg font-semibold">
-                        <i class="fa-solid fa-star mr-1"></i> Celestial Hub Layout
+                    <span class="text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 px-3 py-1 rounded-lg font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-battery-half text-indigo-600"></i> Recharge Day
                     </span>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-black text-indigo-600 bg-indigo-100/60 px-2 py-0.5 rounded-md">Morning & Afternoon</span>
+                            <h3 class="text-sm font-bold text-slate-900 mt-2">Omni ChampionsGate Resort Pools</h3>
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                Enjoy the 850-foot heated lazy river, adults-only infinity pool, private cabanas, and wave pool at the Omni resort.
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-200 text-xs text-emerald-700 font-bold">
+                            <i class="fa-solid fa-umbrella-beach mr-1"></i> Full Pool Access
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-black text-indigo-600 bg-indigo-100/60 px-2 py-0.5 rounded-md">Evening 6:00 PM</span>
+                            <h3 class="text-sm font-bold text-slate-900 mt-2">Universal CityWalk Dining</h3>
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                Head to CityWalk for dinner. Top recommended picks: <strong>The Toothsome Chocolate Emporium</strong> or <strong>The Cowfish Sushi Burger Bar</strong>.
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-200 text-xs text-blue-700 font-bold">
+                            <i class="fa-solid fa-utensils mr-1"></i> Free Parking after 6 PM
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-black text-indigo-600 bg-indigo-100/60 px-2 py-0.5 rounded-md">Night Prep</span>
+                            <h3 class="text-sm font-bold text-slate-900 mt-2">Epic Universe Prep</h3>
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                Early bedtime to ensure a prompt 8:15 AM rope drop at Epic Universe on Tuesday morning.
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-200 text-xs text-purple-700 font-bold">
+                            <i class="fa-solid fa-bed mr-1"></i> Early Rest Night
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- DAY 4: Universal Epic Universe -->
+            <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-purple-600 space-y-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-3.5 border-b border-slate-100 gap-2">
+                    <div>
+                        <span class="text-[11px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">
+                            Day 4 • Tuesday, Sep 01
+                        </span>
+                        <h2 class="text-lg font-bold text-slate-900 mt-1">Universal Epic Universe (Brand New Theme Park)</h2>
+                    </div>
+                    <span class="text-xs bg-purple-50 text-purple-700 border border-purple-200 px-3 py-1 rounded-lg font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-star text-amber-500"></i> Celestial Hub Layout
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     
                     <!-- Mario Kart Bowser's Challenge -->
-                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-black text-purple-400">01 • Rope Drop</span>
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">AR Dark Ride</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-purple-700 bg-purple-100/60 px-2 py-0.5 rounded-md">01 • Rope Drop</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                    AR Dark Ride
+                                </span>
                             </div>
-                            <h3 class="text-sm font-bold text-white">Mario Kart: Bowser’s Challenge</h3>
-                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                            <h3 class="text-sm font-bold text-slate-900">Mario Kart: Bowser’s Challenge</h3>
+                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
                                 Super Nintendo World. Interactive dark ride on tracks with head-mounted AR goggles. Steady track movement.
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-[11px] text-amber-300 font-semibold"><i class="fa-solid fa-flag-checkered mr-1"></i> Walk Fast from Hub</span>
-                            <a href="https://www.youtube.com/watch?v=2ruAqduHXwc" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-2.5 py-1 rounded-lg border border-red-500/30 font-semibold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube"></i> Watch POV
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-[11px] text-amber-700 font-semibold"><i class="fa-solid fa-flag-checkered mr-1"></i> Walk Fast from Hub</span>
+                            <a href="https://www.youtube.com/watch?v=2ruAqduHXwc" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
                             </a>
                         </div>
                     </div>
 
                     <!-- Yoshi's Adventure -->
-                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-black text-purple-400">02 • 10:30 AM</span>
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Gentle Omnimover</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-purple-700 bg-purple-100/60 px-2 py-0.5 rounded-md">02 • 10:30 AM</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                    Gentle Omnimover
+                                </span>
                             </div>
-                            <h3 class="text-sm font-bold text-white">Yoshi’s Adventure</h3>
-                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                            <h3 class="text-sm font-bold text-slate-900">Yoshi’s Adventure</h3>
+                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
                                 Super Nintendo World. Elevated, slow scenic ride overlooking the entire Mushroom Kingdom. Zero motion sickness.
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-[11px] text-emerald-400 font-semibold"><i class="fa-solid fa-check mr-1"></i> Gentle & Relaxing</span>
-                            <a href="https://www.youtube.com/watch?v=ckgyiqxdBU0" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-2.5 py-1 rounded-lg border border-red-500/30 font-semibold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube"></i> Watch POV
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-check mr-1"></i> Gentle & Relaxing</span>
+                            <a href="https://www.youtube.com/watch?v=ckgyiqxdBU0" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
                             </a>
                         </div>
                     </div>
 
                     <!-- Monsters Unchained -->
-                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-black text-purple-400">03 • 11:45 AM</span>
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">Tracked Dark Ride</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-purple-700 bg-purple-100/60 px-2 py-0.5 rounded-md">03 • 11:45 AM</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+                                    Tracked Dark Ride
+                                </span>
                             </div>
-                            <h3 class="text-sm font-bold text-white">Monsters Unchained: Frankenstein</h3>
-                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                            <h3 class="text-sm font-bold text-slate-900">Monsters Unchained: Frankenstein</h3>
+                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
                                 Dark Universe. Cutting-edge indoor dark ride featuring the most advanced animatronics in the world.
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-[11px] text-slate-400"><i class="fa-solid fa-shield mr-1"></i> Smooth Track</span>
-                            <a href="https://www.youtube.com/watch?v=7AbnllQNN4o" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-2.5 py-1 rounded-lg border border-red-500/30 font-semibold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube"></i> Watch POV
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-[11px] text-slate-600 font-semibold"><i class="fa-solid fa-shield mr-1"></i> Smooth Track</span>
+                            <a href="https://www.youtube.com/watch?v=7AbnllQNN4o" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
                             </a>
                         </div>
                     </div>
+
                 </div>
             </div>
 
-            <!-- Skipped Thrill Coasters List -->
-            <div class="glass-card p-5 rounded-2xl border border-red-900/30">
-                <h3 class="text-sm font-bold text-red-400 mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-ban"></i> Excluded Motion Sickness Coasters (Confirmed Bypassed)
+            <!-- Bypassed High-G Coasters (Safety Summary) -->
+            <div class="bg-rose-50/70 p-5 rounded-2xl border border-rose-200 shadow-sm">
+                <h3 class="text-sm font-bold text-rose-800 mb-2.5 flex items-center gap-2">
+                    <i class="fa-solid fa-ban text-rose-600"></i> Confirmed Bypassed Thrill Coasters (Motion Sickness Prevention)
                 </h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs text-slate-300">
-                    <div class="bg-red-950/40 p-2.5 rounded-lg border border-red-900/40">
-                        <span class="font-bold text-red-300 block">VelociCoaster (IOA)</span> 4 Inversions & drops
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                    <div class="bg-white p-3 rounded-xl border border-rose-200 text-slate-700">
+                        <span class="font-bold text-rose-700 block">VelociCoaster (IOA)</span> 4 High-speed Inversions & 140ft drop
                     </div>
-                    <div class="bg-red-950/40 p-2.5 rounded-lg border border-red-900/40">
-                        <span class="font-bold text-red-300 block">Hulk Coaster (IOA)</span> 7 High-G inversions
+                    <div class="bg-white p-3 rounded-xl border border-rose-200 text-slate-700">
+                        <span class="font-bold text-rose-700 block">Hulk Coaster (IOA)</span> 7 Aggressive High-G inversions
                     </div>
-                    <div class="bg-red-950/40 p-2.5 rounded-lg border border-red-900/40">
-                        <span class="font-bold text-red-300 block">Rip Ride Rockit (USF)</span> 90° Vertical lift
+                    <div class="bg-white p-3 rounded-xl border border-rose-200 text-slate-700">
+                        <span class="font-bold text-rose-700 block">Rip Ride Rockit (USF)</span> 90° Vertical climb & steep drop
                     </div>
-                    <div class="bg-red-950/40 p-2.5 rounded-lg border border-red-900/40">
-                        <span class="font-bold text-red-300 block">Stardust Racers (Epic)</span> Dual-launch rolls
+                    <div class="bg-white p-3 rounded-xl border border-rose-200 text-slate-700">
+                        <span class="font-bold text-rose-700 block">Stardust Racers (Epic)</span> Dual-launch rolls & inversions
                     </div>
                 </div>
             </div>
+
         </div>
 
-        <!-- VIEW 2: INTERACTIVE VISUAL MAP WITH NUMBERED PATHS -->
-        <div id="section-map" class="hidden space-y-4">
+        <!-- ========================================================================= -->
+        <!-- VIEW 2: INTERACTIVE VISUAL ROUTE MAP -->
+        <!-- ========================================================================= -->
+        <div id="section-map" class="hidden space-y-5">
             
-            <!-- Park Selection Sub-Tabs -->
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+            <!-- Park Selector Buttons & Legend -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white p-3 rounded-2xl border border-slate-200 shadow-sm">
                 <div class="flex flex-wrap gap-2 w-full md:w-auto" id="parkTabs">
-                    <button onclick="switchPark('ioa')" id="tab-ioa" class="px-3.5 py-2 rounded-xl font-semibold text-xs transition-all flex items-center gap-2 bg-blue-600 text-white shadow-lg shadow-blue-600/30">
+                    <button onclick="switchPark('ioa')" id="tab-ioa" class="tab-btn active px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2">
                         <i class="fa-solid fa-hat-wizard"></i> Islands of Adventure
                     </button>
-                    <button onclick="switchPark('usf')" id="tab-usf" class="px-3.5 py-2 rounded-xl font-semibold text-xs transition-all flex items-center gap-2 bg-slate-800 text-slate-300 hover:bg-slate-700">
+                    <button onclick="switchPark('usf')" id="tab-usf" class="tab-btn px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2">
                         <i class="fa-solid fa-clapperboard"></i> Universal Studios
                     </button>
-                    <button onclick="switchPark('vb')" id="tab-vb" class="px-3.5 py-2 rounded-xl font-semibold text-xs transition-all flex items-center gap-2 bg-slate-800 text-slate-300 hover:bg-slate-700">
+                    <button onclick="switchPark('vb')" id="tab-vb" class="tab-btn px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2">
                         <i class="fa-solid fa-volcano"></i> Volcano Bay
                     </button>
-                    <button onclick="switchPark('eu')" id="tab-eu" class="px-3.5 py-2 rounded-xl font-semibold text-xs transition-all flex items-center gap-2 bg-slate-800 text-slate-300 hover:bg-slate-700">
+                    <button onclick="switchPark('eu')" id="tab-eu" class="tab-btn px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2">
                         <i class="fa-solid fa-globe"></i> Epic Universe
                     </button>
                 </div>
 
-                <div class="flex items-center gap-2.5 text-[11px] bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800">
-                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Safe Must-Do</span>
-                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span> Express</span>
-                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> Caution</span>
+                <div class="flex items-center gap-3 text-xs bg-slate-50 px-3.5 py-2 rounded-xl border border-slate-200 text-slate-600 font-semibold">
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block shadow-sm"></span> Safe Must-Do</span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block shadow-sm"></span> Express</span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block shadow-sm"></span> Caution</span>
                 </div>
             </div>
 
-            <!-- Map Layout + Detail Sidebar -->
+            <!-- Map Layout Grid (Map + Step Sidebar) -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
                 
                 <!-- Left: Vector Map Canvas (7 cols) -->
                 <div class="lg:col-span-7 flex flex-col space-y-3">
-                    <div class="map-container map-grid border border-slate-800 relative flex flex-col justify-between" id="mapContainer">
+                    <div class="map-container map-grid relative flex flex-col justify-between shadow-sm" id="mapContainer">
                         
                         <!-- SVG Paths Overlay -->
                         <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" id="mapSvgPath"></svg>
@@ -614,96 +767,208 @@
                         <!-- Dynamic HTML Map Pins -->
                         <div class="absolute inset-0 z-20 pointer-events-auto" id="pinsContainer"></div>
 
-                        <!-- Header Info Overlay -->
+                        <!-- Header Info Overlay on Map -->
                         <div class="p-3.5 z-30 flex flex-col sm:flex-row justify-between items-start pointer-events-none gap-2">
-                            <div class="bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-700/70 shadow-lg">
-                                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold block" id="parkLabelSub">Sat, Aug 29 • 9:00 AM - 9:00 PM</span>
-                                <span class="text-sm font-bold text-white" id="parkLabelTitle">Islands of Adventure Map</span>
+                            <div class="bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-xl border border-slate-200 shadow-md">
+                                <span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold block" id="parkLabelSub">Sat, Aug 29 • 9:00 AM - 9:00 PM</span>
+                                <span class="text-sm font-extrabold text-slate-900" id="parkLabelTitle">Islands of Adventure Map</span>
                             </div>
-                            <div class="bg-slate-900/90 backdrop-blur-md px-2.5 py-1 rounded-xl border border-slate-700 text-[11px] font-semibold text-blue-400">
+                            <div class="bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-blue-600 shadow-md">
                                 Numbered 1 $\rightarrow$ 7
                             </div>
                         </div>
 
-                        <!-- Footer Info Overlay -->
+                        <!-- Footer Info Overlay on Map -->
                         <div class="p-3.5 z-30 flex flex-col sm:flex-row justify-between items-start sm:items-end pointer-events-none gap-2">
-                            <div class="bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-700 text-[11px] text-slate-300 max-w-xs sm:max-w-sm">
-                                <span class="text-amber-400 font-bold"><i class="fa-solid fa-lightbulb mr-1"></i> Tip:</span>
-                                <span id="parkQuickTip">Rope drop Hagrid's via Seuss Landing immediately at 9:00 AM.</span>
+                            <div class="bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-xl border border-slate-200 text-xs text-slate-700 max-w-xs sm:max-w-sm shadow-md">
+                                <span class="text-amber-600 font-bold"><i class="fa-solid fa-lightbulb mr-1"></i> Tip:</span>
+                                <span id="parkQuickTip" class="font-medium">Rope drop Hagrid's via Seuss Landing immediately at 9:00 AM.</span>
                             </div>
                             <div class="flex gap-1.5 pointer-events-auto mt-2 sm:mt-0 w-full sm:w-auto justify-end sm:justify-start">
-                                <button onclick="zoomMap(1.1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 flex items-center justify-center font-bold text-xs shadow">
+                                <button onclick="zoomMap(1.1)" class="w-8 h-8 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 flex items-center justify-center font-bold text-xs shadow-sm" title="Zoom In">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
-                                <button onclick="resetZoom()" class="px-2 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 flex items-center justify-center font-bold text-[10px] shadow">
+                                <button onclick="resetZoom()" class="px-3 h-8 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 flex items-center justify-center font-bold text-xs shadow-sm">
                                     Reset
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Walking Advice Callout -->
-                    <div class="glass-card p-3.5 rounded-xl flex items-start space-x-3 border-l-4 border-blue-500">
-                        <i class="fa-solid fa-shoe-prints text-blue-400 text-base mt-0.5"></i>
-                        <div class="text-xs text-slate-300 leading-relaxed" id="parkRouteGuideText">
-                            Turn right at Port of Entry through Seuss Landing to reach Hogsmeade first.
+                    <!-- Walking Advice Guide Box -->
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-start space-x-3.5 border-l-4 border-l-blue-600">
+                        <i class="fa-solid fa-shoe-prints text-blue-600 text-lg mt-0.5"></i>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Recommended Walking Route</span>
+                            <div class="text-xs text-slate-700 leading-relaxed font-medium mt-0.5" id="parkRouteGuideText">
+                                Turn right at Port of Entry through Seuss Landing to reach Hogsmeade first.
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right: Step Sequence & Detail Drawer (5 cols) -->
+                <!-- Right: Step Detail Drawer & Sequence List (5 cols) -->
                 <div class="lg:col-span-5 flex flex-col space-y-3.5">
                     
-                    <!-- Detail Drawer -->
-                    <div class="glass-card p-4 rounded-xl border-l-4 border-indigo-500 shadow-xl" id="detailCard">
-                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                    <!-- Selected Attraction Detail Drawer -->
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-md border-l-4 border-l-indigo-600" id="detailCard">
+                        <div class="flex items-start justify-between gap-2 mb-2">
                             <div>
-                                <span id="detailBadge" class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                                <span id="detailBadge" class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
                                     Step #1 • Must-Do
                                 </span>
-                                <h3 id="detailTitle" class="text-base font-bold text-white mt-1">Hagrid’s Magical Creatures Motorbike</h3>
+                                <h3 id="detailTitle" class="text-base font-extrabold text-slate-900 mt-1">Hagrid’s Magical Creatures Motorbike</h3>
                             </div>
-                            <span id="detailLocation" class="text-[11px] font-medium text-slate-400 bg-slate-800 px-2 py-0.5 rounded-lg border border-slate-700">
+                            <span id="detailLocation" class="text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">
                                 Hogsmeade
                             </span>
                         </div>
 
-                        <p id="detailDescription" class="text-xs text-slate-300 mb-3 leading-relaxed">
+                        <p id="detailDescription" class="text-xs text-slate-600 mb-3.5 leading-relaxed font-medium">
                             Smooth outdoor steel coaster with fresh air and zero inversions.
                         </p>
 
-                        <div class="grid grid-cols-2 gap-2 text-[11px] mb-3">
-                            <div class="bg-slate-800/80 p-2 rounded-lg border border-slate-700/60">
-                                <span class="text-slate-400 text-[9px] block font-semibold uppercase">Motion Risk</span>
-                                <span id="detailMotion" class="font-bold text-emerald-400">Low Risk</span>
+                        <div class="grid grid-cols-2 gap-2 text-xs mb-3.5">
+                            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                                <span class="text-slate-400 text-[10px] block font-bold uppercase tracking-wider">Motion Risk</span>
+                                <span id="detailMotion" class="font-extrabold text-emerald-700">Low Risk</span>
                             </div>
-                            <div class="bg-slate-800/80 p-2 rounded-lg border border-slate-700/60">
-                                <span class="text-slate-400 text-[9px] block font-semibold uppercase">Express Pass</span>
-                                <span id="detailExpress" class="font-bold text-amber-400">Standby Line Only</span>
+                            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                                <span class="text-slate-400 text-[10px] block font-bold uppercase tracking-wider">Queue Strategy</span>
+                                <span id="detailExpress" class="font-extrabold text-amber-700">Standby Line Only</span>
                             </div>
                         </div>
 
-                        <div class="flex items-center justify-between pt-2 border-t border-slate-800">
-                            <span id="detailStrategy" class="text-[11px] text-indigo-200">Arrive by 8:00 AM for rope drop.</span>
-                            <a id="detailPovLink" href="https://www.youtube.com/watch?v=TdGbsggU2dg" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-2.5 py-1 rounded-lg border border-red-500/30 font-semibold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube"></i> POV Video
+                        <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                            <span id="detailStrategy" class="text-xs text-indigo-700 font-semibold">Arrive by 8:00 AM for rope drop.</span>
+                            <a id="detailPovLink" href="https://www.youtube.com/watch?v=TdGbsggU2dg" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1.5 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5 shadow-sm">
+                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> POV Video
                             </a>
                         </div>
                     </div>
 
-                    <!-- Step-by-Step Sequence List -->
-                    <div class="space-y-2 overflow-y-auto max-h-[290px] pr-1 custom-scrollbar" id="stepsList"></div>
+                    <!-- Step Sequence List -->
+                    <div class="space-y-2 overflow-y-auto max-h-[300px] pr-1 custom-scrollbar" id="stepsList"></div>
                 </div>
             </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 3: SAFETY & MOTION SICKNESS PROTOCOL -->
+        <!-- ========================================================================= -->
+        <div id="section-safety" class="hidden space-y-6">
+            
+            <!-- Quick Rules Card -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg border border-emerald-100">
+                        <i class="fa-solid fa-shield-heart"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900">Motion Sickness Golden Rules</h2>
+                        <p class="text-xs text-slate-500 font-medium">Follow these strategies to stay energized and 100% nausea-free throughout the trip</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div class="text-blue-600 font-bold text-sm mb-1 flex items-center gap-2">
+                            <i class="fa-solid fa-pills"></i> 1. Medication Timing
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Take Less-Drowsy Dramamine (Meclizine) or Ginger Chews <strong>45-60 minutes BEFORE</strong> arriving at park turnstiles.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div class="text-emerald-600 font-bold text-sm mb-1 flex items-center gap-2">
+                            <i class="fa-solid fa-glasses"></i> 2. The 3D Glasses Trick
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            On simulator rides like Gringotts, simply slide off the 3D glasses during spinning projection screens to instantly stop visual disorientation.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div class="text-amber-600 font-bold text-sm mb-1 flex items-center gap-2">
+                            <i class="fa-solid fa-sun"></i> 3. Midday Heat Break
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Orlando heat peaks from 1:00 PM – 4:00 PM. We have scheduled indoor AC shows (Bourne Stuntacular) and sit-down dining during these peak hours.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complete Ride Classification Table -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-blue-600"></i> Master Motion Safety Classification
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    
+                    <!-- Green / Low Risk -->
+                    <div class="bg-emerald-50/60 p-4 rounded-xl border border-emerald-200 space-y-2">
+                        <span class="font-bold text-emerald-800 text-sm block flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-check text-emerald-600"></i> Safe / Low Motion Risk
+                        </span>
+                        <ul class="space-y-1.5 text-slate-700">
+                            <li>• <strong>Hagrid's Motorbike</strong> (Smooth steel, high airflow)</li>
+                            <li>• <strong>Flight of the Hippogriff</strong> (Gentle coaster)</li>
+                            <li>• <strong>Hogwarts Castle Tour</strong> (Non-riding walk)</li>
+                            <li>• <strong>Jurassic Park River</strong> (Scenic boat ride)</li>
+                            <li>• <strong>Hogwarts Express</strong> (Authentic train cabin)</li>
+                            <li>• <strong>Bourne Stuntacular</strong> (Theater stunt show)</li>
+                            <li>• <strong>Krakatau Aqua Coaster</strong> (Gentle magnetic water)</li>
+                            <li>• <strong>Kopiko Wai Lazy River</strong> (Relaxing float)</li>
+                            <li>• <strong>Yoshi’s Adventure</strong> (Slow elevated omnimover)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Yellow / Caution -->
+                    <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200 space-y-2">
+                        <span class="font-bold text-amber-800 text-sm block flex items-center gap-1.5">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> Caution / Minor Motion
+                        </span>
+                        <ul class="space-y-1.5 text-slate-700">
+                            <li>• <strong>Escape from Gringotts</strong> (Dark coaster + 3D)</li>
+                            <li>• <strong>Revenge of the Mummy</strong> (Indoor coaster, sudden stops)</li>
+                            <li>• <strong>Skull Island Kong</strong> (Truck simulator screen)</li>
+                            <li>• <strong>Mario Kart: Bowser</strong> (AR goggles dark ride)</li>
+                            <li>• <strong>Monsters Unchained</strong> (Tracked dark ride)</li>
+                            <li>• <strong>MEN IN BLACK</strong> (Spinning shooter vehicle)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Red / Confirmed Skip -->
+                    <div class="bg-rose-50/60 p-4 rounded-xl border border-rose-200 space-y-2">
+                        <span class="font-bold text-rose-800 text-sm block flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-xmark text-rose-600"></i> Confirmed Bypassed
+                        </span>
+                        <ul class="space-y-1.5 text-slate-700">
+                            <li>• <strong>VelociCoaster</strong> (4 High-speed Inversions)</li>
+                            <li>• <strong>Incredible Hulk Coaster</strong> (7 High-G Inversions)</li>
+                            <li>• <strong>Rip Ride Rockit</strong> (90° Lift + Rough drops)</li>
+                            <li>• <strong>Forbidden Journey</strong> (Robotic arm nausea vehicle)</li>
+                            <li>• <strong>Stardust Racers</strong> (High speed coaster)</li>
+                            <li>• <strong>Doctor Doom FearFall</strong> (Aggressive drop tower)</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
 
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 border-t border-slate-800 py-4 mt-8 text-center text-xs text-slate-500">
-        Universal Orlando Custom Route & Itinerary Planner • Curated for Deep & Nishita • Aug 28 – Sep 02, 2026
+    <footer class="bg-white border-t border-slate-200 py-5 mt-10 text-center text-xs text-slate-500 font-medium">
+        Universal Orlando Custom Master Plan • Curated for Deep & Nishita • Omni ChampionsGate Resort • Aug 28 – Sep 02, 2026
     </footer>
 
+    <!-- Interactive Logic Script -->
     <script>
         // Universal Parks Map Data with POV Links
         const parkData = {
@@ -723,7 +988,7 @@
                         x: 550, y: 190,
                         type: "must-do",
                         time: "9:00 AM",
-                        motion: "Low Risk",
+                        motion: "Low Risk (High Airflow)",
                         express: "No (Standby Only)",
                         desc: "Smooth outdoor steel coaster with high airflow. Zero inversions or steep drops.",
                         strategy: "Arrive at turnstiles by 8:00 AM. Rope drop through Seuss Landing.",
@@ -804,7 +1069,7 @@
                         motion: "Zero Risk",
                         express: "Yes",
                         desc: "Relaxing scenic train connecting Hogsmeade to King's Cross in USF.",
-                        strategy: "Take this train to transfer parks for lunch.",
+                        strategy: "Take this train to transfer parks for lunch in Diagon Alley.",
                         videoUrl: "https://www.youtube.com/watch?v=IKZ6mSo6G04"
                     }
                 ]
@@ -829,7 +1094,7 @@
                         motion: "Zero Risk",
                         express: "Yes",
                         desc: "Arrival point from Islands of Adventure train.",
-                        strategy: "Walk directly into Diagon Alley.",
+                        strategy: "Walk directly into Diagon Alley for lunch.",
                         videoUrl: "https://www.youtube.com/watch?v=IKZ6mSo6G04"
                     },
                     {
@@ -842,7 +1107,7 @@
                         motion: "Moderate",
                         express: "Yes",
                         desc: "Indoor dark coaster hybrid. Smooth physical track.",
-                        strategy: "Slide off 3D glasses during projection scenes if feeling dizzy.",
+                        strategy: "Slide off 3D glasses during projection screens if feeling dizzy.",
                         videoUrl: "https://www.youtube.com/watch?v=N8FSuOjoy8w"
                     },
                     {
@@ -855,7 +1120,7 @@
                         motion: "Low/Moderate",
                         express: "Yes",
                         desc: "Indoor dark coaster with zero inversions and smooth track.",
-                        strategy: "Use Express Pass line.",
+                        strategy: "Use Express Pass line. Enjoy AC refuge.",
                         videoUrl: "https://www.youtube.com/watch?v=WYI4ljAx4lk"
                     },
                     {
@@ -868,7 +1133,7 @@
                         motion: "Zero Risk",
                         express: "Yes",
                         desc: "High-tech live stunt show with physical actors and LED screen.",
-                        strategy: "Air-conditioned indoor theater.",
+                        strategy: "Air-conditioned indoor theater seating.",
                         videoUrl: "https://www.youtube.com/watch?v=wZCxiXCNzCI"
                     },
                     {
@@ -996,20 +1261,30 @@
         function setViewMode(mode) {
             const itinerarySec = document.getElementById('section-itinerary');
             const mapSec = document.getElementById('section-map');
+            const safetySec = document.getElementById('section-safety');
             const itBtn = document.getElementById('viewTab-itinerary');
             const mapBtn = document.getElementById('viewTab-map');
+            const safetyBtn = document.getElementById('viewTab-safety');
+
+            // Reset all buttons
+            [itBtn, mapBtn, safetyBtn].forEach(b => {
+                b.className = "flex-1 md:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900";
+            });
+
+            itinerarySec.classList.add('hidden');
+            mapSec.classList.add('hidden');
+            safetySec.classList.add('hidden');
 
             if (mode === 'itinerary') {
                 itinerarySec.classList.remove('hidden');
-                mapSec.classList.add('hidden');
-                itBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-blue-600 text-white shadow";
-                mapBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-slate-200";
-            } else {
-                itinerarySec.classList.add('hidden');
+                itBtn.className = "flex-1 md:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 bg-blue-600 text-white shadow-sm";
+            } else if (mode === 'map') {
                 mapSec.classList.remove('hidden');
-                mapBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-blue-600 text-white shadow";
-                itBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-slate-200";
+                mapBtn.className = "flex-1 md:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 bg-blue-600 text-white shadow-sm";
                 renderParkMap();
+            } else if (mode === 'safety') {
+                safetySec.classList.remove('hidden');
+                safetyBtn.className = "flex-1 md:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 bg-blue-600 text-white shadow-sm";
             }
         }
 
@@ -1018,9 +1293,9 @@
             ['ioa', 'usf', 'vb', 'eu'].forEach(key => {
                 const btn = document.getElementById(`tab-${key}`);
                 if (key === parkKey) {
-                    btn.className = "px-3.5 py-2 rounded-xl font-semibold text-xs transition-all flex items-center gap-2 bg-blue-600 text-white shadow-lg shadow-blue-600/30";
+                    btn.className = "tab-btn active px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2";
                 } else {
-                    btn.className = "px-3.5 py-2 rounded-xl font-semibold text-xs transition-all flex items-center gap-2 bg-slate-800 text-slate-300 hover:bg-slate-700";
+                    btn.className = "tab-btn px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2";
                 }
             });
             renderParkMap();
@@ -1038,25 +1313,23 @@
             let pathHtml = '';
             if (data.svgPaths) {
                 data.svgPaths.forEach(pathD => {
-                    pathHtml += `<path d="${pathD}" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="5,5" opacity="0.6"/>`;
+                    pathHtml += `<path d="${pathD}" fill="none" stroke="#2563eb" stroke-width="3" stroke-dasharray="6,6" opacity="0.7"/>`;
                 });
             }
             svgPathContainer.innerHTML = pathHtml;
 
-            // Render Pins
+            // Render Map Pins
             const pinsContainer = document.getElementById('pinsContainer');
             let pinsHtml = '';
             data.steps.forEach((step, index) => {
                 let bgColor = "bg-emerald-500";
-                let borderColor = "border-emerald-300";
+                let borderColor = "border-white";
                 let icon = step.id;
 
                 if (step.type === 'express') {
                     bgColor = "bg-blue-600";
-                    borderColor = "border-blue-300";
                 } else if (step.type === 'caution') {
                     bgColor = "bg-amber-500";
-                    borderColor = "border-amber-200";
                 }
 
                 pinsHtml += `
@@ -1064,7 +1337,7 @@
                          id="pin-${index}" 
                          style="left: ${step.x / 700 * 100}%; top: ${step.y / 520 * 100}%; transform: translate(-50%, -50%) scale(${zoomScale});"
                          class="absolute cursor-pointer group transition-transform duration-200">
-                        <div class="w-7 h-7 rounded-full ${bgColor} ${borderColor} border-2 text-white font-black text-xs flex items-center justify-center shadow-lg group-hover:scale-125 transition-transform">
+                        <div class="w-7 h-7 rounded-full ${bgColor} ${borderColor} border-2 text-white font-black text-xs flex items-center justify-center shadow-md group-hover:scale-125 transition-transform">
                             ${icon}
                         </div>
                     </div>
@@ -1076,31 +1349,31 @@
             const stepsContainer = document.getElementById('stepsList');
             let listHtml = '';
             data.steps.forEach((step, index) => {
-                let badgeClass = "bg-emerald-500/20 text-emerald-400 border-emerald-500/30";
+                let badgeClass = "bg-emerald-50 text-emerald-700 border-emerald-200";
                 let badgeText = "Must-Do";
 
                 if (step.type === 'express') {
-                    badgeClass = "bg-blue-500/20 text-blue-400 border-blue-500/30";
+                    badgeClass = "bg-blue-50 text-blue-700 border-blue-200";
                     badgeText = "Express";
                 } else if (step.type === 'caution') {
-                    badgeClass = "bg-amber-500/20 text-amber-300 border-amber-500/30";
+                    badgeClass = "bg-amber-50 text-amber-700 border-amber-200";
                     badgeText = "Caution";
                 }
 
                 listHtml += `
                     <div onclick="selectStep(${index})" 
                          id="step-item-${index}"
-                         class="glass-card p-2.5 rounded-xl border border-slate-800 hover:border-slate-700 cursor-pointer transition flex items-center justify-between">
-                        <div class="flex items-center space-x-2.5">
-                            <div class="w-6 h-6 rounded-md bg-slate-800 text-slate-200 font-bold text-xs flex items-center justify-center border border-slate-700">
+                         class="bg-white p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:shadow-sm cursor-pointer transition flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-extrabold text-xs flex items-center justify-center border border-slate-200">
                                 ${step.id}
                             </div>
                             <div>
-                                <h4 class="text-xs font-bold text-slate-100">${step.name}</h4>
-                                <span class="text-[10px] text-slate-400">${step.time} • ${step.land}</span>
+                                <h4 class="text-xs font-bold text-slate-900">${step.name}</h4>
+                                <span class="text-[11px] text-slate-500 font-medium">${step.time} • ${step.land}</span>
                             </div>
                         </div>
-                        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full border ${badgeClass}">
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border ${badgeClass}">
                             ${badgeText}
                         </span>
                     </div>
@@ -1120,8 +1393,8 @@
                 const listElem = document.getElementById(`step-item-${idx}`);
                 if (pinElem) pinElem.classList.remove('active-pin');
                 if (listElem) {
-                    listElem.classList.remove('bg-slate-800/90', 'border-blue-500');
-                    listElem.classList.add('border-slate-800');
+                    listElem.classList.remove('bg-blue-50/60', 'border-blue-500');
+                    listElem.classList.add('border-slate-200');
                 }
             });
 
@@ -1129,8 +1402,8 @@
             const activeListItem = document.getElementById(`step-item-${index}`);
             if (activePin) activePin.classList.add('active-pin');
             if (activeListItem) {
-                activeListItem.classList.add('bg-slate-800/90', 'border-blue-500');
-                activeListItem.classList.remove('border-slate-800');
+                activeListItem.classList.add('bg-blue-50/60', 'border-blue-500');
+                activeListItem.classList.remove('border-slate-200');
             }
 
             document.getElementById('detailTitle').innerText = step.name;
@@ -1149,7 +1422,7 @@
             }
 
             const badgeElem = document.getElementById('detailBadge');
-            badgeElem.innerText = `Step #${step.id}`;
+            badgeElem.innerText = `Step #${step.id} • ${step.type.toUpperCase()}`;
         }
 
         function zoomMap(factor) {
