@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Universal Orlando">
     <meta name="theme-color" content="#ffffff">
-    <title>Universal Orlando Master Plan & Visual Guide</title>
+    <title>Deep & Nishita's Universal Orlando Master Plan</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -90,6 +90,14 @@
             background-color: #f8fafc;
             color: #1e293b;
         }
+
+        /* Accordion rotation */
+        .rotate-icon {
+            transition: transform 0.2s ease-in-out;
+        }
+        .expanded .rotate-icon {
+            transform: rotate(180deg);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col custom-scrollbar bg-slate-50 text-slate-800">
@@ -133,7 +141,7 @@
                     <i class="fa-solid fa-map-location-dot"></i> Interactive Route Maps
                 </button>
                 <button onclick="setViewMode('safety')" id="viewTab-safety" class="flex-1 md:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900">
-                    <i class="fa-solid fa-shield-heart"></i> Safety Guide
+                    <i class="fa-solid fa-shield-heart"></i> Safety Guide & Ratings
                 </button>
             </div>
 
@@ -161,10 +169,10 @@
             </div>
             <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
                 <div class="bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/20 text-xs font-semibold flex items-center gap-2.5 text-white">
-                    <i class="fa-solid fa-hotel text-amber-300 text-base"></i>
+                    <i class="fa-solid fa-train text-amber-300 text-base"></i>
                     <div>
-                        <div class="text-[9px] text-blue-200 uppercase font-bold tracking-wider">Resort Base</div>
-                        <div class="font-bold">Omni ChampionsGate</div>
+                        <div class="text-[9px] text-blue-200 uppercase font-bold tracking-wider">Day 1 Highlight</div>
+                        <div class="font-bold">Hogwarts Express Train</div>
                     </div>
                 </div>
                 <div class="bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/20 text-xs font-semibold flex items-center gap-2.5 text-white">
@@ -185,7 +193,7 @@
                 </div>
                 <div>
                     <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Motion Safety</div>
-                    <div class="text-xs sm:text-sm font-extrabold text-slate-800">0 Inversions Coasters</div>
+                    <div class="text-xs sm:text-sm font-extrabold text-slate-800">0 Inversion Coasters</div>
                 </div>
             </div>
 
@@ -221,9 +229,20 @@
         </div>
 
         <!-- ========================================================================= -->
-        <!-- VIEW 1: MASTER ITINERARY WITH EMBEDDED POV VIDEOS & TIMELINES -->
+        <!-- VIEW 1: MASTER ITINERARY WITH EXPANDABLE RIDE RATINGS & POV VIDEOS -->
         <!-- ========================================================================= -->
         <div id="section-itinerary" class="space-y-6">
+
+            <!-- Tip Callout: Expandable Cards -->
+            <div class="bg-blue-50/80 border border-blue-200 rounded-xl p-3.5 text-xs text-blue-800 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info text-blue-600 text-sm"></i>
+                    <span><strong>Interactive Ride Guide:</strong> Click <strong>"Expand Ride Details & Ratings"</strong> on any attraction card below to see full 5-star ratings for Motion Sickness, Enjoyment, Thrill, and Pro Tips!</span>
+                </div>
+                <button onclick="toggleAllCards()" id="toggleAllBtn" class="px-3 py-1 bg-white border border-blue-300 rounded-lg text-blue-700 font-bold hover:bg-blue-100 transition whitespace-nowrap shadow-sm text-[11px]">
+                    Expand All
+                </button>
+            </div>
 
             <!-- Park Schedule & Operating Hours Overview Card -->
             <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
@@ -258,7 +277,7 @@
                                 <td class="py-3.5 px-3.5 font-bold text-slate-900">Islands of Adventure & Universal Studios</td>
                                 <td class="py-3.5 px-3.5 whitespace-nowrap">9:00 AM – 9:00 PM (IOA) / 5:00 PM (USF)</td>
                                 <td class="py-3.5 px-3.5 text-amber-700 font-bold whitespace-nowrap">8:00 AM (Rope Drop)</td>
-                                <td class="py-3.5 px-3.5 text-slate-600">Rope drop Hagrid's via Standby $\rightarrow$ Use Express Pass for rest of rides</td>
+                                <td class="py-3.5 px-3.5 text-slate-600">Rope drop Hagrid's via Standby $\rightarrow$ Hogwarts Express Train $\rightarrow$ Express Pass for rest</td>
                             </tr>
                             <tr class="hover:bg-slate-50/70 transition">
                                 <td class="py-3.5 px-3.5 font-bold text-teal-600 whitespace-nowrap">
@@ -300,7 +319,7 @@
                             Day 1 • Saturday, Aug 29
                         </span>
                         <h2 class="text-lg font-bold text-slate-900 mt-1">
-                            Deep & Nishita's Day 1: Islands of Adventure (AM) $\rightarrow$ Universal Studios (PM)
+                            Deep & Nishita's Day 1: Islands of Adventure (AM) $\rightarrow$ Hogwarts Express $\rightarrow$ Universal Studios (PM)
                         </h2>
                     </div>
                     <span class="text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 px-3 py-1 rounded-lg font-bold flex items-center gap-1.5">
@@ -308,11 +327,11 @@
                     </span>
                 </div>
 
-                <!-- Attractions Cards Grid -->
+                <!-- Attractions Cards Grid with Expandable Ratings -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     
                     <!-- 1. Hagrid's -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <div class="ride-card bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">01 • 9:00 AM</span>
@@ -321,20 +340,51 @@
                                 </span>
                             </div>
                             <h3 class="text-sm font-bold text-slate-900">Hagrid’s Motorbike Adventure</h3>
-                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
-                                Islands of Adventure (Hogsmeade). Ultra-smooth outdoor steel coaster, zero inversions, high airflow. Standby line only.
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                Islands of Adventure (Hogsmeade). Ultra-smooth outdoor steel coaster, zero inversions, high airflow.
                             </p>
+                            
+                            <!-- Quick Ratings Badge Row -->
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 5.0 Enjoyment
+                                </span>
+                                <span class="bg-emerald-100/70 text-emerald-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-shield text-emerald-600"></i> 1.0 Nausea Risk
+                                </span>
+                            </div>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                            <span class="text-[11px] text-amber-700 font-semibold"><i class="fa-solid fa-person-walking mr-1"></i> Walk via Seuss</span>
-                            <a href="https://www.youtube.com/watch?v=TdGbsggU2dg" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
-                            </a>
+
+                        <!-- Expandable Details Section -->
+                        <div class="mt-3.5 pt-3 border-t border-slate-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-slate-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★★</span> (5/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-emerald-600">★☆☆☆☆</span> (1/5 - Low)</div>
+                                    <div><strong>🎢 Thrill Level:</strong> <span class="text-blue-500">★★★☆☆</span> (3.5/5)</div>
+                                    <div><strong>💨 Airflow:</strong> <span class="text-cyan-500">★★★★★</span> (5/5 - Open Air)</div>
+                                </div>
+                                <p class="leading-relaxed bg-blue-50/50 p-2 rounded-lg border border-blue-100">
+                                    <strong>💡 Strategy:</strong> Arrive by 8:00 AM for rope drop through Seuss Landing. Motorbike seat gives better airflow than the sidecar.
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-amber-700 font-semibold"><i class="fa-solid fa-person-walking mr-1"></i> Walk via Seuss</span>
+                                <a href="https://www.youtube.com/watch?v=TdGbsggU2dg" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- 2. Flight of the Hippogriff -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <div class="ride-card bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">02 • 10:15 AM</span>
@@ -343,20 +393,49 @@
                                 </span>
                             </div>
                             <h3 class="text-sm font-bold text-slate-900">Flight of the Hippogriff</h3>
-                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
                                 Islands of Adventure (Hogsmeade). Gentle family outdoor coaster with scenic views of Hogwarts Castle.
                             </p>
+                            
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 4.0 Enjoyment
+                                </span>
+                                <span class="bg-emerald-100/70 text-emerald-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-shield text-emerald-600"></i> 1.0 Nausea Risk
+                                </span>
+                            </div>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                            <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-circle-check mr-1"></i> Gentle / Family</span>
-                            <a href="https://www.youtube.com/watch?v=fX0qMRx4Ufs" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
-                            </a>
+
+                        <div class="mt-3.5 pt-3 border-t border-slate-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-slate-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★☆</span> (4/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-emerald-600">★☆☆☆☆</span> (1/5 - Low)</div>
+                                    <div><strong>🎢 Thrill Level:</strong> <span class="text-blue-500">★★☆☆☆</span> (2/5)</div>
+                                    <div><strong>💨 Airflow:</strong> <span class="text-cyan-500">★★★★★</span> (5/5)</div>
+                                </div>
+                                <p class="leading-relaxed bg-blue-50/50 p-2 rounded-lg border border-blue-100">
+                                    <strong>💡 Strategy:</strong> Use Express Pass line right after Hagrid's. Very gentle and short duration (under 1 minute).
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-circle-check mr-1"></i> Gentle / Family</span>
+                                <a href="https://www.youtube.com/watch?v=fX0qMRx4Ufs" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- 3. Hogwarts Castle Walkthrough -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <div class="ride-card bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-xs font-black text-amber-700 bg-amber-100/60 px-2 py-0.5 rounded-md">03 • 10:45 AM</span>
@@ -365,20 +444,49 @@
                                 </span>
                             </div>
                             <h3 class="text-sm font-bold text-slate-900">Hogwarts Castle Tour</h3>
-                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
                                 Hogsmeade. Skip robotic ride vehicle (Forbidden Journey). Ask entrance team member for non-riding Castle Walkthrough.
                             </p>
+                            
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 4.5 Enjoyment
+                                </span>
+                                <span class="bg-emerald-100/70 text-emerald-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-shield text-emerald-600"></i> 0.0 Nausea Risk
+                                </span>
+                            </div>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                            <span class="text-[11px] text-rose-600 font-semibold"><i class="fa-solid fa-ban mr-1"></i> Skip Robotic Ride</span>
-                            <a href="https://www.youtube.com/watch?v=1YXiSQmCoNg" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch Tour
-                            </a>
+
+                        <div class="mt-3.5 pt-3 border-t border-slate-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-slate-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★☆</span> (4.5/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-emerald-600">☆☆☆☆☆</span> (0/5 - Zero Risk)</div>
+                                    <div><strong>🏰 Immersion:</strong> <span class="text-purple-500">★★★★★</span> (5/5)</div>
+                                    <div><strong>❄️ AC Coolness:</strong> <span class="text-cyan-500">★★★★★</span> (5/5)</div>
+                                </div>
+                                <p class="leading-relaxed bg-amber-50/50 p-2 rounded-lg border border-amber-100">
+                                    <strong>💡 Strategy:</strong> Tell team member at queue entrance: <em>"We want the non-riding Castle Tour walkthrough."</em> You see Dumbledore's office, Defense Against Dark Arts, talking portraits with zero nausea!
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-rose-600 font-semibold"><i class="fa-solid fa-ban mr-1"></i> Skip Robotic Ride</span>
+                                <a href="https://www.youtube.com/watch?v=1YXiSQmCoNg" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch Tour
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- 4. Jurassic Park River Adventure -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <div class="ride-card bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">04 • 11:30 AM</span>
@@ -387,20 +495,49 @@
                                 </span>
                             </div>
                             <h3 class="text-sm font-bold text-slate-900">Jurassic Park River Adventure</h3>
-                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
                                 Islands of Adventure. Scenic water boat ride through animatronic dinosaurs with a single smooth water splash drop.
                             </p>
+                            
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 4.5 Enjoyment
+                                </span>
+                                <span class="bg-emerald-100/70 text-emerald-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-shield text-emerald-600"></i> 1.0 Nausea Risk
+                                </span>
+                            </div>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                            <span class="text-[11px] text-cyan-700 font-semibold"><i class="fa-solid fa-water mr-1"></i> Light Splash</span>
-                            <a href="https://www.youtube.com/watch?v=CHvejAdOGe8" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
-                            </a>
+
+                        <div class="mt-3.5 pt-3 border-t border-slate-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-slate-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★☆</span> (4.5/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-emerald-600">★☆☆☆☆</span> (1/5 - Low)</div>
+                                    <div><strong>🎢 Thrill Level:</strong> <span class="text-blue-500">★★★☆☆</span> (3/5 - 1 Drop)</div>
+                                    <div><strong>🌊 Splash Level:</strong> <span class="text-cyan-500">★★★☆☆</span> (3/5)</div>
+                                </div>
+                                <p class="leading-relaxed bg-blue-50/50 p-2 rounded-lg border border-blue-100">
+                                    <strong>💡 Strategy:</strong> 95% of the ride is a gentle, peaceful scenic river float. One final straight 85ft drop into water creates a refreshing splash.
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-cyan-700 font-semibold"><i class="fa-solid fa-water mr-1"></i> Light Splash</span>
+                                <a href="https://www.youtube.com/watch?v=CHvejAdOGe8" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- 5. Skull Island Reign of Kong -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <div class="ride-card bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">05 • 12:15 PM</span>
@@ -409,103 +546,352 @@
                                 </span>
                             </div>
                             <h3 class="text-sm font-bold text-slate-900">Skull Island: Reign of Kong</h3>
-                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
                                 Islands of Adventure. Large open-sided safari truck traveling through animatronics and 3D screens.
                             </p>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                            <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-shield mr-1"></i> Moderate/Gentle</span>
-                            <a href="https://www.youtube.com/watch?v=FwWrkJlmBc0" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- 6. Hogwarts Express (Train Transfer) -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">06 • 1:15 PM</span>
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
-                                    Park-to-Park Train
+                            
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 4.0 Enjoyment
+                                </span>
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> 2.0 Mild Motion
                                 </span>
                             </div>
-                            <h3 class="text-sm font-bold text-slate-900">Hogwarts Express (IOA $\rightarrow$ USF)</h3>
-                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
-                                Hogsmeade to King's Cross. Smooth authentic locomotive cabin connecting you directly into Universal Studios Florida for lunch.
-                            </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                            <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-check mr-1"></i> 0 Motion Risk</span>
-                            <a href="https://www.youtube.com/watch?v=IKZ6mSo6G04" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
-                            </a>
+
+                        <div class="mt-3.5 pt-3 border-t border-slate-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-slate-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★☆</span> (4/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-amber-600">★★☆☆☆</span> (2/5 - Mild)</div>
+                                    <div><strong>🎢 Thrill Level:</strong> <span class="text-blue-500">★★☆☆☆</span> (2.5/5)</div>
+                                    <div><strong>🦍 Kong Animatronic:</strong> <span class="text-purple-500">★★★★★</span> (5/5)</div>
+                                </div>
+                                <p class="leading-relaxed bg-blue-50/50 p-2 rounded-lg border border-blue-100">
+                                    <strong>💡 Strategy:</strong> Large 72-person expedition bus. During the 3D projection battle, look straight ahead or slide glasses off if feelings of dizziness occur.
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-shield mr-1"></i> Moderate/Gentle</span>
+                                <a href="https://www.youtube.com/watch?v=FwWrkJlmBc0" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
+                                </a>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- 7. Escape from Gringotts -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <!-- 6. Popeye & Bluto’s Bilge-Rat Barges -->
+                    <div class="ride-card bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">07 • 2:30 PM</span>
+                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">06 • 12:45 PM</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+                                    Express Pass
+                                </span>
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-900">Popeye & Bluto’s Barges</h3>
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                Islands of Adventure (Toon Lagoon). Refreshing 12-person circular water raft ride through rapids and waterfalls.
+                            </p>
+                            
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 4.5 Enjoyment
+                                </span>
+                                <span class="bg-emerald-100/70 text-emerald-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-shield text-emerald-600"></i> 1.5 Nausea Risk
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="mt-3.5 pt-3 border-t border-slate-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-slate-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★☆</span> (4.5/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-emerald-600">★☆☆☆☆</span> (1.5/5)</div>
+                                    <div><strong>🌊 Soak Level:</strong> <span class="text-cyan-500">★★★★★</span> (5/5 - 100% Wet!)</div>
+                                    <div><strong>💨 Airflow:</strong> <span class="text-blue-500">★★★★★</span> (5/5)</div>
+                                </div>
+                                <p class="leading-relaxed bg-blue-50/50 p-2 rounded-lg border border-blue-100">
+                                    <strong>💡 Strategy:</strong> Put phones, tickets & wallets in the covered dry center bin. Perfect cooling-off ride before boarding the Hogwarts Express train.
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-cyan-700 font-semibold"><i class="fa-solid fa-water mr-1"></i> Soak Guaranteed</span>
+                                <a href="https://www.youtube.com/watch?v=ZmltWRgt_Vc" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 7. Hogwarts Express Train (HIGHLIGHT) -->
+                    <div class="ride-card bg-gradient-to-br from-indigo-50/80 via-white to-blue-50/80 p-4 rounded-xl border-2 border-indigo-300 shadow-md flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded-md">07 • 1:15 PM</span>
+                                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-indigo-600 text-white shadow-sm">
+                                    🚂 Park-to-Park Train
+                                </span>
+                            </div>
+                            <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-1.5">
+                                Hogwarts Express (IOA $\rightarrow$ USF)
+                            </h3>
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                Hogsmeade Station to London King's Cross. Authentic steam locomotive connecting you into Universal Studios Florida for lunch in Diagon Alley!
+                            </p>
+                            
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 5.0 Enjoyment
+                                </span>
+                                <span class="bg-emerald-100/70 text-emerald-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-shield text-emerald-600"></i> 0.0 Zero Motion Risk
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="mt-3.5 pt-3 border-t border-indigo-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-indigo-700 hover:text-indigo-900 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-indigo-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-indigo-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★★</span> (5/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-emerald-600">☆☆☆☆☆</span> (0/5 - Zero)</div>
+                                    <div><strong>🧙 Immersion:</strong> <span class="text-purple-500">★★★★★</span> (5/5)</div>
+                                    <div><strong>❄️ AC Comfort:</strong> <span class="text-cyan-500">★★★★★</span> (5/5)</div>
+                                </div>
+                                <p class="leading-relaxed bg-indigo-50 p-2 rounded-lg border border-indigo-100">
+                                    <strong>💡 Strategy:</strong> Have your Park-to-Park ticket ready for scanning. Relax in private air-conditioned train cabins as British countryside and Dementors appear outside the digital windows. Exits at King's Cross!
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-indigo-700 font-bold"><i class="fa-solid fa-check-double mr-1"></i> Express Pass Accepted</span>
+                                <a href="https://www.youtube.com/watch?v=IKZ6mSo6G04" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 8. Escape from Gringotts -->
+                    <div class="ride-card bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">08 • 2:45 PM</span>
                                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
                                     Caution / Pro Strategy
                                 </span>
                             </div>
-                            <h3 class="text-sm font-bold text-slate-900">Harry Potter & Escape from Gringotts</h3>
-                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
-                                USF (Diagon Alley). Indoor multi-dimensional coaster. (Pro tip: Slide 3D glasses off during projection screens if needed).
+                            <h3 class="text-sm font-bold text-slate-900">Escape from Gringotts</h3>
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                USF (Diagon Alley). Indoor multi-dimensional vault coaster with 3D projection screens and physical coaster track.
                             </p>
+                            
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 5.0 Enjoyment
+                                </span>
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> 2.5 Moderate Motion
+                                </span>
+                            </div>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                            <span class="text-[11px] text-amber-700 font-semibold"><i class="fa-solid fa-glasses mr-1"></i> Glasses Off Option</span>
-                            <a href="https://www.youtube.com/watch?v=N8FSuOjoy8w" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
-                            </a>
+
+                        <div class="mt-3.5 pt-3 border-t border-slate-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-slate-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★★</span> (5/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-amber-600">★★★☆☆</span> (2.5/5)</div>
+                                    <div><strong>🎢 Thrill Level:</strong> <span class="text-blue-500">★★★☆☆</span> (3/5)</div>
+                                    <div><strong>❄️ AC Coolness:</strong> <span class="text-cyan-500">★★★★★</span> (5/5)</div>
+                                </div>
+                                <p class="leading-relaxed bg-amber-50/50 p-2 rounded-lg border border-amber-100">
+                                    <strong>💡 Strategy:</strong> 3D Glasses Trick: If you feel motion fatigue, simply slide your 3D glasses down onto your nose during screen spinning. Physical track drops are small and smooth!
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-amber-700 font-semibold"><i class="fa-solid fa-glasses mr-1"></i> Glasses Off Option</span>
+                                <a href="https://www.youtube.com/watch?v=N8FSuOjoy8w" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
+                                </a>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- 8. Revenge of the Mummy -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <!-- 9. Revenge of the Mummy -->
+                    <div class="ride-card bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">08 • 3:30 PM</span>
+                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">09 • 3:30 PM</span>
                                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
                                     Express Pass
                                 </span>
                             </div>
                             <h3 class="text-sm font-bold text-slate-900">Revenge of the Mummy</h3>
-                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
-                                USF (New York). Smooth indoor dark coaster with sudden stops and physical fire animatronics. No inversions.
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                USF (New York). Smooth indoor dark coaster with sudden stops, launches up to 40mph, and physical fire animatronics.
                             </p>
+                            
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 5.0 Enjoyment
+                                </span>
+                                <span class="bg-emerald-100/70 text-emerald-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-shield text-emerald-600"></i> 2.0 Low/Mod Risk
+                                </span>
+                            </div>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                            <span class="text-[11px] text-cyan-700 font-semibold"><i class="fa-solid fa-snowflake mr-1"></i> AC Indoor Haven</span>
-                            <a href="https://www.youtube.com/watch?v=WYI4ljAx4lk" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
-                            </a>
+
+                        <div class="mt-3.5 pt-3 border-t border-slate-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-slate-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★★</span> (5/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-emerald-600">★★☆☆☆</span> (2/5 - Low/Mod)</div>
+                                    <div><strong>🎢 Thrill Level:</strong> <span class="text-blue-500">★★★★☆</span> (3.5/5)</div>
+                                    <div><strong>❄️ AC Haven:</strong> <span class="text-cyan-500">★★★★★</span> (5/5)</div>
+                                </div>
+                                <p class="leading-relaxed bg-blue-50/50 p-2 rounded-lg border border-blue-100">
+                                    <strong>💡 Strategy:</strong> 100% physical steel track with zero inversions and zero 3D screens. High forward velocity is great for airflow. Free lockers outside.
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-cyan-700 font-semibold"><i class="fa-solid fa-snowflake mr-1"></i> AC Indoor Haven</span>
+                                <a href="https://www.youtube.com/watch?v=WYI4ljAx4lk" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
+                                </a>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- 9. Bourne Stuntacular -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <!-- 10. Bourne Stuntacular -->
+                    <div class="ride-card bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">09 • 4:15 PM</span>
+                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">10 • 4:15 PM</span>
                                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
                                     Must-Do Show
                                 </span>
                             </div>
                             <h3 class="text-sm font-bold text-slate-900">The Bourne Stuntacular</h3>
-                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
-                                USF (Hollywood). High-tech live action stunt show with real performers and massive 130-foot LED screen.
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                USF (Hollywood). High-tech live action stunt show with real performers, moving physical sets, and colossal 130-foot LED screen.
                             </p>
+                            
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 5.0 Enjoyment
+                                </span>
+                                <span class="bg-emerald-100/70 text-emerald-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-shield text-emerald-600"></i> 0.0 Zero Motion Risk
+                                </span>
+                            </div>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                            <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-couch mr-1"></i> Seated AC Theater</span>
-                            <a href="https://www.youtube.com/watch?v=wZCxiXCNzCI" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch Show
-                            </a>
+
+                        <div class="mt-3.5 pt-3 border-t border-slate-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-slate-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★★</span> (5/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-emerald-600">☆☆☆☆☆</span> (0/5 - Zero)</div>
+                                    <div><strong>🎭 Live Stunts:</strong> <span class="text-purple-500">★★★★★</span> (5/5)</div>
+                                    <div><strong>❄️ AC Theater:</strong> <span class="text-cyan-500">★★★★★</span> (5/5)</div>
+                                </div>
+                                <p class="leading-relaxed bg-blue-50/50 p-2 rounded-lg border border-blue-100">
+                                    <strong>💡 Strategy:</strong> Arrive 15 mins prior. Sit in middle rows for the best optical blend of real actors and digital backdrop.
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-couch mr-1"></i> Seated AC Theater</span>
+                                <a href="https://www.youtube.com/watch?v=wZCxiXCNzCI" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch Show
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 11. MEN IN BLACK Alien Attack -->
+                    <div class="ride-card bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black text-blue-600 bg-blue-100/60 px-2 py-0.5 rounded-md">11 • 5:00 PM</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+                                    Express Pass
+                                </span>
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-900">MEN IN BLACK Alien Attack</h3>
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                USF (World Expo). Interactive laser shooting dark ride where you zap aliens to compete for high scores!
+                            </p>
+                            
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 4.0 Enjoyment
+                                </span>
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> 2.0 Mild Spins
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="mt-3.5 pt-3 border-t border-slate-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-slate-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★☆</span> (4/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-amber-600">★★☆☆☆</span> (2/5 - Mild Spins)</div>
+                                    <div><strong>🎯 Laser Gaming:</strong> <span class="text-purple-500">★★★★★</span> (5/5)</div>
+                                    <div><strong>❄️ AC Coolness:</strong> <span class="text-cyan-500">★★★★★</span> (5/5)</div>
+                                </div>
+                                <p class="leading-relaxed bg-blue-50/50 p-2 rounded-lg border border-blue-100">
+                                    <strong>💡 Strategy:</strong> Hold down the trigger continuously (it auto-fires). Press the big red glowing button when instructed at the end for an instant 100,000 bonus points!
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-blue-700 font-semibold"><i class="fa-solid fa-crosshairs mr-1"></i> Laser Blaster</span>
+                                <a href="https://www.youtube.com/watch?v=5vh9TZEyc0U" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -531,29 +917,58 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     
                     <!-- Krakatau Aqua Coaster -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <div class="ride-card bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-black text-teal-700 bg-teal-100/60 px-2 py-0.5 rounded-md">Priority #1</span>
+                                <span class="text-xs font-black text-teal-700 bg-teal-100/60 px-2 py-0.5 rounded-md">Priority #1 • 10:00 AM</span>
                                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
                                     Smooth Water Coaster
                                 </span>
                             </div>
                             <h3 class="text-sm font-bold text-slate-900">Krakatau Aqua Coaster</h3>
-                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
                                 4-person canoe propelled uphill by magnets through volcano chutes. Very gentle on motion sickness.
                             </p>
+                            
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 5.0 Enjoyment
+                                </span>
+                                <span class="bg-emerald-100/70 text-emerald-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-shield text-emerald-600"></i> 1.0 Nausea Risk
+                                </span>
+                            </div>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                            <span class="text-[11px] text-amber-700 font-semibold"><i class="fa-solid fa-clock mr-1"></i> Tap at 10:00 AM</span>
-                            <a href="https://www.youtube.com/watch?v=j6LmQlUPwT4" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
-                            </a>
+
+                        <div class="mt-3.5 pt-3 border-t border-slate-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-teal-700 hover:text-teal-900 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-slate-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★★</span> (5/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-emerald-600">★☆☆☆☆</span> (1/5 - Low)</div>
+                                    <div><strong>🎢 Thrill Level:</strong> <span class="text-blue-500">★★★☆☆</span> (3/5)</div>
+                                    <div><strong>🌊 Splash:</strong> <span class="text-cyan-500">★★★★☆</span> (4/5)</div>
+                                </div>
+                                <p class="leading-relaxed bg-teal-50/50 p-2 rounded-lg border border-teal-100">
+                                    <strong>💡 Strategy:</strong> Tap your TapuTapu wristband at Krakatau immediately when gates open at 10:00 AM.
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-amber-700 font-semibold"><i class="fa-solid fa-clock mr-1"></i> Tap at 10:00 AM</span>
+                                <a href="https://www.youtube.com/watch?v=j6LmQlUPwT4" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Kopiko Wai Winding River -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <div class="ride-card bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-xs font-black text-teal-700 bg-teal-100/60 px-2 py-0.5 rounded-md">Continuous Entry</span>
@@ -562,20 +977,49 @@
                                 </span>
                             </div>
                             <h3 class="text-sm font-bold text-slate-900">Kopiko Wai Winding River</h3>
-                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
                                 Ultra-calm floating tube river winding through tropical vegetation and glowing stargazing caves under Krakatau volcano.
                             </p>
+                            
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 4.5 Enjoyment
+                                </span>
+                                <span class="bg-emerald-100/70 text-emerald-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-shield text-emerald-600"></i> 0.0 Zero Nausea
+                                </span>
+                            </div>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                            <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-check mr-1"></i> Zero Sickness</span>
-                            <a href="https://www.youtube.com/watch?v=0VSJFI6pCU0" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
-                            </a>
+
+                        <div class="mt-3.5 pt-3 border-t border-slate-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-teal-700 hover:text-teal-900 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-slate-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★☆</span> (4.5/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-emerald-600">☆☆☆☆☆</span> (0/5 - Zero)</div>
+                                    <div><strong>🧘 Relaxation:</strong> <span class="text-purple-500">★★★★★</span> (5/5)</div>
+                                    <div><strong>🌴 Scenery:</strong> <span class="text-cyan-500">★★★★★</span> (5/5)</div>
+                                </div>
+                                <p class="leading-relaxed bg-teal-50/50 p-2 rounded-lg border border-teal-100">
+                                    <strong>💡 Strategy:</strong> Grab a tube anytime. Perfect way to relax while waiting for your Krakatau return time window!
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-check mr-1"></i> Zero Sickness</span>
+                                <a href="https://www.youtube.com/watch?v=0VSJFI6pCU0" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- TeAwa The Fearless River -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <div class="ride-card bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-xs font-black text-teal-700 bg-teal-100/60 px-2 py-0.5 rounded-md">Continuous Entry</span>
@@ -584,13 +1028,42 @@
                                 </span>
                             </div>
                             <h3 class="text-sm font-bold text-slate-900">TeAwa The Fearless River</h3>
-                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
                                 Fast-paced whitewater river with rolling swells and rapid currents (life vests required). Smooth, thrilling, and safe.
                             </p>
+                            
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 5.0 Enjoyment
+                                </span>
+                                <span class="bg-emerald-100/70 text-emerald-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-shield text-emerald-600"></i> 1.0 Nausea Risk
+                                </span>
+                            </div>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                            <span class="text-[11px] text-slate-600 font-semibold"><i class="fa-solid fa-vest mr-1"></i> Vests Provided</span>
-                            <span class="text-xs text-slate-500 font-medium px-2.5 py-0.5 bg-slate-200/80 rounded-md">Volcano Base</span>
+
+                        <div class="mt-3.5 pt-3 border-t border-slate-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-teal-700 hover:text-teal-900 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-slate-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★★</span> (5/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-emerald-600">★☆☆☆☆</span> (1/5 - Low)</div>
+                                    <div><strong>⚡ Thrill Surge:</strong> <span class="text-blue-500">★★★★☆</span> (4/5)</div>
+                                    <div><strong>🦺 Vest Support:</strong> <span class="text-cyan-500">★★★★★</span> (5/5)</div>
+                                </div>
+                                <p class="leading-relaxed bg-teal-50/50 p-2 rounded-lg border border-teal-100">
+                                    <strong>💡 Strategy:</strong> Put on provided life vest and jump in. Rapid current carries you effortlessly across churning waves.
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-slate-600 font-semibold"><i class="fa-solid fa-vest mr-1"></i> Vests Provided</span>
+                                <span class="text-xs text-slate-500 font-medium px-2.5 py-0.5 bg-slate-200/80 rounded-md">Volcano Base</span>
+                            </div>
                         </div>
                     </div>
 
@@ -676,29 +1149,58 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     
                     <!-- Mario Kart Bowser's Challenge -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <div class="ride-card bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-black text-purple-700 bg-purple-100/60 px-2 py-0.5 rounded-md">01 • Rope Drop</span>
+                                <span class="text-xs font-black text-purple-700 bg-purple-100/60 px-2 py-0.5 rounded-md">01 • Rope Drop 9:00 AM</span>
                                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
                                     AR Dark Ride
                                 </span>
                             </div>
                             <h3 class="text-sm font-bold text-slate-900">Mario Kart: Bowser’s Challenge</h3>
-                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
                                 Super Nintendo World. Interactive dark ride on tracks with head-mounted AR goggles. Steady track movement.
                             </p>
+                            
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 5.0 Enjoyment
+                                </span>
+                                <span class="bg-emerald-100/70 text-emerald-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-shield text-emerald-600"></i> 1.5 Nausea Risk
+                                </span>
+                            </div>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                            <span class="text-[11px] text-amber-700 font-semibold"><i class="fa-solid fa-flag-checkered mr-1"></i> Walk Fast from Hub</span>
-                            <a href="https://www.youtube.com/watch?v=2ruAqduHXwc" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
-                            </a>
+
+                        <div class="mt-3.5 pt-3 border-t border-slate-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-purple-700 hover:text-purple-900 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-slate-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★★</span> (5/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-emerald-600">★☆☆☆☆</span> (1.5/5)</div>
+                                    <div><strong>🎮 AR Gaming:</strong> <span class="text-purple-500">★★★★★</span> (5/5)</div>
+                                    <div><strong>❄️ AC Coolness:</strong> <span class="text-cyan-500">★★★★★</span> (5/5)</div>
+                                </div>
+                                <p class="leading-relaxed bg-purple-50/50 p-2 rounded-lg border border-purple-100">
+                                    <strong>💡 Strategy:</strong> Walk briskly to Nintendo World portal right at rope drop. Physical car moves slowly on tracks while you steer and launch shells.
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-amber-700 font-semibold"><i class="fa-solid fa-flag-checkered mr-1"></i> Walk Fast from Hub</span>
+                                <a href="https://www.youtube.com/watch?v=2ruAqduHXwc" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Yoshi's Adventure -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <div class="ride-card bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-xs font-black text-purple-700 bg-purple-100/60 px-2 py-0.5 rounded-md">02 • 10:30 AM</span>
@@ -707,20 +1209,49 @@
                                 </span>
                             </div>
                             <h3 class="text-sm font-bold text-slate-900">Yoshi’s Adventure</h3>
-                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
                                 Super Nintendo World. Elevated, slow scenic ride overlooking the entire Mushroom Kingdom. Zero motion sickness.
                             </p>
+                            
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 4.5 Enjoyment
+                                </span>
+                                <span class="bg-emerald-100/70 text-emerald-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-shield text-emerald-600"></i> 0.0 Zero Nausea
+                                </span>
+                            </div>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                            <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-check mr-1"></i> Gentle & Relaxing</span>
-                            <a href="https://www.youtube.com/watch?v=ckgyiqxdBU0" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
-                            </a>
+
+                        <div class="mt-3.5 pt-3 border-t border-slate-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-purple-700 hover:text-purple-900 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-slate-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★☆</span> (4.5/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-emerald-600">☆☆☆☆☆</span> (0/5 - Zero)</div>
+                                    <div><strong>📸 Photo Views:</strong> <span class="text-purple-500">★★★★★</span> (5/5)</div>
+                                    <div><strong>💨 Airflow:</strong> <span class="text-cyan-500">★★★★★</span> (5/5)</div>
+                                </div>
+                                <p class="leading-relaxed bg-purple-50/50 p-2 rounded-lg border border-purple-100">
+                                    <strong>💡 Strategy:</strong> Take photos of Mount Beanpole and Nintendo World from the elevated track. 100% smooth and relaxing!
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-emerald-700 font-semibold"><i class="fa-solid fa-check mr-1"></i> Gentle & Relaxing</span>
+                                <a href="https://www.youtube.com/watch?v=ckgyiqxdBU0" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Monsters Unchained -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <div class="ride-card bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-xs font-black text-purple-700 bg-purple-100/60 px-2 py-0.5 rounded-md">03 • 11:45 AM</span>
@@ -729,15 +1260,44 @@
                                 </span>
                             </div>
                             <h3 class="text-sm font-bold text-slate-900">Monsters Unchained: Frankenstein</h3>
-                            <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
                                 Dark Universe. Cutting-edge indoor dark ride featuring the most advanced animatronics in the world.
                             </p>
+                            
+                            <div class="mt-2.5 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-amber-500"></i> 5.0 Enjoyment
+                                </span>
+                                <span class="bg-amber-100/70 text-amber-800 px-2 py-0.5 rounded flex items-center gap-1">
+                                    <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> 2.0 Mild Motion
+                                </span>
+                            </div>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                            <span class="text-[11px] text-slate-600 font-semibold"><i class="fa-solid fa-shield mr-1"></i> Smooth Track</span>
-                            <a href="https://www.youtube.com/watch?v=7AbnllQNN4o" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
-                                <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
-                            </a>
+
+                        <div class="mt-3.5 pt-3 border-t border-slate-200">
+                            <button onclick="toggleCard(this)" class="w-full text-xs font-bold text-purple-700 hover:text-purple-900 flex items-center justify-between py-1">
+                                <span>Ratings & Deep/Nishita Strategy</span>
+                                <i class="fa-solid fa-chevron-down rotate-icon text-[10px]"></i>
+                            </button>
+                            
+                            <div class="expandable-content hidden mt-2.5 pt-2 border-t border-slate-200/60 space-y-2.5 text-xs text-slate-600">
+                                <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500">★★★★★</span> (5/5)</div>
+                                    <div><strong>🤢 Motion Risk:</strong> <span class="text-amber-600">★★☆☆☆</span> (2/5 - Mild)</div>
+                                    <div><strong>🧟 Animatronics:</strong> <span class="text-purple-500">★★★★★</span> (5/5 - Best in World)</div>
+                                    <div><strong>❄️ AC Manor:</strong> <span class="text-cyan-500">★★★★★</span> (5/5)</div>
+                                </div>
+                                <p class="leading-relaxed bg-purple-50/50 p-2 rounded-lg border border-purple-100">
+                                    <strong>💡 Strategy:</strong> Smooth tracked robotic arm system. Features practical effects and breathtaking physical monsters rather than disorienting 3D screens.
+                                </p>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between">
+                                <span class="text-[11px] text-slate-600 font-semibold"><i class="fa-solid fa-shield mr-1"></i> Smooth Track</span>
+                                <a href="https://www.youtube.com/watch?v=7AbnllQNN4o" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-3 py-1 rounded-lg border border-red-200 hover:border-red-600 font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-brands fa-youtube text-red-500 group-hover:text-white"></i> Watch POV
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -945,7 +1505,7 @@
             <!-- Complete Ride Classification Table -->
             <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
                 <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-list-check text-blue-600"></i> Master Motion Safety Classification
+                    <i class="fa-solid fa-list-check text-blue-600"></i> Master Motion Safety & Ratings Summary
                 </h3>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
@@ -956,15 +1516,15 @@
                             <i class="fa-solid fa-circle-check text-emerald-600"></i> Safe / Low Motion Risk
                         </span>
                         <ul class="space-y-1.5 text-slate-700">
-                            <li>• <strong>Hagrid's Motorbike</strong> (Smooth steel, high airflow)</li>
-                            <li>• <strong>Flight of the Hippogriff</strong> (Gentle coaster)</li>
-                            <li>• <strong>Hogwarts Castle Tour</strong> (Non-riding walk)</li>
-                            <li>• <strong>Jurassic Park River</strong> (Scenic boat ride)</li>
-                            <li>• <strong>Hogwarts Express</strong> (Authentic train cabin)</li>
-                            <li>• <strong>Bourne Stuntacular</strong> (Theater stunt show)</li>
-                            <li>• <strong>Krakatau Aqua Coaster</strong> (Gentle magnetic water)</li>
-                            <li>• <strong>Kopiko Wai Lazy River</strong> (Relaxing float)</li>
-                            <li>• <strong>Yoshi’s Adventure</strong> (Slow elevated omnimover)</li>
+                            <li>• <strong>Hogwarts Express Train</strong> (⭐ 0.0 Nausea • 5.0 Enjoyment)</li>
+                            <li>• <strong>Hagrid's Motorbike</strong> (⭐ 1.0 Nausea • 5.0 Enjoyment)</li>
+                            <li>• <strong>Flight of the Hippogriff</strong> (⭐ 1.0 Nausea • 4.0 Enjoyment)</li>
+                            <li>• <strong>Hogwarts Castle Tour</strong> (⭐ 0.0 Nausea • 4.5 Enjoyment)</li>
+                            <li>• <strong>Jurassic Park River</strong> (⭐ 1.0 Nausea • 4.5 Enjoyment)</li>
+                            <li>• <strong>Bourne Stuntacular</strong> (⭐ 0.0 Nausea • 5.0 Enjoyment)</li>
+                            <li>• <strong>Krakatau Aqua Coaster</strong> (⭐ 1.0 Nausea • 5.0 Enjoyment)</li>
+                            <li>• <strong>Kopiko Wai Lazy River</strong> (⭐ 0.0 Nausea • 4.5 Enjoyment)</li>
+                            <li>• <strong>Yoshi’s Adventure</strong> (⭐ 0.0 Nausea • 4.5 Enjoyment)</li>
                         </ul>
                     </div>
 
@@ -974,12 +1534,13 @@
                             <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> Caution / Minor Motion
                         </span>
                         <ul class="space-y-1.5 text-slate-700">
-                            <li>• <strong>Escape from Gringotts</strong> (Dark coaster + 3D)</li>
-                            <li>• <strong>Revenge of the Mummy</strong> (Indoor coaster, sudden stops)</li>
-                            <li>• <strong>Skull Island Kong</strong> (Truck simulator screen)</li>
-                            <li>• <strong>Mario Kart: Bowser</strong> (AR goggles dark ride)</li>
-                            <li>• <strong>Monsters Unchained</strong> (Tracked dark ride)</li>
-                            <li>• <strong>MEN IN BLACK</strong> (Spinning shooter vehicle)</li>
+                            <li>• <strong>Escape from Gringotts</strong> (⭐ 2.5 Nausea • 5.0 Enjoyment)</li>
+                            <li>• <strong>Revenge of the Mummy</strong> (⭐ 2.0 Nausea • 5.0 Enjoyment)</li>
+                            <li>• <strong>Skull Island Kong</strong> (⭐ 2.0 Nausea • 4.0 Enjoyment)</li>
+                            <li>• <strong>Popeye & Bluto Barges</strong> (⭐ 1.5 Nausea • 4.5 Enjoyment)</li>
+                            <li>• <strong>Mario Kart: Bowser</strong> (⭐ 1.5 Nausea • 5.0 Enjoyment)</li>
+                            <li>• <strong>Monsters Unchained</strong> (⭐ 2.0 Nausea • 5.0 Enjoyment)</li>
+                            <li>• <strong>MEN IN BLACK</strong> (⭐ 2.0 Nausea • 4.0 Enjoyment)</li>
                         </ul>
                     </div>
 
@@ -993,7 +1554,7 @@
                             <li>• <strong>Incredible Hulk Coaster</strong> (7 High-G Inversions)</li>
                             <li>• <strong>Rip Ride Rockit</strong> (90° Lift + Rough drops)</li>
                             <li>• <strong>Forbidden Journey</strong> (Robotic arm nausea vehicle)</li>
-                            <li>• <strong>Stardust Racers</strong> (High speed coaster)</li>
+                            <li>• <strong>Stardust Racers</strong> (High speed dual rolls)</li>
                             <li>• <strong>Doctor Doom FearFall</strong> (Aggressive drop tower)</li>
                         </ul>
                     </div>
@@ -1015,6 +1576,50 @@
 
     <!-- Interactive Logic Script -->
     <script>
+        // Toggle individual card expansion
+        function toggleCard(btn) {
+            const card = btn.closest('.ride-card');
+            const content = card.querySelector('.expandable-content');
+            const isHidden = content.classList.contains('hidden');
+            
+            if (isHidden) {
+                content.classList.remove('hidden');
+                btn.classList.add('expanded');
+            } else {
+                content.classList.add('hidden');
+                btn.classList.remove('expanded');
+            }
+        }
+
+        // Toggle all cards
+        let allExpanded = false;
+        function toggleAllCards() {
+            allExpanded = !allExpanded;
+            const contents = document.querySelectorAll('.expandable-content');
+            const buttons = document.querySelectorAll('.ride-card button');
+            const toggleAllBtn = document.getElementById('toggleAllBtn');
+
+            contents.forEach(c => {
+                if (allExpanded) {
+                    c.classList.remove('hidden');
+                } else {
+                    c.classList.add('hidden');
+                }
+            });
+
+            buttons.forEach(b => {
+                if (allExpanded) {
+                    b.classList.add('expanded');
+                } else {
+                    b.classList.remove('expanded');
+                }
+            });
+
+            if (toggleAllBtn) {
+                toggleAllBtn.innerText = allExpanded ? "Collapse All" : "Expand All";
+            }
+        }
+
         // Universal Parks Map Data with POV Links
         const parkData = {
             ioa: {
@@ -1050,7 +1655,7 @@
                         express: "Yes",
                         desc: "Gentle outdoor family coaster with small dips and great castle views.",
                         strategy: "Use Express Pass line immediately after Hagrid's.",
-                        videoUrl: "https://www.youtube.com/watch?v=fX0qMRx4Ufs"
+                        videoUrl: "https://www.youtube.com/watch?fX0qMRx4Ufs"
                     },
                     {
                         id: 3,
@@ -1131,7 +1736,7 @@
                 steps: [
                     {
                         id: 1,
-                        name: "King’s Cross Arrival",
+                        name: "King’s Cross Arrival (Hogwarts Express)",
                         land: "London Waterfront",
                         x: 550, y: 180,
                         type: "must-do",
@@ -1139,7 +1744,7 @@
                         motion: "Zero Risk",
                         express: "Yes",
                         desc: "Arrival point from Islands of Adventure train.",
-                        strategy: "Walk directly into Diagon Alley for lunch.",
+                        strategy: "Walk directly into Diagon Alley for lunch at Leaky Cauldron.",
                         videoUrl: "https://www.youtube.com/watch?v=IKZ6mSo6G04"
                     },
                     {
@@ -1152,7 +1757,7 @@
                         motion: "Moderate",
                         express: "Yes",
                         desc: "Indoor dark coaster hybrid. Smooth physical track.",
-                        strategy: "Slide off 3D glasses during projection screens if feeling dizzy.",
+                        strategy: "Slide off 3D glasses during projection scenes if feeling dizzy.",
                         videoUrl: "https://www.youtube.com/watch?v=N8FSuOjoy8w"
                     },
                     {
