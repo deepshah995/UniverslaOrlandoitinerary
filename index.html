@@ -84,10 +84,15 @@
             font-family: 'Outfit', sans-serif;
         }
 
-        /* Custom Scrollbar */
+        /* Mobile-first touch enhancements */
+        button, a {
+            touch-action: manipulation;
+        }
+
+        /* Custom Scrollbars */
         .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
             background: #f1f5f9;
@@ -105,7 +110,7 @@
         .nav-tab.active {
             background: linear-gradient(135deg, #0284c7, #2563eb);
             color: #ffffff;
-            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.28);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
         }
         .nav-tab:not(.active) {
             background-color: #ffffff;
@@ -133,19 +138,9 @@
 
         /* Glassmorphism Card Style */
         .glass-card {
-            background: rgba(255, 255, 255, 0.88);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-        }
-
-        /* Map Hotspot Pulse */
-        @keyframes hotspotPulse {
-            0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.7); }
-            70% { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 0 12px rgba(2, 132, 199, 0); }
-            100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); }
-        }
-        .map-hotspot {
-            animation: hotspotPulse 2.4s infinite;
+            border: 1px solid rgba(226, 232, 240, 0.85);
         }
 
         /* Modal backdrop animation */
@@ -154,56 +149,64 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col custom-scrollbar bg-slate-50 text-slate-800 antialiased selection:bg-sky-100 selection:text-sky-900">
+<body class="min-h-screen flex flex-col custom-scrollbar bg-slate-50 text-slate-800 antialiased selection:bg-sky-100 selection:text-sky-900 overflow-x-hidden">
 
-    <!-- Top Sticky Header -->
-    <header class="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 shadow-sm">
-        <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+    <!-- Top Sticky Header (Optimized for Mobile & Desktop) -->
+    <header class="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 shadow-xs">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 sm:py-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-2.5">
             
             <!-- Official Logo & Quick Trip Meta -->
-            <div class="flex items-center space-x-3.5">
-                <img src="Epic%20Universe%20logo.png" alt="Universal Epic Universe Logo" class="h-11 sm:h-12 w-auto object-contain flex-shrink-0 drop-shadow-sm hover:scale-105 transition-transform duration-200 cursor-pointer" onclick="switchView('timeline'); filterPortal('all')">
-                
-                <div class="border-l border-slate-200 pl-3">
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <h1 class="text-base sm:text-lg font-black text-slate-900 tracking-tight font-display">
-                            Master Itinerary & Guide
-                        </h1>
-                        <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                            <i class="fa-solid fa-car-side mr-1"></i>30 Min Away
-                        </span>
+            <div class="flex items-center space-x-2.5 sm:space-x-3.5 w-full md:w-auto justify-between md:justify-start">
+                <div class="flex items-center space-x-2.5">
+                    <img src="Epic%20Universe%20logo.png" alt="Universal Epic Universe Logo" class="h-8 sm:h-11 w-auto object-contain flex-shrink-0 drop-shadow-xs cursor-pointer" onclick="switchView('timeline'); filterPortal('all')">
+                    
+                    <div class="border-l border-slate-200 pl-2.5 sm:pl-3">
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                            <h1 class="text-sm sm:text-base md:text-lg font-black text-slate-900 tracking-tight font-display">
+                                Master Itinerary & Guide
+                            </h1>
+                            <span class="text-[9px] sm:text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 whitespace-nowrap">
+                                <i class="fa-solid fa-car-side mr-1"></i>30 Min Away
+                            </span>
+                            <span class="text-[9px] sm:text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 whitespace-nowrap">
+                                <i class="fa-solid fa-clock mr-1"></i>11:00 AM Start
+                            </span>
+                        </div>
+                        <p class="text-[10px] sm:text-[11px] text-slate-500 font-medium mt-0.5 flex items-center gap-1.5 flex-wrap">
+                            <span><i class="fa-solid fa-heart text-rose-500 mr-1"></i>Deep & Nishita</span>
+                            <span class="hidden sm:inline">•</span>
+                            <span class="text-emerald-700 font-semibold"><i class="fa-solid fa-leaf text-emerald-600 mr-1"></i>Vegetarian (Eggs OK)</span>
+                            <span class="hidden sm:inline">•</span>
+                            <span class="hidden sm:inline text-sky-600"><i class="fa-solid fa-compass mr-1"></i>5 Themed Worlds</span>
+                        </p>
                     </div>
-                    <p class="text-[11px] text-slate-500 font-medium mt-0.5 flex items-center gap-1.5 flex-wrap">
-                        <span><i class="fa-solid fa-heart text-rose-500 mr-1"></i>Deep & Nishita</span>
-                        <span>•</span>
-                        <span><i class="fa-solid fa-leaf text-emerald-600 mr-1"></i>Vegetarian (Eggs OK)</span>
-                        <span>•</span>
-                        <span><i class="fa-solid fa-compass text-sky-600 mr-1"></i>5 Themed Portals</span>
-                        <span>•</span>
-                        <span><i class="fa-solid fa-shield-halved text-amber-500 mr-1"></i>Motion Sickness Guide</span>
-                    </p>
                 </div>
+
+                <!-- Mobile Quick Map Trigger -->
+                <button onclick="switchView('map')" class="md:hidden w-8 h-8 rounded-xl bg-sky-50 text-sky-700 border border-sky-200 flex items-center justify-center text-xs flex-shrink-0" title="View Map">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                </button>
             </div>
 
-            <!-- Primary View Mode Switcher -->
+            <!-- Primary View Mode Switcher (Touch Scrollable on Mobile) -->
             <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-2xl border border-slate-200 w-full md:w-auto overflow-x-auto custom-scrollbar">
-                <button onclick="switchView('timeline')" id="tabBtn-timeline" class="nav-tab active flex-1 md:flex-none px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap">
-                    <i class="fa-solid fa-clock"></i> 1-Day Timeline
+                <button onclick="switchView('timeline')" id="tabBtn-timeline" class="nav-tab active flex-1 md:flex-none px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-clock"></i> Timeline
                 </button>
-                <button onclick="switchView('map')" id="tabBtn-map" class="nav-tab flex-1 md:flex-none px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap">
-                    <i class="fa-solid fa-map-location-dot text-sky-600"></i> Park Map
+                <button onclick="switchView('map')" id="tabBtn-map" class="nav-tab flex-1 md:flex-none px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-map-location-dot text-sky-600"></i> Map
                 </button>
-                <button onclick="switchView('rides')" id="tabBtn-rides" class="nav-tab flex-1 md:flex-none px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap">
+                <button onclick="switchView('rides')" id="tabBtn-rides" class="nav-tab flex-1 md:flex-none px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap">
                     <i class="fa-solid fa-film text-red-500"></i> Rides & POVs
                 </button>
-                <button onclick="switchView('dining')" id="tabBtn-dining" class="nav-tab flex-1 md:flex-none px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap">
-                    <i class="fa-solid fa-utensils text-emerald-600"></i> Veg Dining (Eggs OK)
+                <button onclick="switchView('dining')" id="tabBtn-dining" class="nav-tab flex-1 md:flex-none px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-utensils text-emerald-600"></i> Veg Dining
                 </button>
-                <button onclick="switchView('commute')" id="tabBtn-commute" class="nav-tab flex-1 md:flex-none px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap">
-                    <i class="fa-solid fa-route text-indigo-600"></i> 30-Min Commute
+                <button onclick="switchView('commute')" id="tabBtn-commute" class="nav-tab flex-1 md:flex-none px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-route text-indigo-600"></i> Commute
                 </button>
-                <button onclick="switchView('checklist')" id="tabBtn-checklist" class="nav-tab flex-1 md:flex-none px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap">
-                    <i class="fa-solid fa-square-check text-purple-600"></i> My Wishlist (<span id="checklistCount">0</span>)
+                <button onclick="switchView('checklist')" id="tabBtn-checklist" class="nav-tab flex-1 md:flex-none px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-square-check text-purple-600"></i> Wishlist (<span id="checklistCount">0</span>)
                 </button>
             </div>
 
@@ -211,18 +214,16 @@
     </header>
 
     <!-- Quick Highlights Banner -->
-    <div class="bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-600 text-white text-xs py-2 px-4 shadow-inner">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-medium">
-            <div class="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
+    <div class="bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-600 text-white text-xs py-2 px-3.5 shadow-inner">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5 text-[11px] font-medium">
+            <div class="flex items-center gap-1.5 flex-wrap justify-center sm:justify-start">
                 <span class="bg-white/20 backdrop-blur-md px-2 py-0.5 rounded-full font-bold uppercase text-[9px] tracking-wider border border-white/30">
-                    ⚡ Local Pro Advantage
+                    ⚡ 11:00 AM Plan
                 </span>
-                <span>You live 30 min away: Depart at <strong>7:20 AM</strong> → Park by <strong>7:50 AM</strong> → First in line at Nintendo World!</span>
+                <span>Depart home at <strong>10:30 AM</strong> → Park by <strong>11:00 AM</strong> → First stop: <strong>Toadstool Cafe Veg Lunch</strong> at 11:30 AM!</span>
             </div>
-            <div class="flex items-center gap-3">
-                <a href="#portalFilter" onclick="switchView('timeline'); filterPortal('nintendo')" class="underline hover:text-amber-200 transition font-bold">Rope Drop Strategy</a>
-                <span>•</span>
-                <button onclick="switchView('map')" class="underline hover:text-amber-200 transition font-bold">Official Park Map</button>
+            <div class="flex items-center gap-3 text-[10px] sm:text-[11px]">
+                <button onclick="switchView('map')" class="underline hover:text-amber-200 transition font-bold">Park Map</button>
                 <span>•</span>
                 <a href="#butterbeer" onclick="switchView('dining')" class="underline hover:text-amber-200 transition font-bold">Paris Butterbeer</a>
             </div>
@@ -230,20 +231,20 @@
     </div>
 
     <!-- Main Application Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-3.5 sm:px-6 lg:px-8 py-5 space-y-6">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-5 space-y-4 sm:space-y-5">
 
         <!-- ========================================================================= -->
         <!-- 5 THEMED PORTAL NAVIGATOR STRIP (STICKY / ACCESSIBLE ACROSS VIEWS) -->
         <!-- ========================================================================= -->
-        <section id="portalFilter" class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+        <section id="portalFilter" class="bg-white p-3 sm:p-4 rounded-2xl border border-slate-200 shadow-xs space-y-2.5">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-100 pb-2">
                 <div>
                     <h2 class="text-xs sm:text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-1.5 font-display">
-                        <i class="fa-solid fa-ring text-sky-500"></i> Explore Epic Universe by Themed Portal
+                        <i class="fa-solid fa-ring text-sky-500"></i> Explore by Themed World
                     </h2>
-                    <p class="text-[11px] text-slate-500">Select any world to instantly filter the itinerary, rides, and vegetarian restaurants:</p>
+                    <p class="text-[10px] sm:text-[11px] text-slate-500">Filter timeline, rides, and vegetarian food stops by portal:</p>
                 </div>
-                <div class="flex items-center gap-2 text-xs">
+                <div class="flex items-center gap-2 text-xs w-full sm:w-auto justify-between sm:justify-end">
                     <span class="text-[11px] text-slate-500 font-semibold">Filter:</span>
                     <button onclick="filterPortal('all')" id="portalBtn-all" class="portal-btn active px-3 py-1 rounded-xl text-xs font-bold bg-slate-900 text-white transition">
                         All 5 Worlds
@@ -251,7 +252,7 @@
                 </div>
             </div>
 
-            <!-- 5 Themed Portal Cards / Buttons -->
+            <!-- 5 Themed Portal Cards / Buttons (2-col on phone, 5-col on desktop) -->
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-2.5">
                 
                 <!-- 1. Celestial Park -->
@@ -261,27 +262,27 @@
                         <i class="fa-solid fa-meteor text-sky-500 group-hover:scale-125 transition-transform text-sm"></i>
                     </div>
                     <div class="font-extrabold text-slate-900 text-xs truncate font-display">Celestial Park</div>
-                    <div class="text-[10px] text-slate-500 truncate">Stardust Racers & Hub</div>
+                    <div class="text-[10px] text-slate-500 truncate">Stardust & Night Finale</div>
                 </button>
 
                 <!-- 2. Super Nintendo World -->
                 <button onclick="filterPortal('nintendo')" id="portalBtn-nintendo" class="portal-btn text-left p-2.5 rounded-xl border border-rose-200 bg-gradient-to-br from-rose-50 via-white to-amber-50/40 hover:border-rose-400 transition group relative overflow-hidden">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-rose-100 text-rose-800">Rope Drop #1</span>
+                        <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-rose-100 text-rose-800">11:30 AM Start</span>
                         <i class="fa-solid fa-gamepad text-rose-500 group-hover:scale-125 transition-transform text-sm"></i>
                     </div>
                     <div class="font-extrabold text-slate-900 text-xs truncate font-display">Super Nintendo</div>
-                    <div class="text-[10px] text-slate-500 truncate">Mario Kart & Donkey Kong</div>
+                    <div class="text-[10px] text-slate-500 truncate">Mario, DK & Toadstool Lunch</div>
                 </button>
 
                 <!-- 3. Wizarding World: Ministry of Magic -->
                 <button onclick="filterPortal('ministry')" id="portalBtn-ministry" class="portal-btn text-left p-2.5 rounded-xl border border-purple-200 bg-gradient-to-br from-purple-50 via-white to-indigo-50/40 hover:border-purple-400 transition group relative overflow-hidden">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-purple-100 text-purple-800">Paris & Ministry</span>
+                        <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-purple-100 text-purple-800">Parisian AC</span>
                         <i class="fa-solid fa-wand-magic-sparkles text-purple-500 group-hover:scale-125 transition-transform text-sm"></i>
                     </div>
                     <div class="font-extrabold text-slate-900 text-xs truncate font-display">Ministry of Magic</div>
-                    <div class="text-[10px] text-slate-500 truncate">Battle at Ministry & Wands</div>
+                    <div class="text-[10px] text-slate-500 truncate">Paris Butterbeer & Battle</div>
                 </button>
 
                 <!-- 4. Isle of Berk -->
@@ -291,69 +292,147 @@
                         <i class="fa-solid fa-dragon text-cyan-600 group-hover:scale-125 transition-transform text-sm"></i>
                     </div>
                     <div class="font-extrabold text-slate-900 text-xs truncate font-display">Isle of Berk</div>
-                    <div class="text-[10px] text-slate-500 truncate">Hiccup's Gliders & Mead Hall</div>
+                    <div class="text-[10px] text-slate-500 truncate">Indoor Theater & Gliders</div>
                 </button>
 
                 <!-- 5. Dark Universe -->
                 <button onclick="filterPortal('dark')" id="portalBtn-dark" class="portal-btn text-left p-2.5 rounded-xl border border-slate-300 bg-gradient-to-br from-slate-100 via-white to-zinc-100 hover:border-slate-400 transition group relative overflow-hidden">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-slate-200 text-slate-800">Monsters</span>
+                        <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-slate-200 text-slate-800">Dusk / Evening</span>
                         <i class="fa-solid fa-skull text-slate-700 group-hover:scale-125 transition-transform text-sm"></i>
                     </div>
                     <div class="font-extrabold text-slate-900 text-xs truncate font-display">Dark Universe</div>
-                    <div class="text-[10px] text-slate-500 truncate">Frankenstein & Werewolf</div>
+                    <div class="text-[10px] text-slate-500 truncate">Frankenstein & Veg Dinner</div>
                 </button>
 
             </div>
         </section>
 
         <!-- ========================================================================= -->
-        <!-- VIEW 1: MASTER EXPANDABLE 1-DAY TIMELINE ITINERARY -->
+        <!-- VIEW 1: MASTER EXPANDABLE 1-DAY TIMELINE ITINERARY (11:00 AM START) -->
         <!-- ========================================================================= -->
         <section id="view-timeline" class="space-y-4">
             
-            <!-- Controls Bar: Search & Global Expand/Collapse -->
-            <div class="bg-white p-3 sm:p-3.5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+            <!-- STRATEGIC REASONING CARD (EXPLAINS THE WHY BEHIND THIS ROUTE ORDER) -->
+            <div class="bg-gradient-to-br from-indigo-900 via-slate-900 to-sky-950 rounded-2xl sm:rounded-3xl p-4 sm:p-5 text-white shadow-md border border-indigo-700/40 space-y-3">
+                <div class="flex items-start justify-between gap-3">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="bg-amber-400 text-slate-950 font-black text-[10px] uppercase px-2.5 py-0.5 rounded-full tracking-wider">
+                                🧭 Route Strategy
+                            </span>
+                            <span class="text-sky-300 text-xs font-bold">11:00 AM – 11:30 AM Arrival Flow</span>
+                        </div>
+                        <h3 class="text-base sm:text-lg font-black tracking-tight font-display text-white">
+                            Why is this specific portal order set?
+                        </h3>
+                    </div>
+                    <button onclick="toggleRouteReasoning()" id="toggleReasoningBtn" class="text-xs bg-white/10 hover:bg-white/20 text-sky-200 px-2.5 py-1 rounded-lg border border-white/20 transition flex items-center gap-1 flex-shrink-0">
+                        <span id="reasoningBtnText">Collapse</span> <i class="fa-solid fa-chevron-up text-[10px]" id="reasoningChevron"></i>
+                    </button>
+                </div>
+
+                <div id="routeReasoningContent" class="space-y-2.5 text-xs text-slate-200 leading-relaxed border-t border-white/10 pt-2.5">
+                    <p class="text-[11px] sm:text-xs text-sky-100">
+                        Epic Universe is a massive <strong>750-acre circular layout</strong>. Walking back and forth between portals easily adds 4+ miles of exhausting backtracking in Florida heat. This itinerary follows a synchronized loop:
+                    </p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-[11px] pt-1">
+                        
+                        <div class="bg-white/10 p-2.5 rounded-xl border border-white/10 space-y-1">
+                            <div class="font-extrabold text-amber-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-utensils"></i> 1. Nintendo Lunch First (11:30 AM)
+                            </div>
+                            <p class="text-slate-300 text-[10.5px]">
+                                Arriving at 11:00 AM means your family is hungry. Heading straight to <strong>Toadstool Cafe</strong> beats the afternoon capacity cutoff and lets you savor a hot meal before riding!
+                            </p>
+                        </div>
+
+                        <div class="bg-white/10 p-2.5 rounded-xl border border-white/10 space-y-1">
+                            <div class="font-extrabold text-cyan-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-sun"></i> 2. Peak Heat in AC (2:30–4:30 PM)
+                            </div>
+                            <p class="text-slate-300 text-[10.5px]">
+                                The highest heat index is mid-afternoon. We scheduled the indoor air-conditioned <em>Untrainable Dragon</em> theater in Berk followed by Paris indoor streets and <em>Battle at the Ministry</em> during peak sun!
+                            </p>
+                        </div>
+
+                        <div class="bg-white/10 p-2.5 rounded-xl border border-white/10 space-y-1">
+                            <div class="font-extrabold text-purple-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-ghost"></i> 3. Dark Universe at Twilight (6:30 PM)
+                            </div>
+                            <p class="text-slate-300 text-[10.5px]">
+                                Universal Classic Monsters look ten times cooler at dusk when the windmill blades ignite in fire and the gothic Frankenstein manor glows under eerie fog!
+                            </p>
+                        </div>
+
+                        <div class="bg-white/10 p-2.5 rounded-xl border border-white/10 space-y-1">
+                            <div class="font-extrabold text-sky-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-stars"></i> 4. Stardust Night & Finale (8:30 PM)
+                            </div>
+                            <p class="text-slate-300 text-[10.5px]">
+                                <em>Stardust Racers</em> dual-launch trains feature bioluminescent comet lights that are spectacular in pitch darkness. You finish right at the lagoon exit for a fast 30-min drive home!
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls Bar: Search & Filters -->
+            <div class="bg-white p-3 sm:p-3.5 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
                 <div class="relative flex-1">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                    <input type="text" id="timelineSearch" oninput="filterTimelineSearch()" placeholder="Search attractions, lands, times, snacks (e.g. Mario, Butterbeer, 11:30)..." class="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                    <input type="text" id="timelineSearch" oninput="filterTimelineSearch()" placeholder="Search timeline (e.g. Mario, Lunch, Butterbeer, 3:00 PM)..." class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500">
                 </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="toggleAllTimeline(true)" class="flex-1 sm:flex-none px-3 py-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl text-slate-700 text-xs font-bold transition flex items-center justify-center gap-1.5">
-                        <i class="fa-solid fa-angles-down text-sky-600 text-[10px]"></i> Expand All
+                
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5">
+                    <!-- Type Filters -->
+                    <button onclick="filterTimelineType('all')" id="timelineTypeBtn-all" class="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white transition whitespace-nowrap">
+                        All Stops
                     </button>
-                    <button onclick="toggleAllTimeline(false)" class="flex-1 sm:flex-none px-3 py-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl text-slate-700 text-xs font-bold transition flex items-center justify-center gap-1.5">
-                        <i class="fa-solid fa-angles-up text-slate-500 text-[10px]"></i> Collapse All
+                    <button onclick="filterTimelineType('food')" id="timelineTypeBtn-food" class="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition whitespace-nowrap flex items-center gap-1">
+                        <i class="fa-solid fa-utensils text-emerald-600"></i> Food Stops
+                    </button>
+                    <button onclick="filterTimelineType('ride')" id="timelineTypeBtn-ride" class="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100 transition whitespace-nowrap flex items-center gap-1">
+                        <i class="fa-solid fa-ticket text-sky-600"></i> Rides & Shows
+                    </button>
+                    <button onclick="toggleAllTimeline(true)" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl text-slate-700 text-xs font-bold transition flex items-center justify-center gap-1 whitespace-nowrap">
+                        <i class="fa-solid fa-angles-down text-sky-600 text-[10px]"></i> Expand
                     </button>
                 </div>
             </div>
 
-            <!-- Master Timeline Flow Bar -->
+            <!-- Master Timeline Flow Bar (Touch scrollable) -->
             <div class="p-3 bg-gradient-to-r from-sky-50 via-indigo-50 to-purple-50 rounded-2xl border border-sky-200 flex items-center gap-2 overflow-x-auto whitespace-nowrap custom-scrollbar text-xs font-medium text-slate-700">
                 <span class="font-extrabold text-sky-900 flex items-center gap-1">
-                    <i class="fa-solid fa-route text-sky-600"></i> Optimal Rhythm:
+                    <i class="fa-solid fa-route text-sky-600"></i> 11 AM Flow:
                 </span>
-                <span class="bg-white px-2 py-0.5 rounded-lg border border-slate-200 font-bold text-slate-800">7:20 AM Leave Home</span>
+                <span class="bg-white px-2 py-0.5 rounded-lg border border-slate-200 font-bold text-slate-800">10:30 AM Leave Home</span>
                 <span>→</span>
-                <span class="bg-rose-100 px-2 py-0.5 rounded-lg border border-rose-200 font-bold text-rose-800">9:00 AM Mario Kart</span>
+                <span class="bg-emerald-100 px-2 py-0.5 rounded-lg border border-emerald-200 font-black text-emerald-900">11:30 AM Toadstool Veg Lunch</span>
                 <span>→</span>
-                <span class="bg-rose-50 px-2 py-0.5 rounded-lg border border-rose-200 font-bold text-rose-800">10:00 AM Donkey Kong</span>
+                <span class="bg-rose-100 px-2 py-0.5 rounded-lg border border-rose-200 font-bold text-rose-800">12:30 PM Mario Kart</span>
                 <span>→</span>
-                <span class="bg-emerald-100 px-2 py-0.5 rounded-lg border border-emerald-200 font-black text-emerald-800">11:30 AM Toadstool Veg Lunch</span>
+                <span class="bg-rose-50 px-2 py-0.5 rounded-lg border border-rose-200 font-bold text-rose-800">1:30 PM Donkey Kong</span>
                 <span>→</span>
-                <span class="bg-cyan-100 px-2 py-0.5 rounded-lg border border-cyan-200 font-bold text-cyan-800">1:00 PM Isle of Berk</span>
+                <span class="bg-cyan-100 px-2 py-0.5 rounded-lg border border-cyan-200 font-bold text-cyan-900">3:00 PM Toothless Show (AC)</span>
                 <span>→</span>
-                <span class="bg-purple-100 px-2 py-0.5 rounded-lg border border-purple-200 font-bold text-purple-800">3:30 PM Ministry of Magic & Butterbeer</span>
+                <span class="bg-purple-100 px-2 py-0.5 rounded-lg border border-purple-200 font-bold text-purple-900">4:30 PM Paris Butterbeer & Quiche</span>
                 <span>→</span>
-                <span class="bg-slate-200 px-2 py-0.5 rounded-lg border border-slate-300 font-bold text-slate-800">5:45 PM Dark Universe</span>
+                <span class="bg-purple-50 px-2 py-0.5 rounded-lg border border-purple-200 font-bold text-purple-800">5:45 PM Battle at Ministry</span>
                 <span>→</span>
-                <span class="bg-sky-100 px-2 py-0.5 rounded-lg border border-sky-200 font-bold text-sky-800">8:00 PM Stardust Racers at Night</span>
+                <span class="bg-emerald-100 px-2 py-0.5 rounded-lg border border-emerald-200 font-black text-emerald-900">6:45 PM Darkmoor Veg Dinner</span>
                 <span>→</span>
-                <span class="bg-indigo-100 px-2 py-0.5 rounded-lg border border-indigo-200 font-black text-indigo-900">9:15 PM Celestial Lagoon Show</span>
+                <span class="bg-slate-200 px-2 py-0.5 rounded-lg border border-slate-300 font-bold text-slate-800">7:30 PM Frankenstein Experiment</span>
+                <span>→</span>
+                <span class="bg-sky-100 px-2 py-0.5 rounded-lg border border-sky-200 font-bold text-sky-900">8:45 PM Stardust Racers at Night</span>
+                <span>→</span>
+                <span class="bg-indigo-100 px-2 py-0.5 rounded-lg border border-indigo-200 font-black text-indigo-900">9:30 PM Céleste Lagoon Finale</span>
             </div>
 
             <!-- TIMELINE ITEMS LIST CONTAINER -->
-            <div id="timelineContainer" class="space-y-3">
+            <div id="timelineContainer" class="space-y-2.5 sm:space-y-3">
                 <!-- Dynamically Rendered via JS -->
             </div>
 
@@ -362,67 +441,66 @@
         <!-- ========================================================================= -->
         <!-- VIEW 2: INTERACTIVE PARK MAP & PORTAL HOTSPOTS -->
         <!-- ========================================================================= -->
-        <section id="view-map" class="hidden space-y-5">
+        <section id="view-map" class="hidden space-y-4 sm:space-y-5">
             
-            <div class="bg-white p-4 sm:p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+            <div class="bg-white p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-xs space-y-3 sm:space-y-4">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
                     <div>
-                        <h2 class="text-base sm:text-lg font-extrabold text-slate-900 flex items-center gap-2 font-display">
+                        <h2 class="text-sm sm:text-base md:text-lg font-extrabold text-slate-900 flex items-center gap-2 font-display">
                             <i class="fa-solid fa-map-location-dot text-sky-600"></i> Universal Epic Universe Official Layout Map
                         </h2>
-                        <p class="text-[11px] text-slate-500">Hub-and-spoke layout: Celestial Park is in the center with portals radiating outwards to all 4 themed worlds.</p>
+                        <p class="text-[11px] text-slate-500">Tap anywhere on the map to open full-screen HD zoom mode.</p>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="openMapLightbox()" class="px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs transition flex items-center gap-1.5 shadow-sm">
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <button onclick="openMapLightbox()" class="flex-1 sm:flex-none px-3 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-xs">
                             <i class="fa-solid fa-up-right-and-down-left-from-center"></i> View Full Screen HD Map
                         </button>
                     </div>
                 </div>
 
-                <!-- Map Container with Visual Hotspots & Click Triggers -->
+                <!-- Map Container with Touch Lightbox Trigger -->
                 <div class="relative w-full rounded-2xl overflow-hidden border border-slate-200 shadow-inner bg-slate-900 group cursor-pointer" onclick="openMapLightbox()">
                     <img src="Epic%20Universe%20Map.png" alt="Epic Universe Park Map" class="w-full h-auto object-cover max-h-[620px] rounded-2xl group-hover:scale-[1.01] transition-transform duration-300">
                     
-                    <!-- Overlay Badge -->
-                    <div class="absolute top-3 left-3 bg-slate-900/85 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1.5 rounded-xl border border-white/20 shadow-md flex items-center gap-2">
-                        <i class="fa-solid fa-magnifying-glass-plus text-sky-400"></i> Click Map to Enlarge & Zoom
+                    <div class="absolute top-3 left-3 bg-slate-900/85 backdrop-blur-md text-white text-[10px] sm:text-[11px] font-bold px-3 py-1.5 rounded-xl border border-white/20 shadow-md flex items-center gap-2">
+                        <i class="fa-solid fa-magnifying-glass-plus text-sky-400"></i> Tap Map to Zoom Full Screen
                     </div>
 
-                    <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-slate-900 text-[10px] font-extrabold px-3 py-1 rounded-xl border border-slate-200 shadow-sm hidden sm:flex items-center gap-1">
-                        <i class="fa-solid fa-compass text-sky-600"></i> Chronos Entrance → Celestial Hub → 4 Portals
+                    <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-slate-900 text-[10px] font-extrabold px-3 py-1 rounded-xl border border-slate-200 shadow-xs hidden sm:flex items-center gap-1">
+                        <i class="fa-solid fa-compass text-sky-600"></i> Celestial Hub in Center • 4 Portals on Perimeter
                     </div>
                 </div>
 
                 <!-- 5 Portal Jump Navigation Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-5 gap-2.5 pt-1">
-                    <button onclick="switchView('timeline'); filterPortal('celestial')" class="p-3 rounded-xl border border-sky-200 bg-sky-50/50 hover:bg-sky-100/70 transition text-left space-y-0.5">
-                        <div class="text-[10px] font-extrabold text-sky-700 uppercase">Center Hub</div>
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1">
+                    <button onclick="switchView('timeline'); filterPortal('celestial')" class="p-2.5 rounded-xl border border-sky-200 bg-sky-50/60 hover:bg-sky-100/70 transition text-left space-y-0.5">
+                        <div class="text-[9px] font-extrabold text-sky-700 uppercase">Center Hub</div>
                         <div class="text-xs font-bold text-slate-900">Celestial Park</div>
-                        <div class="text-[10px] text-slate-500">Stardust Racers & Carousel</div>
+                        <div class="text-[10px] text-slate-500">Stardust & Fountains</div>
                     </button>
 
-                    <button onclick="switchView('timeline'); filterPortal('nintendo')" class="p-3 rounded-xl border border-rose-200 bg-rose-50/50 hover:bg-rose-100/70 transition text-left space-y-0.5">
-                        <div class="text-[10px] font-extrabold text-rose-700 uppercase">North-East Portal</div>
+                    <button onclick="switchView('timeline'); filterPortal('nintendo')" class="p-2.5 rounded-xl border border-rose-200 bg-rose-50/60 hover:bg-rose-100/70 transition text-left space-y-0.5">
+                        <div class="text-[9px] font-extrabold text-rose-700 uppercase">North-East Portal</div>
                         <div class="text-xs font-bold text-slate-900">Super Nintendo</div>
-                        <div class="text-[10px] text-slate-500">Mario Kart & Donkey Kong</div>
+                        <div class="text-[10px] text-slate-500">Mario & DK Madness</div>
                     </button>
 
-                    <button onclick="switchView('timeline'); filterPortal('ministry')" class="p-3 rounded-xl border border-purple-200 bg-purple-50/50 hover:bg-purple-100/70 transition text-left space-y-0.5">
-                        <div class="text-[10px] font-extrabold text-purple-700 uppercase">South-East Portal</div>
+                    <button onclick="switchView('timeline'); filterPortal('ministry')" class="p-2.5 rounded-xl border border-purple-200 bg-purple-50/60 hover:bg-purple-100/70 transition text-left space-y-0.5">
+                        <div class="text-[9px] font-extrabold text-purple-700 uppercase">South-East Portal</div>
                         <div class="text-xs font-bold text-slate-900">Ministry of Magic</div>
-                        <div class="text-[10px] text-slate-500">1920s Paris & London</div>
+                        <div class="text-[10px] text-slate-500">Paris & Ministry Battle</div>
                     </button>
 
-                    <button onclick="switchView('timeline'); filterPortal('berk')" class="p-3 rounded-xl border border-cyan-200 bg-cyan-50/50 hover:bg-cyan-100/70 transition text-left space-y-0.5">
-                        <div class="text-[10px] font-extrabold text-cyan-700 uppercase">North-West Portal</div>
+                    <button onclick="switchView('timeline'); filterPortal('berk')" class="p-2.5 rounded-xl border border-cyan-200 bg-cyan-50/60 hover:bg-cyan-100/70 transition text-left space-y-0.5">
+                        <div class="text-[9px] font-extrabold text-cyan-700 uppercase">North-West Portal</div>
                         <div class="text-xs font-bold text-slate-900">Isle of Berk</div>
-                        <div class="text-[10px] text-slate-500">Dragons Lagoon & Shows</div>
+                        <div class="text-[10px] text-slate-500">Dragons Lagoon & Show</div>
                     </button>
 
-                    <button onclick="switchView('timeline'); filterPortal('dark')" class="p-3 rounded-xl border border-slate-300 bg-slate-100/70 hover:bg-slate-200/70 transition text-left space-y-0.5">
-                        <div class="text-[10px] font-extrabold text-slate-700 uppercase">South-West Portal</div>
+                    <button onclick="switchView('timeline'); filterPortal('dark')" class="col-span-2 sm:col-span-1 p-2.5 rounded-xl border border-slate-300 bg-slate-100/70 hover:bg-slate-200/70 transition text-left space-y-0.5">
+                        <div class="text-[9px] font-extrabold text-slate-700 uppercase">South-West Portal</div>
                         <div class="text-xs font-bold text-slate-900">Dark Universe</div>
-                        <div class="text-[10px] text-slate-500">Frankenstein & Werewolf</div>
+                        <div class="text-[10px] text-slate-500">Frankenstein Experiment</div>
                     </button>
                 </div>
 
@@ -433,11 +511,11 @@
         <!-- ========================================================================= -->
         <!-- VIEW 3: ALL RIDES, ATTRACTIONS & POV VIDEO HUB -->
         <!-- ========================================================================= -->
-        <section id="view-rides" class="hidden space-y-5">
+        <section id="view-rides" class="hidden space-y-4 sm:space-y-5">
             
             <!-- Category & Motion Filter Bar -->
-            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+            <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-xs space-y-2.5">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-100 pb-2">
                     <div>
                         <h2 class="text-sm font-extrabold text-slate-900 flex items-center gap-2 font-display">
                             <i class="fa-solid fa-film text-red-500"></i> Complete Epic Universe Ride Directory & POVs
@@ -453,8 +531,8 @@
                 </div>
             </div>
 
-            <!-- Rides Grid -->
-            <div id="ridesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Rides Grid (1-col on mobile, 2/3-col on desktop) -->
+            <div id="ridesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
                 <!-- Dynamically Populated by JS -->
             </div>
 
@@ -463,10 +541,10 @@
         <!-- ========================================================================= -->
         <!-- VIEW 4: 100% VEGETARIAN DINING & BUTTERBEER GUIDE (EGGS OK) -->
         <!-- ========================================================================= -->
-        <section id="view-dining" class="hidden space-y-5">
+        <section id="view-dining" class="hidden space-y-4 sm:space-y-5">
             
             <!-- Butterbeer Special Spotlight Card -->
-            <div id="butterbeer" class="bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 p-4 sm:p-5 rounded-3xl text-white shadow-lg space-y-3.5 relative overflow-hidden">
+            <div id="butterbeer" class="bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 p-4 sm:p-5 rounded-2xl sm:rounded-3xl text-white shadow-md space-y-3 relative overflow-hidden">
                 <div class="absolute -right-8 -bottom-8 opacity-15 text-9xl">
                     <i class="fa-solid fa-beer-mug-empty"></i>
                 </div>
@@ -476,20 +554,23 @@
                         <span class="text-[9px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/30 tracking-wider">
                             🍺 Wizarding World Paris Exclusive
                         </span>
-                        <h2 class="text-lg sm:text-xl font-black tracking-tight mt-1 font-display">
+                        <h2 class="text-base sm:text-xl font-black tracking-tight mt-1 font-display">
                             Parisian Butterbeer & French Sweets Guide
                         </h2>
                     </div>
-                    <span class="text-xs bg-white text-amber-900 font-extrabold px-3 py-1 rounded-xl shadow-sm">
+                    <span class="text-xs bg-white text-amber-900 font-extrabold px-3 py-1 rounded-xl shadow-xs">
                         100% Vegetarian • Place Cachée
                     </span>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-slate-900 relative z-10">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 text-slate-900 relative z-10">
                     
-                    <div class="bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-sm border border-amber-200 text-xs space-y-1">
-                        <div class="font-extrabold text-amber-800 uppercase flex items-center gap-1.5 text-[11px]">
-                            <i class="fa-solid fa-snowflake text-sky-500"></i> 1. Frozen & Cold Butterbeer
+                    <div class="bg-white/95 backdrop-blur-md p-3 sm:p-3.5 rounded-xl sm:rounded-2xl shadow-xs border border-amber-200 text-xs space-y-1">
+                        <div class="flex items-center justify-between gap-1 mb-1">
+                            <div class="font-extrabold text-amber-800 uppercase flex items-center gap-1 text-[11px]">
+                                <i class="fa-solid fa-snowflake text-sky-500"></i> 1. Frozen & Cold Butterbeer
+                            </div>
+                            <span class="text-[10px] font-black bg-amber-100 text-amber-900 px-2 py-0.5 rounded border border-amber-300 whitespace-nowrap">~$8.99 – $9.49</span>
                         </div>
                         <p class="text-slate-600 text-[11px] leading-relaxed">
                             Signature butterscotch shortbread soda with marshmallow foam head. Refreshing for hot Orlando afternoons.
@@ -497,9 +578,12 @@
                         <span class="text-[10px] font-bold text-amber-700 block pt-1">📍 Bar Moonshine & Street Carts</span>
                     </div>
 
-                    <div class="bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-sm border border-amber-200 text-xs space-y-1">
-                        <div class="font-extrabold text-amber-800 uppercase flex items-center gap-1.5 text-[11px]">
-                            <i class="fa-solid fa-cookie-bite text-amber-700"></i> 2. Butterbeer Crème Brûlée & Éclairs
+                    <div class="bg-white/95 backdrop-blur-md p-3 sm:p-3.5 rounded-xl sm:rounded-2xl shadow-xs border border-amber-200 text-xs space-y-1">
+                        <div class="flex items-center justify-between gap-1 mb-1">
+                            <div class="font-extrabold text-amber-800 uppercase flex items-center gap-1 text-[11px]">
+                                <i class="fa-solid fa-cookie-bite text-amber-700"></i> 2. Butterbeer Crème Brûlée & Éclairs
+                            </div>
+                            <span class="text-[10px] font-black bg-amber-100 text-amber-900 px-2 py-0.5 rounded border border-amber-300 whitespace-nowrap">~$6.99 – $8.99</span>
                         </div>
                         <p class="text-slate-600 text-[11px] leading-relaxed">
                             French bistro twist! Torch-caramelized sugar crust over rich butterscotch custard, plus choux pastry eclairs. (Eggs OK)
@@ -507,9 +591,12 @@
                         <span class="text-[10px] font-bold text-amber-700 block pt-1">📍 Café L'air De La Côte</span>
                     </div>
 
-                    <div class="bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-sm border border-amber-200 text-xs space-y-1">
-                        <div class="font-extrabold text-amber-800 uppercase flex items-center gap-1.5 text-[11px]">
-                            <i class="fa-solid fa-ice-cream text-rose-500"></i> 3. Bièraubeurre Gelato Swirl
+                    <div class="bg-white/95 backdrop-blur-md p-3 sm:p-3.5 rounded-xl sm:rounded-2xl shadow-xs border border-amber-200 text-xs space-y-1">
+                        <div class="flex items-center justify-between gap-1 mb-1">
+                            <div class="font-extrabold text-amber-800 uppercase flex items-center gap-1 text-[11px]">
+                                <i class="fa-solid fa-ice-cream text-rose-500"></i> 3. Bièraubeurre Gelato Swirl
+                            </div>
+                            <span class="text-[10px] font-black bg-amber-100 text-amber-900 px-2 py-0.5 rounded border border-amber-300 whitespace-nowrap">~$7.99</span>
                         </div>
                         <p class="text-slate-600 text-[11px] leading-relaxed">
                             Artisanal cream & butterscotch swirl gelato in a crisp waffle cone. Pure decadence!
@@ -521,137 +608,137 @@
             </div>
 
             <!-- Dining Type Quick Filter -->
-            <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between flex-wrap gap-2">
+            <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between flex-wrap gap-2">
                 <div class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
                     <i class="fa-solid fa-leaf text-emerald-600"></i>
-                    <span>Vegetarian Diet Filter: <strong>Lacto-Ovo (Eggs OK) & Plant-Based</strong></span>
+                    <span>Vegetarian Diet: <strong>Lacto-Ovo (Eggs OK) & Plant-Based</strong></span>
                 </div>
                 <div class="flex items-center gap-1.5">
-                    <button onclick="filterDiningCategory('all')" id="diningCatBtn-all" class="px-3 py-1 rounded-xl text-xs font-bold bg-emerald-600 text-white transition shadow-sm">All Eats</button>
-                    <button onclick="filterDiningCategory('lunch-dinner')" id="diningCatBtn-lunch-dinner" class="px-3 py-1 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Meals & Entrees</button>
-                    <button onclick="filterDiningCategory('snacks-sweets')" id="diningCatBtn-snacks-sweets" class="px-3 py-1 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Snacks & Treats</button>
+                    <button onclick="filterDiningCategory('all')" id="diningCatBtn-all" class="px-3 py-1 rounded-xl text-xs font-bold bg-emerald-600 text-white transition shadow-xs">All Eats</button>
+                    <button onclick="filterDiningCategory('lunch-dinner')" id="diningCatBtn-lunch-dinner" class="px-3 py-1 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Meals</button>
+                    <button onclick="filterDiningCategory('snacks-sweets')" id="diningCatBtn-snacks-sweets" class="px-3 py-1 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Snacks & Sweets</button>
                 </div>
             </div>
 
             <!-- Dining Cards Grid -->
-            <div id="diningGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div id="diningGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
                 <!-- Dynamically Rendered by JS -->
             </div>
 
         </section>
 
         <!-- ========================================================================= -->
-        <!-- VIEW 5: 30-MINUTE LOCAL COMMUTE & STRATEGY GUIDE -->
+        <!-- VIEW 5: 30-MINUTE LOCAL COMMUTE & STRATEGY GUIDE (11:00 AM START) -->
         <!-- ========================================================================= -->
-        <section id="view-commute" class="hidden space-y-5">
+        <section id="view-commute" class="hidden space-y-4 sm:space-y-5">
             
             <!-- Commute Strategy Hero Card -->
-            <div class="bg-gradient-to-r from-sky-600 via-indigo-600 to-blue-700 p-5 sm:p-6 rounded-3xl text-white shadow-md space-y-4">
+            <div class="bg-gradient-to-r from-sky-600 via-indigo-600 to-blue-700 p-4 sm:p-6 rounded-2xl sm:rounded-3xl text-white shadow-md space-y-3 sm:space-y-4">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-white/20 pb-3">
                     <div>
                         <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/30 tracking-wider">
-                            🚗 30-Minute Local Orlando Advantage
+                            🚗 30-Minute Local Advantage • 11:00 AM Start
                         </span>
                         <h2 class="text-lg sm:text-2xl font-black tracking-tight mt-1 font-display">
-                            Local Drive & Parking Master Plan
+                            Relaxed Late-Morning Drive & Parking Plan
                         </h2>
                     </div>
                     <div class="text-right">
-                        <span class="text-xs bg-emerald-400 text-slate-900 font-extrabold px-3 py-1 rounded-xl shadow-sm">
+                        <span class="text-xs bg-emerald-400 text-slate-900 font-extrabold px-3 py-1 rounded-xl shadow-xs">
                             Drive Time: ~30 Minutes
                         </span>
                     </div>
                 </div>
 
                 <p class="text-xs sm:text-sm text-sky-100 leading-relaxed">
-                    Because you live just 30 minutes away, you skip expensive hotel check-ins and crowded early-morning shuttle lines. With our precision schedule, you will arrive at the parking structure right when security opens, beat the highway congestion, and walk through the portal turnstiles 30 minutes before off-site tourists!
+                    By starting your day at 11:00–11:30 AM, you completely bypass the 7:30–8:30 AM morning interstate rush hour and parking gate lines. You arrive refreshed, eat an unhurried sit-down lunch at Toadstool Cafe, enjoy the indoor shows during the peak heat, and stay energized all the way through the 9:30 PM lagoon fountain spectacular!
                 </p>
             </div>
 
             <!-- Step-by-Step Commute Timeline -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
                 
                 <!-- Morning Departure Plan -->
-                <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3.5">
+                <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs space-y-3">
                     <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2 font-display">
-                        <i class="fa-solid fa-sun text-amber-500"></i> Morning Departure & Rope Drop Flow
+                        <i class="fa-solid fa-sun text-amber-500"></i> 11:00 AM Departure Schedule
                     </h3>
 
-                    <div class="space-y-3 text-xs">
+                    <div class="space-y-2.5 text-xs">
                         <div class="flex items-start gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-                            <div class="w-12 h-9 rounded-lg bg-sky-100 text-sky-800 font-extrabold text-[11px] flex items-center justify-center flex-shrink-0">
-                                7:00 AM
+                            <div class="w-16 h-9 rounded-lg bg-sky-100 text-sky-800 font-extrabold text-[11px] flex items-center justify-center flex-shrink-0">
+                                9:45 AM
                             </div>
                             <div>
-                                <h4 class="font-bold text-slate-900">Wake Up & Light Veggie Breakfast</h4>
-                                <p class="text-slate-600 text-[11px] mt-0.5">Hydrate, apply sunscreen, pack motion sickness wristbands/Dramamine if needed.</p>
+                                <h4 class="font-bold text-slate-900">Wake Up & Pack Bag</h4>
+                                <p class="text-slate-600 text-[11px] mt-0.5">Hydrate, apply sunscreen, pack external power bank, sunglasses, and light jacket for evening.</p>
                             </div>
                         </div>
 
                         <div class="flex items-start gap-3 p-2.5 rounded-xl bg-sky-50/60 border border-sky-200">
-                            <div class="w-12 h-9 rounded-lg bg-sky-600 text-white font-extrabold text-[11px] flex items-center justify-center flex-shrink-0">
-                                7:20 AM
+                            <div class="w-16 h-9 rounded-lg bg-sky-600 text-white font-extrabold text-[11px] flex items-center justify-center flex-shrink-0">
+                                10:30 AM
                             </div>
                             <div>
                                 <h4 class="font-bold text-slate-900">Depart Home (30 Min Drive)</h4>
-                                <p class="text-slate-600 text-[11px] mt-0.5">Take your fastest route to Universal Blvd / Sand Lake Rd. Use SunPass for toll lanes.</p>
+                                <p class="text-slate-600 text-[11px] mt-0.5">Smooth drive via I-4 / Universal Blvd. Highway traffic is calm after morning rush hour.</p>
                             </div>
                         </div>
 
                         <div class="flex items-start gap-3 p-2.5 rounded-xl bg-indigo-50/60 border border-indigo-200">
-                            <div class="w-12 h-9 rounded-lg bg-indigo-600 text-white font-extrabold text-[11px] flex items-center justify-center flex-shrink-0">
-                                7:50 AM
+                            <div class="w-16 h-9 rounded-lg bg-indigo-600 text-white font-extrabold text-[11px] flex items-center justify-center flex-shrink-0">
+                                11:00 AM
                             </div>
                             <div>
-                                <h4 class="font-bold text-slate-900">Arrive at Epic Universe Parking Complex</h4>
-                                <p class="text-slate-600 text-[11px] mt-0.5">Prime Parking is recommended ($50 vs $32) for the fastest exit at night. Clear security hub.</p>
+                                <h4 class="font-bold text-slate-900">Arrive at Epic Universe Parking</h4>
+                                <p class="text-slate-600 text-[11px] mt-0.5">Breeze straight through security. Morning queue has vanished. Take tram to Chronos entrance.</p>
                             </div>
                         </div>
 
                         <div class="flex items-start gap-3 p-2.5 rounded-xl bg-emerald-50/60 border border-emerald-200">
-                            <div class="w-12 h-9 rounded-lg bg-emerald-600 text-white font-extrabold text-[11px] flex items-center justify-center flex-shrink-0">
-                                8:20 AM
+                            <div class="w-16 h-9 rounded-lg bg-emerald-600 text-white font-extrabold text-[11px] flex items-center justify-center flex-shrink-0">
+                                11:20 AM
                             </div>
                             <div>
-                                <h4 class="font-bold text-slate-900">Chronos Grand Entrance Turnstiles</h4>
-                                <p class="text-slate-600 text-[11px] mt-0.5">Line up at turnstiles. When gates open, walk straight through the Celestial emerald portal into Super Nintendo World!</p>
+                                <h4 class="font-bold text-slate-900">Enter Chronos Grand Portal</h4>
+                                <p class="text-slate-600 text-[11px] mt-0.5">Walk straight into Super Nintendo World for your 11:30 AM Toadstool Cafe lunch reservation!</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Local Pro Logistics & Pack List -->
-                <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3.5">
+                <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs space-y-3">
                     <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2 font-display">
-                        <i class="fa-solid fa-backpack text-sky-600"></i> Local Resident Pack & Logistics Checklist
+                        <i class="fa-solid fa-backpack text-sky-600"></i> Local Resident Essentials
                     </h3>
 
                     <div class="space-y-2.5 text-xs">
                         
                         <div class="p-2.5 rounded-xl border border-slate-200 bg-slate-50">
                             <span class="font-bold text-slate-900 text-[11px] block mb-0.5">
-                                <i class="fa-solid fa-lock text-slate-500 mr-1"></i> Ride Lockers Policy
+                                <i class="fa-solid fa-lock text-slate-500 mr-1"></i> Free Ride Lockers
                             </span>
                             <p class="text-slate-600 text-[11px] leading-relaxed">
-                                Free small fingerprint lockers are provided at <strong>Stardust Racers</strong> and <strong>Monsters Unchained</strong>. Keep your park tickets / phones accessible.
+                                Complimentary fingerprint lockers are located right outside <strong>Stardust Racers</strong> and <strong>Monsters Unchained</strong>.
                             </p>
                         </div>
 
                         <div class="p-2.5 rounded-xl border border-slate-200 bg-slate-50">
                             <span class="font-bold text-slate-900 text-[11px] block mb-0.5">
-                                <i class="fa-solid fa-battery-full text-emerald-600 mr-1"></i> Portable Charger & App
+                                <i class="fa-solid fa-battery-full text-emerald-600 mr-1"></i> Phone Battery Bank
                             </span>
                             <p class="text-slate-600 text-[11px] leading-relaxed">
-                                Universal Orlando App is vital for Mario Kart Power-Up Band sync and mobile food ordering at Toadstool Cafe. Bring an external battery bank!
+                                Universal Orlando App is needed for Mario Kart coin syncing and mobile food ordering. Bring an external charger.
                             </p>
                         </div>
 
                         <div class="p-2.5 rounded-xl border border-slate-200 bg-slate-50">
                             <span class="font-bold text-slate-900 text-[11px] block mb-0.5">
-                                <i class="fa-solid fa-moon text-indigo-600 mr-1"></i> Evening Departure (9:45 PM)
+                                <i class="fa-solid fa-moon text-indigo-600 mr-1"></i> 9:45 PM Smooth Exit
                             </span>
                             <p class="text-slate-600 text-[11px] leading-relaxed">
-                                After the 9:15 PM Céleste fountain and projection show over the lagoon, leisurely stroll out of the park. You will be back in your own bed in 30 minutes by 10:20 PM!
+                                After the 9:30 PM Céleste fountain spectacular, leisurely walk back to your car. You'll be back home relaxing by 10:25 PM!
                             </p>
                         </div>
 
@@ -665,18 +752,18 @@
         <!-- ========================================================================= -->
         <!-- VIEW 6: INTERACTIVE CHECKLIST & FAVORITES -->
         <!-- ========================================================================= -->
-        <section id="view-checklist" class="hidden space-y-5">
+        <section id="view-checklist" class="hidden space-y-4 sm:space-y-5">
             
-            <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+            <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs space-y-3">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
                     <div>
                         <h2 class="text-base font-extrabold text-slate-900 flex items-center gap-2 font-display">
                             <i class="fa-solid fa-square-check text-purple-600"></i> My Epic Universe Wishlist & Progress
                         </h2>
-                        <p class="text-[11px] text-slate-500">Check off rides, shows, and vegetarian dishes as you experience them during your trip!</p>
+                        <p class="text-[11px] text-slate-500">Check off rides, shows, and vegetarian dishes as you experience them during your day!</p>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button onclick="resetChecklist()" class="px-3 py-1 bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 border border-slate-200 rounded-xl text-xs font-bold transition">
+                        <button onclick="resetChecklist()" class="px-3 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 border border-slate-200 rounded-xl text-xs font-bold transition">
                             <i class="fa-solid fa-rotate-left mr-1"></i> Reset Progress
                         </button>
                     </div>
@@ -695,7 +782,7 @@
             </div>
 
             <!-- Wishlist Items Container -->
-            <div id="checklistItemsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div id="checklistItemsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3">
                 <!-- Dynamically Populated by JS -->
             </div>
 
@@ -707,15 +794,15 @@
     <!-- INTERACTIVE RIDE POV VIDEO MODAL -->
     <!-- ========================================================================= -->
     <div id="povModal" class="fixed inset-0 z-50 hidden bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 modal-fade opacity-0">
-        <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden border border-slate-200 transform transition-transform scale-95 duration-200" id="povModalContent">
+        <div class="bg-white w-full max-w-3xl rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden border border-slate-200 transform transition-transform scale-95 duration-200" id="povModalContent">
             
             <!-- Modal Header -->
             <div class="px-4 py-3 bg-slate-900 text-white flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <span class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></span>
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse flex-shrink-0"></span>
                     <h3 id="modalRideTitle" class="text-xs sm:text-sm font-bold truncate">Ride POV Video</h3>
                 </div>
-                <button onclick="closePovModal()" class="text-slate-400 hover:text-white text-base w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-800 transition">
+                <button onclick="closePovModal()" class="text-slate-400 hover:text-white text-base w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-800 transition flex-shrink-0">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -726,13 +813,13 @@
             </div>
 
             <!-- Modal Details Footer -->
-            <div class="p-3.5 sm:p-4 bg-slate-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs">
+            <div class="p-3.5 sm:p-4 bg-slate-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs">
                 <div>
                     <span id="modalRideLand" class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-sky-100 text-sky-800">Celestial Park</span>
                     <p id="modalRideTips" class="text-[11px] text-slate-600 mt-1">Seating tip: Front car offers best unobstructed views!</p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <a id="modalDirectYoutube" href="#" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition">
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <a id="modalDirectYoutube" href="#" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition">
                         <i class="fa-brands fa-youtube"></i> Open in YouTube
                     </a>
                 </div>
@@ -745,12 +832,12 @@
     <!-- INTERACTIVE FULL-SCREEN MAP LIGHTBOX MODAL -->
     <!-- ========================================================================= -->
     <div id="mapLightboxModal" class="fixed inset-0 z-50 hidden bg-slate-900/90 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 modal-fade opacity-0" onclick="closeMapLightbox()">
-        <div class="relative max-w-6xl w-full max-h-[92vh] bg-slate-950 rounded-3xl overflow-hidden shadow-2xl border border-slate-700 flex flex-col" onclick="event.stopPropagation()">
+        <div class="relative max-w-6xl w-full max-h-[92vh] bg-slate-950 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-slate-700 flex flex-col" onclick="event.stopPropagation()">
             
             <div class="p-3 bg-slate-900/95 border-b border-slate-800 flex items-center justify-between text-white">
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-map text-sky-400"></i>
-                    <h3 class="text-xs sm:text-sm font-bold">Universal Epic Universe High-Resolution Layout Map</h3>
+                    <h3 class="text-xs sm:text-sm font-bold">Universal Epic Universe Layout Map</h3>
                 </div>
                 <div class="flex items-center gap-2">
                     <a href="Epic%20Universe%20Map.png" target="_blank" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-semibold text-sky-300 transition">
@@ -767,7 +854,7 @@
             </div>
 
             <div class="p-2.5 bg-slate-900/95 border-t border-slate-800 text-slate-400 text-center text-[11px]">
-                Tip: Scroll or pinch to zoom. Click anywhere outside to close.
+                Tip: Scroll or pinch to zoom. Tap outside to close.
             </div>
 
         </div>
@@ -780,7 +867,7 @@
                 <img src="Epic%20Universe%20logo.png" alt="Epic Universe Logo" class="h-6 w-auto object-contain opacity-80">
             </div>
             <p class="font-bold text-slate-700 font-display">Universal Epic Universe Master Itinerary & Strategy Guide</p>
-            <p>Crafted for Deep & Nishita • 30-Minute Local Commute • 100% Vegetarian (Eggs OK)</p>
+            <p>Crafted for Deep & Nishita • 11:00 AM Arrival • 30-Minute Local Commute • 100% Vegetarian (Eggs OK)</p>
         </div>
     </footer>
 
@@ -788,25 +875,72 @@
     <!-- APPLICATION DATA & CONTROLLERS (JAVASCRIPT) -->
     <!-- ========================================================================= -->
     <script>
-        // MASTER DATA STRUCTURE FOR ALL ATTRACTIONS, RATINGS & POVs
-        const attractionsData = [
+        // MASTER INTEGRATED TIMELINE DATA (11:00 AM START - INCLUDES ATTRACTIONS & FOOD STOPS)
+        const timelineData = [
+            {
+                id: 'commute-arrival',
+                name: "Arrival & Entrance via Chronos Grand Portal",
+                land: 'celestial',
+                landLabel: 'Celestial Park',
+                timeSlot: '11:15 AM – 11:30 AM',
+                badge: 'Park Arrival',
+                type: 'Arrival & Welcome',
+                itemKind: 'ride',
+                motionScore: 0.0,
+                motionLevel: 'Zero Risk',
+                motionColor: 'emerald',
+                motionDesc: 'Walking through the emerald Chronos portal into Celestial Park.',
+                thrillScore: 1.0,
+                enjoymentScore: 5.0,
+                airflow: 'Outdoor Open Air',
+                express: 'Turnstiles',
+                strategy: 'Leave home at 10:30 AM. Park and take the rapid tram to Chronos entrance. Walk straight across the central bridge to Super Nintendo World portal on your right.',
+                youtubeId: 'i6pRzyW6HYM',
+                povTitle: "Chronos Grand Portal Entrance Walkthrough",
+                isMustDo: true,
+                category: 'show'
+            },
+            {
+                id: 'food-toadstool-lunch',
+                name: "🍽️ LUNCH: Toadstool Cafe (Super Nintendo World)",
+                land: 'nintendo',
+                landLabel: 'Super Nintendo World',
+                timeSlot: '11:30 AM – 12:30 PM',
+                badge: 'Top Vegetarian Lunch (~$12–$20)',
+                type: 'Themed Casual Dining',
+                itemKind: 'food',
+                motionScore: 0.0,
+                motionLevel: 'Zero Risk',
+                motionColor: 'emerald',
+                motionDesc: 'Relaxing air-conditioned sit-down meal. Zero motion.',
+                thrillScore: 2.0,
+                enjoymentScore: 5.0,
+                airflow: 'Indoor Air Conditioned',
+                express: 'Mobile Order Window',
+                strategy: 'FIRST FOOD STOP! Grab a table inside Chef Toad’s whimsical cafe. Must-try for Vegetarians (Eggs OK): Super Mushroom Soup in the collectible bowl (~$19.99 with bowl / ~$9.99 soup), Tomato Pesto Caprese (~$13.99), Fire Flower Spaghetti (~$16.99), and the ? Block Tiramisu (~$9.99)!',
+                youtubeId: 'ckgyiqxdBU0',
+                povTitle: "Toadstool Cafe Mushroom Kingdom Tour & Menu",
+                isMustDo: true,
+                category: 'dining'
+            },
             {
                 id: 'mario-kart',
                 name: "Mario Kart: Bowser’s Challenge",
                 land: 'nintendo',
                 landLabel: 'Super Nintendo World',
-                timeSlot: '9:00 AM (Rope Drop #1)',
-                badge: 'Must-Do Rope Drop',
+                timeSlot: '12:30 PM – 1:30 PM',
+                badge: 'Must-Do Flagship',
                 type: 'Interactive AR Dark Ride',
+                itemKind: 'ride',
                 motionScore: 1.5,
                 motionLevel: 'Low Risk',
                 motionColor: 'emerald',
-                motionDesc: 'Real physical ride vehicle moving along a track with AR visors. No nauseating spinning or screen-swaying.',
+                motionDesc: 'Physical vehicle on track with AR visors. Gentle turns, no spinning or disorienting screen sway.',
                 thrillScore: 2.5,
                 enjoymentScore: 5.0,
-                airflow: 'Indoor / Air Conditioned',
+                airflow: 'Indoor Air Conditioned',
                 express: 'Standby / Single Rider',
-                strategy: 'Rush here directly at park opening. Keep hands on the steering wheel and tap your Power-Up Band on the M logo before the race starts to bank coins!',
+                strategy: 'Ride right after lunch! Lines dip slightly as early rope-droppers disperse. Put on your AR visor, hold the steering wheel, and tap your Power-Up Band to bank coins.',
                 youtubeId: '2ruAqduHXwc',
                 povTitle: "Mario Kart: Bowser's Challenge AR Dark Ride POV",
                 isMustDo: true,
@@ -814,21 +948,22 @@
             },
             {
                 id: 'mine-cart',
-                name: "Mine-Cart Madness (Donkey Kong)",
+                name: "Mine-Cart Madness (Donkey Kong Country)",
                 land: 'nintendo',
                 landLabel: 'Super Nintendo World',
-                timeSlot: '10:00 AM',
+                timeSlot: '1:30 PM – 2:15 PM',
                 badge: 'Brand New Boom Coaster',
-                type: 'Boom Coaster (Jumping Track)',
+                type: 'Boom Coaster (Track Jumper)',
+                itemKind: 'ride',
                 motionScore: 2.5,
                 motionLevel: 'Low/Moderate',
                 motionColor: 'emerald',
-                motionDesc: 'Smooth physical coaster with visual illusions of leaping over track gaps. Outdoor breezy airflow prevents dizziness.',
+                motionDesc: 'Smooth physical coaster with visual illusions of leaping over track voids. Breezy outdoor air prevents nausea.',
                 thrillScore: 3.8,
                 enjoymentScore: 4.9,
-                airflow: 'Outdoor Breeze',
+                airflow: 'Outdoor Jungle Breeze',
                 express: 'Standby Only',
-                strategy: 'Do right after Mario Kart. Seat rows 1 or 2 give the most thrilling illusion of leaping over track voids.',
+                strategy: 'Head deep into Donkey Kong Country behind the Golden Temple. Seat rows 1–2 give the most thrilling illusion of jumping broken tracks!',
                 youtubeId: 'v8Jt_ZJb-Lw',
                 povTitle: "Mine-Cart Madness Donkey Kong Coaster Full POV",
                 isMustDo: true,
@@ -836,144 +971,128 @@
             },
             {
                 id: 'yoshi-adventure',
-                name: "Yoshi’s Adventure",
+                name: "Yoshi’s Adventure & Power-Up Band Minigames",
                 land: 'nintendo',
                 landLabel: 'Super Nintendo World',
-                timeSlot: '11:00 AM',
-                badge: 'Scenic Family Ride',
-                type: 'Omnimover Scenic Tour',
+                timeSlot: '2:15 PM – 2:45 PM',
+                badge: 'Scenic Panoramic Ride',
+                type: 'Omnimover Family Tour',
+                itemKind: 'ride',
                 motionScore: 0.5,
                 motionLevel: 'Zero Risk',
                 motionColor: 'emerald',
-                motionDesc: 'Gentle, slow, panoramic outdoor ride atop the Mushroom Kingdom. 0% motion sickness.',
+                motionDesc: 'Gentle, slow, panoramic outdoor ride atop the Mushroom Kingdom. 0% sickness.',
                 thrillScore: 1.2,
-                enjoymentScore: 4.2,
+                enjoymentScore: 4.3,
                 airflow: 'Outdoor Open Air',
                 express: 'Standby',
-                strategy: 'Relaxing transition before lunch. Spot the 3 colored glowing eggs along the track and press the matching buttons on your console!',
+                strategy: 'Great relaxing cooldown before heading to Isle of Berk. Spot the 3 colored glowing eggs along the track and punch the yellow ? blocks!',
                 youtubeId: 'ckgyiqxdBU0',
                 povTitle: "Yoshi's Adventure Scenic Ride POV",
                 isMustDo: false,
                 category: 'ride'
             },
             {
-                id: 'power-up-games',
-                name: "Power-Up Band Key Challenges & Bowser Jr.",
-                land: 'nintendo',
-                landLabel: 'Super Nintendo World',
-                timeSlot: '11:15 AM',
-                badge: 'Interactive Minigames',
-                type: 'Physical Interactive Games',
-                motionScore: 0.0,
-                motionLevel: 'Zero Risk',
-                motionColor: 'emerald',
-                motionDesc: 'Walking and playing physical mini-games (Goomba crank, Piranha Plant alarm clock, Thwomp block).',
-                thrillScore: 2.0,
-                enjoymentScore: 4.8,
-                airflow: 'Mixed Indoor / Outdoor',
-                express: 'Interactive Standby',
-                strategy: 'Collect 3 virtual keys around the land to unlock the Bowser Jr. Shadow Showdown boss lair!',
-                youtubeId: 'X94gG2V04j0',
-                povTitle: "Bowser Jr. Shadow Showdown Battle Walkthrough",
-                isMustDo: true,
-                category: 'show'
-            },
-            {
-                id: 'hiccups-gliders',
-                name: "Hiccup’s Wing Gliders",
-                land: 'berk',
-                landLabel: 'Isle of Berk',
-                timeSlot: '1:00 PM',
-                badge: 'Lagoon Coaster',
-                type: 'Launched Family Thrill Coaster',
-                motionScore: 1.5,
-                motionLevel: 'Low Risk',
-                motionColor: 'emerald',
-                motionDesc: 'Fast, extremely smooth launched coaster flying across the lagoon and Viking village. No inversions, very gentle on stomach.',
-                thrillScore: 3.6,
-                enjoymentScore: 4.9,
-                airflow: 'Outdoor Lagoon Breeze',
-                express: 'Standby',
-                strategy: 'Ride right after lunch! Reaches 45 mph with delightful gentle swoops over the water.',
-                youtubeId: '4f9W5QoPz9k',
-                povTitle: "Hiccup's Wing Gliders Coaster Full POV",
-                isMustDo: true,
-                category: 'ride'
-            },
-            {
                 id: 'untrainable-dragon',
-                name: "The Untrainable Dragon Stage Show",
+                name: "The Untrainable Dragon Stage Show (Indoor AC)",
                 land: 'berk',
                 landLabel: 'Isle of Berk',
-                timeSlot: '2:00 PM',
-                badge: 'Broadway-Scale Show',
-                type: 'Live Theatrical Spectacle',
+                timeSlot: '3:00 PM – 3:45 PM',
+                badge: 'Broadway-Scale Spectacle',
+                type: 'Live Theatrical Stage Show',
+                itemKind: 'ride',
                 motionScore: 0.0,
                 motionLevel: 'Zero Risk',
                 motionColor: 'emerald',
-                motionDesc: 'Air-conditioned indoor theater with massive life-sized flying Toothless animatronic soaring above the audience.',
+                motionDesc: 'Comfortable indoor theater seating. Air-conditioned escape from afternoon Florida heat.',
                 thrillScore: 3.5,
                 enjoymentScore: 5.0,
                 airflow: 'Indoor Air Conditioned',
                 express: 'Open Seating',
-                strategy: 'Prime mid-afternoon indoor escape from Florida heat! Arrive 15 minutes before showtime for center middle row seats.',
+                strategy: 'PERFECT 3:00 PM SUN ESCAPE! Enter Isle of Berk and walk into the theater. Massive life-sized flying Toothless animatronic flies directly overhead through the auditorium!',
                 youtubeId: 'qQ5b7g4i-hQ',
                 povTitle: "The Untrainable Dragon Live Stage Spectacular",
                 isMustDo: true,
                 category: 'show'
             },
             {
-                id: 'fyre-drill',
-                name: "Fyre Drill Water Battle",
+                id: 'hiccups-gliders',
+                name: "Hiccup’s Wing Gliders & Fyre Drill Splash",
                 land: 'berk',
                 landLabel: 'Isle of Berk',
-                timeSlot: '2:45 PM',
-                badge: 'Interactive Splash Ride',
-                type: 'Interactive Boat Ride',
-                motionScore: 0.5,
-                motionLevel: 'Zero Risk',
+                timeSlot: '3:45 PM – 4:30 PM',
+                badge: 'Lagoon Flight Coaster',
+                type: 'Launched Family Thrill Coaster',
+                itemKind: 'ride',
+                motionScore: 1.5,
+                motionLevel: 'Low Risk',
                 motionColor: 'emerald',
-                motionDesc: 'Slow-moving Viking boats equipped with water cannons to douse flame targets and neighboring boats.',
-                thrillScore: 1.5,
-                enjoymentScore: 4.3,
-                airflow: 'Outdoor Water Ride',
+                motionDesc: 'Ultra-smooth launched coaster sweeping across the lagoon waters. Very gentle on stomach.',
+                thrillScore: 3.6,
+                enjoymentScore: 4.9,
+                airflow: 'Outdoor Lagoon Breeze',
                 express: 'Standby',
-                strategy: 'Great refreshing cool-down. You will get lightly splashed!',
-                youtubeId: 'O8Jk2sKq1aU',
-                povTitle: "Fyre Drill Boat Battle POV",
-                isMustDo: false,
+                strategy: 'Reaches 45 mph with delightful banking over the Viking longships. Optional: hop on Fyre Drill water boats right next door to shoot water cannons!',
+                youtubeId: '4f9W5QoPz9k',
+                povTitle: "Hiccup's Wing Gliders Coaster Full POV",
+                isMustDo: true,
                 category: 'ride'
             },
             {
-                id: 'dragon-rally',
-                name: "Dragon Racer’s Rally",
-                land: 'berk',
-                landLabel: 'Isle of Berk',
-                timeSlot: '3:15 PM (Optional Thrill)',
-                badge: 'Acrobatic Sky Fly',
-                type: 'Controlled Spinning Aerobatics',
-                motionScore: 4.0,
-                motionLevel: 'Caution: High Dizziness Risk',
-                motionColor: 'amber',
-                motionDesc: 'Rider controls wing flaps to execute 360-degree barrel rolls up in the air. Prone to dizziness if you spin repeatedly.',
-                thrillScore: 4.0,
-                enjoymentScore: 4.1,
-                airflow: 'Outdoor Breeze',
-                express: 'Standby',
-                strategy: 'If sensitive to motion sickness, keep the wings flat for a gentle circular glide instead of barrel-rolling!',
-                youtubeId: 'R9xLw1Xz8d0',
-                povTitle: "Dragon Racer's Rally Sky Fly POV",
-                isMustDo: false,
-                category: 'ride'
+                id: 'food-paris-butterbeer',
+                name: "🥐 AFTERNOON TREAT: Parisian Butterbeer & French Pastries",
+                land: 'ministry',
+                landLabel: 'Wizarding World: Ministry of Magic',
+                timeSlot: '4:30 PM – 5:15 PM',
+                badge: 'French Wizard Treats (~$5–$13)',
+                type: 'Patisserie & Butterbeer Bar',
+                itemKind: 'food',
+                motionScore: 0.0,
+                motionLevel: 'Zero Risk',
+                motionColor: 'emerald',
+                motionDesc: 'Stroll through shaded Parisian street of Place Cachée.',
+                thrillScore: 1.5,
+                enjoymentScore: 5.0,
+                airflow: 'Shaded Parisian Boulevard',
+                express: 'Walk-Up',
+                strategy: 'Walk into Place Cachée Paris! Stop at Café L’air De La Côte for warm Four-Cheese & Leek Quiche (~$12.99, Eggs OK) and French Butter Croissants (~$5.49), then grab a Parisian Frozen Butterbeer (~$8.99–$9.49) or Butterbeer Crème Brûlée (~$8.99) at Bar Moonshine!',
+                youtubeId: 'i6pRzyW6HYM',
+                povTitle: "Place Cachée Paris Pastries & Butterbeer Walkthrough",
+                isMustDo: true,
+                category: 'dining'
+            },
+            {
+                id: 'wand-magic-paris',
+                name: "Cosme Acajor Baguettes Magique (Wand Spells)",
+                land: 'ministry',
+                landLabel: 'Wizarding World: Ministry of Magic',
+                timeSlot: '5:15 PM – 5:45 PM',
+                badge: 'Interactive Wand Magic',
+                type: 'Storefront Spell Casting',
+                itemKind: 'ride',
+                motionScore: 0.0,
+                motionLevel: 'Zero Risk',
+                motionColor: 'emerald',
+                motionDesc: 'Interactive wand spell casting throughout Place Cachée enchanted shop windows.',
+                thrillScore: 1.0,
+                enjoymentScore: 4.7,
+                airflow: 'Covered Themed Street',
+                express: 'Open Access',
+                strategy: 'Browse triangular presentation wand boxes at Cosme Acajor unique to Paris, and practice wand flourishes in the quiet Parisian courtyards.',
+                youtubeId: 'i6pRzyW6HYM',
+                povTitle: "Place Cachée Paris Wand Spell Windows Walkthrough",
+                isMustDo: true,
+                category: 'show'
             },
             {
                 id: 'battle-ministry',
-                name: "Harry Potter & The Battle at the Ministry",
+                name: "Harry Potter and the Battle at the Ministry",
                 land: 'ministry',
                 landLabel: 'Wizarding World: Ministry of Magic',
-                timeSlot: '3:45 PM',
+                timeSlot: '5:45 PM – 6:45 PM',
                 badge: 'Flagship Dark Ride',
                 type: 'Omnidirectional Lift Dark Ride',
+                itemKind: 'ride',
                 motionScore: 2.5,
                 motionLevel: 'Low/Moderate',
                 motionColor: 'emerald',
@@ -989,154 +1108,115 @@
                 category: 'ride'
             },
             {
-                id: 'cirque-arcanus',
-                name: "Le Cirque Arcanus Live Show",
-                land: 'ministry',
-                landLabel: 'Wizarding World: Ministry of Magic',
-                timeSlot: '4:45 PM',
-                badge: 'French Wizard Circus',
-                type: 'Magical Acrobatics & Beast Show',
+                id: 'food-darkmoor-dinner',
+                name: "🍽️ DINNER: Das Stakehaus or The Burning Blade Tavern",
+                land: 'dark',
+                landLabel: 'Dark Universe',
+                timeSlot: '6:45 PM – 7:30 PM',
+                badge: 'Hearty Veg Dinner (~$10–$23)',
+                type: 'Themed Gothic Dining',
+                itemKind: 'food',
                 motionScore: 0.0,
                 motionLevel: 'Zero Risk',
                 motionColor: 'emerald',
-                motionDesc: 'Spectacular stage production with live actors, aerial acrobatics, puppetry, and magical effects inside Place Cachée.',
-                thrillScore: 3.0,
+                motionDesc: 'Gothic tavern atmosphere. Full meal before night rides.',
+                thrillScore: 2.0,
                 enjoymentScore: 4.8,
-                airflow: 'Indoor Air Conditioned',
-                express: 'Open Seating',
-                strategy: 'Pair this with a Parisian Butterbeer pastry from Café L’air De La Côte right before entering!',
-                youtubeId: 'z2Yk5lM7s1g',
-                povTitle: "Le Cirque Arcanus French Wizard Spectacle Preview",
+                airflow: 'Themed Indoor / Covered',
+                express: 'Walk-Up / Mobile Order',
+                strategy: 'DUSK ARRIVAL IN DARK UNIVERSE! Grab dinner at Das Stakehaus (Charred Cauliflower Steak ~$22.99, Truffle Parmesan Fries ~$8.99, Roasted Beet Salad ~$14.99) or The Burning Blade Tavern (Warm Pretzel Knots ~$10.99, Plant-Based Bratwurst ~$15.99, Darkmoor Craft Cider ~$5.99) right as the windmill flames ignite!',
+                youtubeId: '7AbnllQNN4o',
+                povTitle: "Dark Universe Burning Blade Tavern & Das Stakehaus",
                 isMustDo: true,
-                category: 'show'
-            },
-            {
-                id: 'wand-magic-paris',
-                name: "Cosme Acajor Baguettes Magique (Paris Wand Spell Casting)",
-                land: 'ministry',
-                landLabel: 'Wizarding World: Ministry of Magic',
-                timeSlot: '5:15 PM',
-                badge: 'Interactive Wand Magic',
-                type: 'Storefront Spell Casting',
-                motionScore: 0.0,
-                motionLevel: 'Zero Risk',
-                motionColor: 'emerald',
-                motionDesc: 'Interactive wand spell casting throughout Place Cachée enchanted shop windows.',
-                thrillScore: 1.0,
-                enjoymentScore: 4.7,
-                airflow: 'Outdoor Themed Street',
-                express: 'Open Access',
-                strategy: 'Cosme Acajor sells triangular presentation wand boxes unique to Paris. Practice spell movements in the quiet side alleys.',
-                youtubeId: 'i6pRzyW6HYM',
-                povTitle: "Place Cachée Paris Wand Spell Windows Walkthrough",
-                isMustDo: true,
-                category: 'show'
+                category: 'dining'
             },
             {
                 id: 'monsters-unchained',
                 name: "Monsters Unchained: The Frankenstein Experiment",
                 land: 'dark',
                 landLabel: 'Dark Universe',
-                timeSlot: '5:45 PM',
-                badge: 'Ultimate Animatronic Dark Ride',
+                timeSlot: '7:30 PM – 8:15 PM',
+                badge: 'Ultimate Animatronics',
                 type: 'Robotic Arm Dark Ride',
+                itemKind: 'ride',
                 motionScore: 3.0,
                 motionLevel: 'Moderate Thrill (Robotic Arm)',
                 motionColor: 'amber',
-                motionDesc: 'KUKA robotic arm vehicle through Dr. Victoria Frankenstein’s catacombs. Intense monster animatronics (Dracula, Wolf Man, Mummy, Creature). Dynamic motion without motion-blur screen sickness.',
+                motionDesc: 'KUKA robotic arm vehicle through Dr. Victoria Frankenstein’s catacombs. Intense monster animatronics (Dracula, Wolf Man, Mummy). Physical sets, no screen-blur nausea.',
                 thrillScore: 4.8,
                 enjoymentScore: 5.0,
                 airflow: 'Indoor Catacombs',
                 express: 'Standby Only',
-                strategy: 'Must-do landmark attraction! Uses physical sets and state-of-the-art animatronics rather than disorienting screens.',
+                strategy: 'Must-do landmark attraction! Darkmoor Village is fully illuminated under eerie green and purple lights at this hour. Free lockers provided at entrance.',
                 youtubeId: '7AbnllQNN4o',
                 povTitle: "Monsters Unchained Frankenstein Dark Ride POV",
                 isMustDo: true,
                 category: 'ride'
             },
             {
-                id: 'curse-werewolf',
-                name: "Curse of the Werewolf",
-                land: 'dark',
-                landLabel: 'Dark Universe',
-                timeSlot: '6:30 PM',
-                badge: 'Spinning Family Coaster',
-                type: 'Spinning Forest Coaster',
-                motionScore: 3.5,
-                motionLevel: 'Moderate (Spinning Cars)',
-                motionColor: 'amber',
-                motionDesc: 'Outdoor launched coaster where individual cars freely rotate as you dodge werewolf claws in the Darkmoor woods.',
-                thrillScore: 3.4,
-                enjoymentScore: 4.6,
-                airflow: 'Outdoor Forest Breeze',
-                express: 'Standby',
-                strategy: 'Take a Dramamine if you are prone to spinning dizziness, or sit towards the middle of the train for a milder rotation.',
-                youtubeId: 'm4XqK9aQ2y0',
-                povTitle: "Curse of the Werewolf Coaster Full POV",
-                isMustDo: false,
-                category: 'ride'
-            },
-            {
                 id: 'stardust-racers',
-                name: "Stardust Racers (Dual-Launch Coaster)",
+                name: "Stardust Racers (Dual-Launch Coaster at Night!)",
                 land: 'celestial',
                 landLabel: 'Celestial Park',
-                timeSlot: '8:00 PM (Golden Hour / Night)',
-                badge: 'Flagship Celestial Coaster',
+                timeSlot: '8:45 PM – 9:15 PM',
+                badge: 'Flagship Night Coaster',
                 type: 'Dual-Launch Dueling Coaster',
+                itemKind: 'ride',
                 motionScore: 2.0,
-                motionLevel: 'Low Risk (Smooth Thrill)',
+                motionLevel: 'Low Risk (Ultra Smooth)',
                 motionColor: 'emerald',
-                motionDesc: 'Reaches 62 mph and 133 ft with zero inversions except the stunning Celestial Spin inverted cross-over. Butter-smooth Mack track with great night breeze.',
+                motionDesc: 'Dual-launch Mack coaster reaching 62 mph. Butter-smooth track with refreshing night breeze. Zero traditional inversions except the Celestial Spin cross-over.',
                 thrillScore: 4.8,
                 enjoymentScore: 5.0,
-                airflow: 'High-Speed Open Air',
+                airflow: 'High-Speed Night Breeze',
                 express: 'Standby',
-                strategy: 'Riding at twilight or night is MAGICAL! The coaster trains glow like comets with onboard kinetic LED lighting and soundtrack.',
+                strategy: 'MAGICAL NIGHT RIDE! At 8:45 PM, the coaster trains glow like shooting comets across the sky with onboard kinetic LED lighting and celestial music.',
                 youtubeId: '6L3kS_4Q2v8',
                 povTitle: "Stardust Racers Dueling Coaster Day & Night POV",
                 isMustDo: true,
                 category: 'ride'
             },
             {
-                id: 'constellation-carousel',
-                name: "Constellation Carousel",
+                id: 'food-celestial-gelato',
+                name: "🍦 NIGHT DESSERT: Moonship Chocolates & Celestial Sweets",
                 land: 'celestial',
                 landLabel: 'Celestial Park',
-                timeSlot: '8:45 PM',
-                badge: 'Cosmic Kinetic Carousel',
-                type: 'Astronomical Kinetic Carousel',
-                motionScore: 1.0,
-                motionLevel: 'Zero / Low Risk',
+                timeSlot: '9:15 PM – 9:30 PM',
+                badge: 'Artisan Gelato (~$4–$15)',
+                type: 'Artisan Confectionery',
+                itemKind: 'food',
+                motionScore: 0.0,
+                motionLevel: 'Zero Risk',
                 motionColor: 'emerald',
-                motionDesc: 'Majestic celestial beasts (lions, bears, peacocks) under a star-canopy dome that rotates, lifts, and performs choreographed dances.',
-                thrillScore: 1.5,
-                enjoymentScore: 4.7,
-                airflow: 'Covered Open-Air Dome',
-                express: 'Standby',
-                strategy: 'Breathtaking photo opportunity right before the lagoon fountain finale!',
-                youtubeId: 'n7K8e3Lz1wQ',
-                povTitle: "Constellation Carousel Magical Night Experience",
-                isMustDo: true,
-                category: 'ride'
+                motionDesc: 'Sweet dessert before lagoon show.',
+                thrillScore: 1.0,
+                enjoymentScore: 4.9,
+                airflow: 'Lagoon Promenade',
+                express: 'Walk-Up',
+                strategy: 'Grab a waffle cone of Celestial Blue Vanilla Gelato with edible star glitter (~$7.49) or a box of Galaxy Macarons (~$14.99 box / ~$3.99 single) to enjoy during the fountain show!',
+                youtubeId: 'i6pRzyW6HYM',
+                povTitle: "Moonship Chocolates Artisan Sweet Shop Tour",
+                isMustDo: false,
+                category: 'dining'
             },
             {
                 id: 'celestial-night-show',
                 name: "Céleste: Grand Fountain & Light Spectacular",
                 land: 'celestial',
                 landLabel: 'Celestial Park',
-                timeSlot: '9:15 PM (Grand Finale)',
-                badge: 'Nighttime Finale',
+                timeSlot: '9:30 PM – 9:50 PM',
+                badge: 'Grand Night Finale',
                 type: 'Lagoon Water & Projection Show',
+                itemKind: 'ride',
                 motionScore: 0.0,
                 motionLevel: 'Zero Risk',
                 motionColor: 'emerald',
-                motionDesc: 'Choreographed dancing fountains, cosmic lasers, projection mapping onto the Grand Helios Hotel, and cinematic music.',
+                motionDesc: 'Lagoon viewing promenade. Relaxing grand finale.',
                 thrillScore: 4.0,
                 enjoymentScore: 5.0,
-                airflow: 'Lagoon Waterfront',
+                airflow: 'Lagoon Waterfront Breeze',
                 express: 'Open Viewing',
-                strategy: 'Stand along the central bridge near the Atlantic glass dome for the best panoramic view of the fireworks and fountains!',
+                strategy: 'Stand along the central bridge near the Atlantic glass dome for the best panoramic view of the fireworks, lasers, and dancing fountains. When finished, you are directly next to the park exit for your smooth 30-min drive home!',
                 youtubeId: 'i6pRzyW6HYM',
                 povTitle: "Celestial Park Fountain & Light Spectacular",
                 isMustDo: true,
@@ -1144,41 +1224,28 @@
             }
         ];
 
-        // 100% VEGETARIAN DINING (EGGS OK) DIRECTORY
+        // RIDES ONLY DIRECTORY (FOR RIDES & POVS TAB)
+        const attractionsData = timelineData.filter(item => item.itemKind === 'ride');
+
+        // 100% VEGETARIAN DINING DIRECTORY (WITH DISH-BY-DISH APPROXIMATE COSTS)
         const diningData = [
             {
                 id: 'toadstool-cafe',
                 name: "Toadstool Cafe",
                 land: 'nintendo',
                 landLabel: 'Super Nintendo World',
-                type: 'Quick Service / Casual Themed Dining',
+                type: 'Quick Service / Themed Sit-Down',
                 mealCategory: 'lunch-dinner',
                 diet: 'Lacto-Ovo Vegetarian (Eggs OK)',
-                mustTryDishes: [
-                    "🍄 Super Mushroom Soup in collectible mushroom bowl (Creamy mushroom, herb croutons)",
-                    "🍝 Fire Flower Spaghetti & Meatballs (Plant-based marinara & spicy flower crunch)",
-                    "🧀 Tomato Pesto Caprese (Fresh mozzarella, basil pesto, cherry tomatoes)",
-                    "❓ ? Block Tiramisu & Princess Peach Cupcake"
+                avgCost: '$12 – $20 per person',
+                dishes: [
+                    { name: "Super Mushroom Soup in Collectible Bowl", cost: "~$19.99", note: "Creamy mushroom & garlic broth in souvenir bowl (~$9.99 without bowl)" },
+                    { name: "Fire Flower Spaghetti & Plant Meatballs", cost: "~$16.99", note: "Plant-based meatballs, tangy San Marzano marinara & spicy flower crunch" },
+                    { name: "Tomato Pesto Caprese Salad", cost: "~$13.99", note: "Fresh buffalo mozzarella, house basil pesto & vine-ripened tomatoes" },
+                    { name: "? Block Tiramisu & Princess Peach Cupcake", cost: "~$9.99", note: "Espresso mascarpone cocoa cake & raspberry cream cupcake (Eggs OK)" }
                 ],
                 price: "$$",
-                tips: "Book mobile return window in the Universal App right at 9:00 AM as soon as you enter the park!"
-            },
-            {
-                id: 'mead-hall',
-                name: "Mead Hall",
-                land: 'berk',
-                landLabel: 'Isle of Berk',
-                type: 'Grand Viking Feasting Hall',
-                mealCategory: 'lunch-dinner',
-                diet: 'Lacto-Ovo Vegetarian (Eggs OK)',
-                mustTryDishes: [
-                    "🥨 Giant Warm Bavarian Pretzel with warm artisan beer cheese",
-                    "🥘 Roasted Root Vegetable & Herb Skillet with goat cheese crumble",
-                    "🧀 Viking Artisanal Cheese & Fruit Platter",
-                    "🍎 Non-Alcoholic Sparkling Dragon Spiced Cider"
-                ],
-                price: "$$",
-                tips: "Massive Viking atmosphere with carved wooden dragon pillars. Great hearty vegetarian lunch!"
+                tips: "Featured in Timeline as Stop #1 at 11:30 AM! Place your mobile order window in the Universal App right as you park at 11:00 AM."
             },
             {
                 id: 'cafe-clair',
@@ -1188,14 +1255,33 @@
                 type: 'French Bistro Bakery & Patisserie',
                 mealCategory: 'snacks-sweets',
                 diet: 'Vegetarian Bakery (Eggs OK)',
-                mustTryDishes: [
-                    "🥐 Fresh French Butter Croissants & Pain au Chocolat",
-                    "🥧 Warm Four-Cheese & Leek Quiche (Eggs OK)",
-                    "🍮 Parisian Butterbeer Crème Brûlée with caramelized sugar crust",
-                    "☕ Café au Lait & Artisan French Roast"
+                avgCost: '$5 – $14 per person',
+                dishes: [
+                    { name: "Warm Four-Cheese & Leek French Quiche", cost: "~$12.99", note: "Golden puff pastry crust with savory Gruyère egg custard (Eggs OK)" },
+                    { name: "Parisian Butterbeer Crème Brûlée", cost: "~$8.99", note: "Torch-caramelized sugar crust over rich butterscotch custard" },
+                    { name: "French Butter Croissants & Pain au Chocolat", cost: "~$5.49", note: "Flaky artisan Viennoiserie baked fresh daily in Place Cachée" },
+                    { name: "French Choux Éclairs & Artisan Café au Lait", cost: "~$6.49", note: "Dark chocolate ganache & French roast espresso" }
                 ],
                 price: "$",
-                tips: "Perfect mid-afternoon pastry break in Place Cachée with outdoor Parisian bistro seating."
+                tips: "Featured in Timeline at 4:30 PM! Perfect mid-afternoon pastry break in Place Cachée with outdoor Parisian bistro seating."
+            },
+            {
+                id: 'mead-hall',
+                name: "Mead Hall",
+                land: 'berk',
+                landLabel: 'Isle of Berk',
+                type: 'Grand Viking Feasting Hall',
+                mealCategory: 'lunch-dinner',
+                diet: 'Lacto-Ovo Vegetarian (Eggs OK)',
+                avgCost: '$13 – $22 per person',
+                dishes: [
+                    { name: "Giant Warm Bavarian Pretzel", cost: "~$12.99", note: "Warm jumbo artisan pretzel with creamy beer cheese dip" },
+                    { name: "Roasted Root Vegetable & Goat Cheese Skillet", cost: "~$16.99", note: "Roasted carrots, parsnips, gold potatoes, goat cheese & fresh herbs" },
+                    { name: "Viking Artisanal Cheese & Fruit Platter", cost: "~$14.99", note: "Aged sharp cheddar, brie, candied nuts, grapes & crisp flatbreads" },
+                    { name: "Sparkling Dragon Spiced Cider", cost: "~$5.99", note: "Non-alcoholic chilled spiced apple cider with cinnamon stick" }
+                ],
+                price: "$$",
+                tips: "Massive Viking atmosphere with carved wooden dragon pillars. Great option if you prefer lunch in Berk!"
             },
             {
                 id: 'le-gobelet-noir',
@@ -1205,13 +1291,48 @@
                 type: 'Dark Wizard Tavern & Inn',
                 mealCategory: 'lunch-dinner',
                 diet: 'Lacto-Ovo Vegetarian (Eggs OK)',
-                mustTryDishes: [
-                    "🥘 Traditional French Ratatouille with warm crusty baguette",
-                    "🥔 Truffled Potato & Gruyère Gratin Skillet",
-                    "🧅 Parisian French Onion Tart (Vegetarian broth)"
+                avgCost: '$14 – $22 per person',
+                dishes: [
+                    { name: "Traditional French Ratatouille Skillet", cost: "~$17.99", note: "Slow-simmered zucchini, eggplant, herb tomato & warm crusty baguette" },
+                    { name: "Truffled Potato & Gruyère Gratin Skillet", cost: "~$15.99", note: "Layered golden potatoes baked in rich cream & melted gruyère" },
+                    { name: "Parisian French Onion Tart", cost: "~$13.99", note: "Caramelized sweet onions & melted Swiss cheese in savory tart shell" }
                 ],
                 price: "$$",
-                tips: "Atmospheric corner where dark witches and wizards gather. Intricate enchanted portraits."
+                tips: "Atmospheric corner where dark witches and wizards gather. Intricate moving enchanted portraits."
+            },
+            {
+                id: 'das-stakehaus',
+                name: "Das Stakehaus",
+                land: 'dark',
+                landLabel: 'Dark Universe',
+                type: 'Vampire Catacomb Dining',
+                mealCategory: 'lunch-dinner',
+                diet: 'Vegetarian Entrees Available',
+                avgCost: '$15 – $26 per person',
+                dishes: [
+                    { name: "Charred Herb-Marinated Cauliflower Steak", cost: "~$22.99", note: "Thick-cut roasted cauliflower, fresh chimichurri & roasted garlic mash" },
+                    { name: "Roasted Golden Beet & Goat Cheese Salad", cost: "~$14.99", note: "Baby arugula, candied pecans, whipped chèvre & citrus vinaigrette" },
+                    { name: "Garlic Truffle & Parmesan Steak Fries", cost: "~$8.99", note: "Crisp hand-cut fries with white truffle oil & shaved parmesan" }
+                ],
+                price: "$$$",
+                tips: "Featured in Timeline at 6:45 PM for dinner! Underground dining hall surrounded by vampire familiars."
+            },
+            {
+                id: 'burning-blade',
+                name: "The Burning Blade Tavern",
+                land: 'dark',
+                landLabel: 'Dark Universe',
+                type: 'Themed Tavern Quick Service',
+                mealCategory: 'snacks-sweets',
+                diet: 'Lacto-Ovo Vegetarian',
+                avgCost: '$10 – $18 per person',
+                dishes: [
+                    { name: "Plant-Based Bavarian Bratwurst", cost: "~$15.99", note: "Savory veggie brat with braised red cabbage & spiced whole grain mustard" },
+                    { name: "Soft Pretzel Knots with Beer Cheese", cost: "~$10.99", note: "Fresh-baked pretzel bites with warm mustard & melted cheddar dip" },
+                    { name: "Darkmoor Craft Root Beer & Specialty Cider", cost: "~$5.99", note: "Specialty chilled spiced root beer in souvenir cup" }
+                ],
+                price: "$",
+                tips: "Every 20 minutes, the windmill blades on top of the tavern ignite in flames!"
             },
             {
                 id: 'blue-dragon',
@@ -1221,11 +1342,12 @@
                 type: 'Table Service / Themed Dining',
                 mealCategory: 'lunch-dinner',
                 diet: 'Vegetarian & Plant-Forward',
-                mustTryDishes: [
-                    "🥟 Steamed Edamame & Truffle Mushroom Dumplings",
-                    "🍜 Garlic Chili Dan Dan Noodles with Crispy Tofu",
-                    "🍚 Celestial Wok-Tossed Jasmine Fried Rice (Eggs OK)",
-                    "🍵 Matcha Green Tea Lava Cake"
+                avgCost: '$18 – $28 per person',
+                dishes: [
+                    { name: "Garlic Chili Dan Dan Noodles with Crispy Tofu", cost: "~$21.99", note: "Wok-seared tofu, scallions, rich sesame chili broth & baby bok choy" },
+                    { name: "Celestial Wok-Tossed Jasmine Fried Rice", cost: "~$18.99", note: "Sweet corn, tender peas, scallions & farm eggs (Eggs OK)" },
+                    { name: "Steamed Edamame & Truffle Dumplings (6 pcs)", cost: "~$13.99", note: "Handmade steamed dumplings with ginger soy dipping sauce" },
+                    { name: "Matcha Green Tea Lava Cake", cost: "~$10.99", note: "Warm molten green tea cake with vanilla bean ice cream" }
                 ],
                 price: "$$$",
                 tips: "Dine under glowing neon paper lanterns and celestial dragons inside Celestial Park."
@@ -1238,10 +1360,12 @@
                 type: 'Artisanal Quick Service',
                 mealCategory: 'lunch-dinner',
                 diet: 'Lacto-Ovo Vegetarian',
-                mustTryDishes: [
-                    "🍕 Moon White Truffle & Wild Forest Mushroom Pizza",
-                    "🍕 Four-Cheese Quattro Formaggi with hot honey drizzle",
-                    "🥗 Crisp Caesar Salad with house-baked parmesan crisps (Eggs OK)"
+                avgCost: '$12 – $20 per person',
+                dishes: [
+                    { name: "Moon White Truffle & Wild Forest Mushroom Pizza", cost: "~$17.99", note: "Personal 10\" sourdough, garlic ricotta, wild mushrooms & truffle oil" },
+                    { name: "Quattro Formaggi Four-Cheese Pizza with Hot Honey", cost: "~$16.99", note: "Mozzarella, fontina, gorgonzola, parmesan & hot wildflower honey" },
+                    { name: "Classic Fresh Basil Margherita Pizza", cost: "~$15.99", note: "San Marzano tomato sauce, fresh mozzarella & sweet Italian basil" },
+                    { name: "Crisp Caesar Salad with House Parmesan Crisp", cost: "~$11.99", note: "Romaine hearts, shaved pecorino & sourdough croutons (Eggs OK)" }
                 ],
                 price: "$$",
                 tips: "Hand-stretched artisan sourdough crust baked fresh in wood-fired stone ovens."
@@ -1254,50 +1378,20 @@
                 type: 'Artisan Confectionery & Gelato',
                 mealCategory: 'snacks-sweets',
                 diet: 'Vegetarian Sweets & Gelato',
-                mustTryDishes: [
-                    "🌌 Galaxy Swirl Artisan Macarons (Lavender, Pistachio, Salted Caramel)",
-                    "🍫 Handcrafted Cosmic Truffles & Golden Hazelnut Pralines",
-                    "🍦 Celestial Blue Vanilla Bean Gelato with edible glitter"
+                avgCost: '$4 – $16 per person',
+                dishes: [
+                    { name: "Celestial Blue Vanilla Bean Gelato (Waffle Cone)", cost: "~$7.49", note: "Artisanal rich vanilla bean gelato dusted with edible star glitter" },
+                    { name: "Galaxy Swirl Artisan Macarons (Box of 4)", cost: "~$14.99", note: "French almond macarons: Lavender Honey, Pistachio, Salted Caramel (~$3.99 single)" },
+                    { name: "Handcrafted Cosmic Chocolate Truffles", cost: "~$4.50 / $16.99", note: "Single gourmet artisan truffle or souvenir 4-pack gift box" }
                 ],
                 price: "$",
-                tips: "Pick up a gift box of celestial chocolates before heading home on your 30-min drive!"
-            },
-            {
-                id: 'das-stakehaus',
-                name: "Das Stakehaus",
-                land: 'dark',
-                landLabel: 'Dark Universe',
-                type: 'Vampire Catacomb Dining',
-                mealCategory: 'lunch-dinner',
-                diet: 'Vegetarian Entrees Available',
-                mustTryDishes: [
-                    "🥩 Charred Herb-Marinated Cauliflower Steak with chimichurri",
-                    "🍟 Garlic Truffle & Parmesan Steak Fries",
-                    "🥗 Roasted Golden Beet & Whipped Goat Cheese Salad"
-                ],
-                price: "$$$",
-                tips: "Underground dining hall surrounded by vampire familiars and gothic artwork."
-            },
-            {
-                id: 'burning-blade',
-                name: "The Burning Blade Tavern",
-                land: 'dark',
-                landLabel: 'Dark Universe',
-                type: 'Themed Tavern Quick Service',
-                mealCategory: 'snacks-sweets',
-                diet: 'Lacto-Ovo Vegetarian',
-                mustTryDishes: [
-                    "🥨 Soft Pretzel Knots with spicy whole-grain mustard & warm cheese",
-                    "🌭 Plant-Based Bavarian Bratwurst with braised red cabbage",
-                    "🍺 Darkmoor Craft Root Beer & Specialty Cider"
-                ],
-                price: "$",
-                tips: "Every 20 minutes, the windmill blades on top of the tavern ignite in flames!"
+                tips: "Featured in Timeline at 9:15 PM! Pick up gelato right before the lagoon finale."
             }
         ];
 
-        // STATE CONTROLLER
+        // STATE CONTROLLERS
         let currentPortalFilter = 'all';
+        let currentTimelineTypeFilter = 'all';
         let currentRideMotionFilter = 'all';
         let currentDiningCategoryFilter = 'all';
         let userChecklist = JSON.parse(localStorage.getItem('epicUniverseChecklist') || '{}');
@@ -1310,13 +1404,29 @@
                 const tabEl = document.getElementById(`tabBtn-${v}`);
                 if (v === viewName) {
                     viewEl.classList.remove('hidden');
-                    tabEl.className = "nav-tab active flex-1 md:flex-none px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap";
+                    tabEl.className = "nav-tab active flex-1 md:flex-none px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap";
                 } else {
                     viewEl.classList.add('hidden');
-                    tabEl.className = "nav-tab flex-1 md:flex-none px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap";
+                    tabEl.className = "nav-tab flex-1 md:flex-none px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap";
                 }
             });
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // TOGGLE ROUTE REASONING ACCORDION
+        function toggleRouteReasoning() {
+            const content = document.getElementById('routeReasoningContent');
+            const chevron = document.getElementById('reasoningChevron');
+            const btnText = document.getElementById('reasoningBtnText');
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                chevron.className = "fa-solid fa-chevron-up text-[10px]";
+                btnText.innerText = "Collapse";
+            } else {
+                content.classList.add('hidden');
+                chevron.className = "fa-solid fa-chevron-down text-[10px]";
+                btnText.innerText = "View Strategy";
+            }
         }
 
         // PORTAL FILTER CONTROLLER
@@ -1338,13 +1448,27 @@
             renderDining();
         }
 
+        // TIMELINE TYPE FILTER
+        function filterTimelineType(typeKey) {
+            currentTimelineTypeFilter = typeKey;
+            ['all', 'food', 'ride'].forEach(k => {
+                const btn = document.getElementById(`timelineTypeBtn-${k}`);
+                if (k === typeKey) {
+                    btn.className = "px-2.5 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white transition whitespace-nowrap";
+                } else {
+                    btn.className = "px-2.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition whitespace-nowrap";
+                }
+            });
+            renderTimeline();
+        }
+
         // MOTION FILTER CONTROLLER
         function filterRideMotion(motionKey) {
             currentRideMotionFilter = motionKey;
             ['all', 'zero-low', 'moderate-high'].forEach(k => {
                 const btn = document.getElementById(`rideMotionBtn-${k}`);
                 if (k === motionKey) {
-                    btn.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-900 text-white transition shadow-sm";
+                    btn.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-900 text-white transition shadow-xs";
                 } else {
                     btn.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
                 }
@@ -1358,7 +1482,7 @@
             ['all', 'lunch-dinner', 'snacks-sweets'].forEach(k => {
                 const btn = document.getElementById(`diningCatBtn-${k}`);
                 if (k === catKey) {
-                    btn.className = "px-3 py-1 rounded-xl text-xs font-bold bg-emerald-600 text-white transition shadow-sm";
+                    btn.className = "px-3 py-1 rounded-xl text-xs font-bold bg-emerald-600 text-white transition shadow-xs";
                 } else {
                     btn.className = "px-3 py-1 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
                 }
@@ -1366,13 +1490,19 @@
             renderDining();
         }
 
-        // RENDER MASTER TIMELINE
+        // RENDER MASTER TIMELINE (INCLUDING FOOD & RIDES)
         function renderTimeline() {
             const container = document.getElementById('timelineContainer');
-            let filtered = attractionsData;
+            let filtered = timelineData;
             
             if (currentPortalFilter !== 'all') {
                 filtered = filtered.filter(item => item.land === currentPortalFilter);
+            }
+
+            if (currentTimelineTypeFilter === 'food') {
+                filtered = filtered.filter(item => item.itemKind === 'food');
+            } else if (currentTimelineTypeFilter === 'ride') {
+                filtered = filtered.filter(item => item.itemKind === 'ride');
             }
 
             const searchInput = document.getElementById('timelineSearch');
@@ -1390,6 +1520,8 @@
             let html = '';
             filtered.forEach((item, index) => {
                 const isChecked = userChecklist[item.id] ? true : false;
+                const isFood = item.itemKind === 'food';
+                
                 const portalThemeClasses = {
                     celestial: 'border-l-sky-500 bg-sky-50/40 text-sky-800',
                     nintendo: 'border-l-rose-500 bg-rose-50/40 text-rose-800',
@@ -1403,14 +1535,14 @@
                     : 'bg-amber-50 text-amber-700 border-amber-200';
 
                 html += `
-                    <div class="timeline-row bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden border-l-4 ${portalThemeClasses.split(' ')[0]} transition" id="timelineRow-${item.id}">
+                    <div class="timeline-row bg-white rounded-2xl border ${isFood ? 'border-emerald-300 shadow-sm' : 'border-slate-200 shadow-xs'} overflow-hidden border-l-4 ${portalThemeClasses.split(' ')[0]} transition" id="timelineRow-${item.id}">
                         
                         <!-- Header Accordion Trigger -->
-                        <div class="p-3 sm:p-4 flex items-center justify-between gap-2.5 cursor-pointer hover:bg-slate-50/80 select-none" onclick="toggleTimelineAccordion('${item.id}')">
+                        <div class="p-3 sm:p-4 flex items-center justify-between gap-2 cursor-pointer hover:bg-slate-50/80 select-none" onclick="toggleTimelineAccordion('${item.id}')">
                             
-                            <div class="flex items-center space-x-3 min-w-0">
-                                <div class="w-8 h-8 rounded-xl ${portalThemeClasses.split(' ')[1]} ${portalThemeClasses.split(' ')[2]} font-black text-xs flex items-center justify-center border border-slate-200 flex-shrink-0">
-                                    ${(index + 1).toString().padStart(2, '0')}
+                            <div class="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+                                <div class="w-8 h-8 rounded-xl ${isFood ? 'bg-emerald-600 text-white' : portalThemeClasses.split(' ')[1] + ' ' + portalThemeClasses.split(' ')[2]} font-black text-xs flex items-center justify-center border border-slate-200 flex-shrink-0">
+                                    ${isFood ? '<i class="fa-solid fa-utensils text-[11px]"></i>' : (index + 1).toString().padStart(2, '0')}
                                 </div>
                                 <div class="min-w-0">
                                     <div class="flex items-center gap-1.5 flex-wrap">
@@ -1420,19 +1552,26 @@
                                         <span class="text-xs sm:text-sm font-extrabold text-slate-900 truncate">
                                             ${item.name}
                                         </span>
-                                        ${item.isMustDo ? '<span class="text-[9px] font-extrabold bg-amber-100 text-amber-900 px-1.5 py-0.2 rounded border border-amber-200"><i class="fa-solid fa-star text-amber-500"></i> Top Pick</span>' : ''}
+                                        ${isFood ? '<span class="text-[9px] font-extrabold bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded border border-emerald-300"><i class="fa-solid fa-leaf text-emerald-600"></i> Veg Meal</span>' : ''}
+                                        ${item.isMustDo && !isFood ? '<span class="text-[9px] font-extrabold bg-amber-100 text-amber-900 px-1.5 py-0.2 rounded border border-amber-200 hidden sm:inline-block"><i class="fa-solid fa-star text-amber-500"></i> Top Pick</span>' : ''}
                                     </div>
-                                    <div class="text-[11px] text-slate-500 font-medium mt-0.5">
+                                    <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium mt-0.5">
                                         <i class="fa-regular fa-clock mr-1 text-slate-400"></i>${item.timeSlot} • <span class="text-slate-700 font-semibold">${item.type}</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="flex items-center space-x-2 flex-shrink-0">
-                                <span class="hidden sm:inline-block text-[10px] font-bold px-2 py-0.5 rounded-full border ${motionBadgeClass}">
-                                    <i class="fa-solid fa-shield-heart mr-1"></i>${item.motionLevel} (${item.motionScore}/5)
-                                </span>
-                                <span class="text-[11px] font-black px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">
+                            <div class="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0">
+                                ${!isFood ? `
+                                    <span class="hidden sm:inline-block text-[10px] font-bold px-2 py-0.5 rounded-full border ${motionBadgeClass}">
+                                        <i class="fa-solid fa-shield-heart mr-1"></i>${item.motionLevel} (${item.motionScore}/5)
+                                    </span>
+                                ` : `
+                                    <span class="hidden sm:inline-block text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                        Eggs OK
+                                    </span>
+                                `}
+                                <span class="text-[10px] sm:text-[11px] font-black px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">
                                     ⭐ ${item.enjoymentScore}
                                 </span>
                                 <button onclick="event.stopPropagation(); toggleWishlistItem('${item.id}')" title="Add to Wishlist" class="w-7 h-7 rounded-lg ${isChecked ? 'bg-purple-100 text-purple-700 border-purple-300' : 'bg-slate-100 text-slate-400 hover:text-purple-600'} border flex items-center justify-center transition">
@@ -1446,35 +1585,37 @@
                         </div>
 
                         <!-- Accordion Detail Body -->
-                        <div id="accordionBody-${item.id}" class="hidden px-4 pb-4 pt-1 border-t border-slate-100 bg-slate-50/70 space-y-2.5 text-xs">
+                        <div id="accordionBody-${item.id}" class="hidden px-3.5 sm:px-4 pb-4 pt-1 border-t border-slate-100 bg-slate-50/70 space-y-2.5 text-xs">
                             
                             <!-- Rating Cards Matrix -->
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 text-[11px] bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
                                 <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500 font-extrabold">${item.enjoymentScore}/5</span></div>
                                 <div><strong>🤢 Motion Sickness:</strong> <span class="${item.motionScore <= 2 ? 'text-emerald-600' : 'text-amber-600'} font-extrabold">${item.motionScore}/5 (${item.motionLevel})</span></div>
                                 <div><strong>🎢 Thrill Level:</strong> <span class="text-sky-600 font-extrabold">${item.thrillScore}/5</span></div>
                                 <div><strong>💨 Environment:</strong> <span class="text-indigo-600 font-bold">${item.airflow}</span></div>
                             </div>
 
-                            <!-- Motion Sickness Analysis & Strategy -->
-                            <div class="bg-sky-50/70 p-3 rounded-xl border border-sky-100 text-[11px] text-slate-700 space-y-1">
+                            <!-- Pro Strategy & Advice -->
+                            <div class="bg-sky-50/70 p-2.5 sm:p-3 rounded-xl border border-sky-100 text-[11px] text-slate-700 space-y-1">
                                 <div class="font-bold text-sky-950 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-lightbulb text-amber-500"></i> Pro Strategy & Comfort Advice:
+                                    <i class="fa-solid fa-lightbulb text-amber-500"></i> Strategy & Recommendations:
                                 </div>
                                 <p class="leading-relaxed">${item.strategy}</p>
-                                <div class="pt-1 text-slate-600">
-                                    <strong>Motion Sickness Note:</strong> ${item.motionDesc}
+                                <div class="pt-0.5 text-slate-600">
+                                    <strong>Motion Sickness Analysis:</strong> ${item.motionDesc}
                                 </div>
                             </div>
 
                             <!-- POV Video Launcher Trigger -->
-                            <div class="flex items-center justify-between pt-1">
+                            <div class="flex items-center justify-between pt-1 flex-wrap gap-2">
                                 <span class="text-[11px] font-semibold text-slate-500">
-                                    <i class="fa-solid fa-ticket text-sky-500 mr-1"></i> Queue Type: ${item.express}
+                                    <i class="fa-solid fa-ticket text-sky-500 mr-1"></i> Access: ${item.express}
                                 </span>
-                                <button onclick="openPovModal('${item.id}')" class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-600 text-red-700 hover:text-white border border-red-200 font-bold text-xs transition flex items-center gap-1.5 shadow-xs">
-                                    <i class="fa-brands fa-youtube text-red-500"></i> Watch Ride POV Video
-                                </button>
+                                ${item.youtubeId ? `
+                                    <button onclick="openPovModal('${item.id}')" class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-600 text-red-700 hover:text-white border border-red-200 font-bold text-xs transition flex items-center gap-1.5 shadow-xs">
+                                        <i class="fa-brands fa-youtube text-red-500"></i> Watch POV Video
+                                    </button>
+                                ` : ''}
                             </div>
 
                         </div>
@@ -1484,7 +1625,7 @@
             });
 
             if (filtered.length === 0) {
-                html = `<div class="p-8 text-center bg-white rounded-2xl border border-slate-200 text-slate-500 text-xs">No attractions found for this filter.</div>`;
+                html = `<div class="p-8 text-center bg-white rounded-2xl border border-slate-200 text-slate-500 text-xs">No stops match your filter criteria.</div>`;
             }
 
             container.innerHTML = html;
@@ -1517,7 +1658,7 @@
                 }[item.land] || 'bg-blue-100 text-blue-800 border-blue-200';
 
                 html += `
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition p-4 flex flex-col justify-between space-y-3">
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition p-3.5 sm:p-4 flex flex-col justify-between space-y-3">
                         
                         <div class="space-y-2">
                             <div class="flex items-center justify-between">
@@ -1549,9 +1690,9 @@
 
                         <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
                             <button onclick="toggleWishlistItem('${item.id}')" class="px-2.5 py-1.5 rounded-xl ${isChecked ? 'bg-purple-100 text-purple-700 border-purple-300' : 'bg-slate-100 text-slate-600'} border text-xs font-bold transition flex items-center gap-1">
-                                <i class="fa-solid ${isChecked ? 'fa-square-check' : 'fa-square'}"></i> ${isChecked ? 'Wishlisted' : 'Wishlist'}
+                                <i class="fa-solid ${isChecked ? 'fa-square-check' : 'fa-square'}"></i> ${isChecked ? 'Saved' : 'Wishlist'}
                             </button>
-                            <button onclick="openPovModal('${item.id}')" class="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                            <button onclick="openPovModal('${item.id}')" class="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs">
                                 <i class="fa-brands fa-youtube"></i> POV Video
                             </button>
                         </div>
@@ -1567,7 +1708,7 @@
             grid.innerHTML = html;
         }
 
-        // RENDER 100% VEGETARIAN DINING DIRECTORY
+        // RENDER 100% VEGETARIAN DINING DIRECTORY (WITH APPROXIMATE ITEM COSTS)
         function renderDining() {
             const grid = document.getElementById('diningGrid');
             let filtered = diningData;
@@ -1592,7 +1733,7 @@
                 }[item.land] || 'bg-blue-100 text-blue-800 border-blue-200';
 
                 html += `
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition p-4 flex flex-col justify-between space-y-3">
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition p-3.5 sm:p-4 flex flex-col justify-between space-y-3">
                         
                         <div class="space-y-2.5">
                             <div class="flex items-center justify-between">
@@ -1608,16 +1749,29 @@
                                 <h3 class="text-sm font-extrabold text-slate-900">
                                     ${item.name}
                                 </h3>
-                                <p class="text-[11px] text-slate-500 font-medium">${item.type} • Price: <strong>${item.price}</strong></p>
+                                <div class="flex items-center gap-2 mt-0.5">
+                                    <span class="text-[11px] text-slate-500 font-medium">${item.type}</span>
+                                    <span class="text-[10px] font-extrabold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">${item.avgCost || item.price}</span>
+                                </div>
                             </div>
 
-                            <!-- Must-Try Dishes List -->
-                            <div class="bg-emerald-50/50 p-2.5 rounded-xl border border-emerald-100 space-y-1 text-xs">
+                            <!-- Must-Try Dishes List with Approximate Costs -->
+                            <div class="bg-emerald-50/50 p-2.5 sm:p-3 rounded-xl border border-emerald-100 space-y-1.5 text-xs">
                                 <span class="text-[10px] font-black uppercase text-emerald-900 tracking-wide block">
-                                    ⭐ Recommended Vegetarian Picks (Eggs OK):
+                                    ⭐ Recommended Vegetarian Menu Picks (with Approx Costs):
                                 </span>
-                                <ul class="space-y-1 text-[11px] text-slate-700 font-medium">
-                                    ${item.mustTryDishes.map(d => `<li>• ${d}</li>`).join('')}
+                                <ul class="space-y-1.5 text-[11px] text-slate-700">
+                                    ${item.dishes.map(d => `
+                                        <li class="flex items-center justify-between gap-2 p-1.5 rounded-lg bg-white border border-emerald-100 shadow-2xs">
+                                            <div class="min-w-0">
+                                                <span class="font-bold text-slate-900 block truncate">${d.name}</span>
+                                                <span class="text-[10px] text-slate-500 block truncate">${d.note}</span>
+                                            </div>
+                                            <span class="text-[10px] font-black text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 flex-shrink-0 whitespace-nowrap">
+                                                ${d.cost}
+                                            </span>
+                                        </li>
+                                    `).join('')}
                                 </ul>
                             </div>
 
@@ -1647,7 +1801,7 @@
         // RENDER CHECKLIST & PROGRESS
         function renderChecklist() {
             const container = document.getElementById('checklistItemsContainer');
-            const allItems = [...attractionsData, ...diningData];
+            const allItems = [...timelineData, ...diningData.filter(d => !timelineData.find(t => t.id === d.id))];
             let completedCount = 0;
             const totalCount = allItems.length;
 
@@ -1664,7 +1818,7 @@
                             </div>
                             <div class="min-w-0">
                                 <div class="text-xs font-bold text-slate-900 truncate ${isChecked ? 'line-through text-slate-400' : ''}">${item.name}</div>
-                                <div class="text-[10px] text-slate-500 truncate">${item.landLabel} • ${item.type || 'Dining'}</div>
+                                <div class="text-[10px] text-slate-500 truncate">${item.landLabel} • ${item.type || 'Stop'}</div>
                             </div>
                         </div>
                         <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isChecked ? 'bg-purple-100 text-purple-800' : 'bg-slate-100 text-slate-600'}">
@@ -1676,7 +1830,6 @@
 
             container.innerHTML = html;
 
-            // Update Progress Bar
             const percent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
             document.getElementById('checklistCount').innerText = completedCount;
             document.getElementById('progressPercentText').innerText = `${percent}% (${completedCount} of ${totalCount} Completed)`;
@@ -1701,7 +1854,7 @@
 
         // GLOBAL EXPAND / COLLAPSE
         function toggleAllTimeline(expand) {
-            attractionsData.forEach(item => {
+            timelineData.forEach(item => {
                 const body = document.getElementById(`accordionBody-${item.id}`);
                 const chevron = document.getElementById(`chevron-${item.id}`);
                 const row = document.getElementById(`timelineRow-${item.id}`);
@@ -1752,8 +1905,8 @@
 
         // POV VIDEO MODAL CONTROLLER
         function openPovModal(rideId) {
-            const ride = attractionsData.find(r => r.id === rideId);
-            if (!ride) return;
+            const ride = timelineData.find(r => r.id === rideId) || attractionsData.find(r => r.id === rideId);
+            if (!ride || !ride.youtubeId) return;
 
             document.getElementById('modalRideTitle').innerText = ride.povTitle || `${ride.name} POV`;
             document.getElementById('modalRideLand').innerText = ride.landLabel;
