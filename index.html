@@ -276,8 +276,8 @@
                         <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-sky-100 text-sky-800">Hub</span>
                         <i class="fa-solid fa-meteor text-sky-500 group-hover:scale-125 transition-transform text-sm"></i>
                     </div>
-                    <div class="font-extrabold text-slate-900 text-xs truncate font-display">Celestial Park</div>
-                    <div class="text-[10px] text-slate-500 truncate">Stardust & Night Finale</div>
+                    <div class="font-extrabold text-slate-900 text-xs leading-tight font-display">Celestial Park</div>
+                    <div class="text-[10px] text-slate-500 leading-tight mt-0.5">Stardust & Night Finale</div>
                 </button>
 
                 <!-- 2. Super Nintendo World -->
@@ -286,8 +286,8 @@
                         <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-rose-100 text-rose-800">11:30 AM Start</span>
                         <i class="fa-solid fa-gamepad text-rose-500 group-hover:scale-125 transition-transform text-sm"></i>
                     </div>
-                    <div class="font-extrabold text-slate-900 text-xs truncate font-display">Super Nintendo</div>
-                    <div class="text-[10px] text-slate-500 truncate">Mario, DK & Toadstool Lunch</div>
+                    <div class="font-extrabold text-slate-900 text-xs leading-tight font-display">Super Nintendo</div>
+                    <div class="text-[10px] text-slate-500 leading-tight mt-0.5">Mario, DK & Toadstool Lunch</div>
                 </button>
 
                 <!-- 3. Wizarding World: Ministry of Magic -->
@@ -296,8 +296,8 @@
                         <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-purple-100 text-purple-800">Parisian AC</span>
                         <i class="fa-solid fa-wand-magic-sparkles text-purple-500 group-hover:scale-125 transition-transform text-sm"></i>
                     </div>
-                    <div class="font-extrabold text-slate-900 text-xs truncate font-display">Ministry of Magic</div>
-                    <div class="text-[10px] text-slate-500 truncate">Paris Butterbeer & Battle</div>
+                    <div class="font-extrabold text-slate-900 text-xs leading-tight font-display">Ministry of Magic</div>
+                    <div class="text-[10px] text-slate-500 leading-tight mt-0.5">Paris Butterbeer & Battle</div>
                 </button>
 
                 <!-- 4. Isle of Berk -->
@@ -306,8 +306,8 @@
                         <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-cyan-100 text-cyan-800">Dragons</span>
                         <i class="fa-solid fa-dragon text-cyan-600 group-hover:scale-125 transition-transform text-sm"></i>
                     </div>
-                    <div class="font-extrabold text-slate-900 text-xs truncate font-display">Isle of Berk</div>
-                    <div class="text-[10px] text-slate-500 truncate">Indoor Theater & Gliders</div>
+                    <div class="font-extrabold text-slate-900 text-xs leading-tight font-display">Isle of Berk</div>
+                    <div class="text-[10px] text-slate-500 leading-tight mt-0.5">Indoor Theater & Gliders</div>
                 </button>
 
                 <!-- 5. Dark Universe -->
@@ -316,8 +316,8 @@
                         <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-slate-200 text-slate-800">Dusk / Evening</span>
                         <i class="fa-solid fa-skull text-slate-700 group-hover:scale-125 transition-transform text-sm"></i>
                     </div>
-                    <div class="font-extrabold text-slate-900 text-xs truncate font-display">Dark Universe</div>
-                    <div class="text-[10px] text-slate-500 truncate">Frankenstein & Veg Dinner</div>
+                    <div class="font-extrabold text-slate-900 text-xs leading-tight font-display">Dark Universe</div>
+                    <div class="text-[10px] text-slate-500 leading-tight mt-0.5">Frankenstein & Veg Dinner</div>
                 </button>
 
             </div>
@@ -813,9 +813,9 @@
             
             <!-- Modal Header -->
             <div class="px-4 py-3 bg-slate-900 text-white flex items-center justify-between">
-                <div class="flex items-center gap-2 min-w-0">
+                <div class="flex items-center gap-2 min-w-0 pr-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse flex-shrink-0"></span>
-                    <h3 id="modalRideTitle" class="text-xs sm:text-sm font-bold truncate">Ride POV Video</h3>
+                    <h3 id="modalRideTitle" class="text-xs sm:text-sm font-bold leading-snug break-words">Ride POV Video</h3>
                 </div>
                 <button onclick="closePovModal()" class="text-slate-400 hover:text-white text-base w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-800 transition flex-shrink-0">
                     <i class="fa-solid fa-xmark"></i>
@@ -1553,30 +1553,35 @@
                     <div class="timeline-row bg-white rounded-2xl border ${isFood ? 'border-emerald-300 shadow-sm' : 'border-slate-200 shadow-xs'} overflow-hidden border-l-4 ${portalThemeClasses.split(' ')[0]} transition" id="timelineRow-${item.id}">
                         
                         <!-- Header Accordion Trigger -->
-                        <div class="p-3 sm:p-4 flex items-center justify-between gap-2 cursor-pointer hover:bg-slate-50/80 select-none" onclick="toggleTimelineAccordion('${item.id}')">
+                        <div class="p-3 sm:p-4 flex items-start justify-between gap-2.5 cursor-pointer hover:bg-slate-50/80 select-none" onclick="toggleTimelineAccordion('${item.id}')">
                             
-                            <div class="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
-                                <div class="w-8 h-8 rounded-xl ${isFood ? 'bg-emerald-600 text-white' : portalThemeClasses.split(' ')[1] + ' ' + portalThemeClasses.split(' ')[2]} font-black text-xs flex items-center justify-center border border-slate-200 flex-shrink-0">
+                            <div class="flex items-start space-x-2.5 sm:space-x-3 min-w-0 flex-1">
+                                <div class="w-8 h-8 rounded-xl ${isFood ? 'bg-emerald-600 text-white' : portalThemeClasses.split(' ')[1] + ' ' + portalThemeClasses.split(' ')[2]} font-black text-xs flex items-center justify-center border border-slate-200 flex-shrink-0 mt-0.5 shadow-2xs">
                                     ${isFood ? '<i class="fa-solid fa-utensils text-[11px]"></i>' : (index + 1).toString().padStart(2, '0')}
                                 </div>
-                                <div class="min-w-0">
-                                    <div class="flex items-center gap-1.5 flex-wrap">
-                                        <span class="text-[9px] font-black uppercase px-1.5 py-0.2 rounded ${portalThemeClasses.split(' ')[1]} ${portalThemeClasses.split(' ')[2]}">
+                                <div class="min-w-0 flex-1">
+                                    <!-- Badges & Meta -->
+                                    <div class="flex items-center gap-1.5 flex-wrap mb-1">
+                                        <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded ${portalThemeClasses.split(' ')[1]} ${portalThemeClasses.split(' ')[2]} tracking-wide">
                                             ${item.landLabel}
                                         </span>
-                                        <span class="text-xs sm:text-sm font-extrabold text-slate-900 truncate">
-                                            ${item.name}
-                                        </span>
-                                        ${isFood ? '<span class="text-[9px] font-extrabold bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded border border-emerald-300"><i class="fa-solid fa-leaf text-emerald-600"></i> Veg Meal</span>' : ''}
-                                        ${item.isMustDo && !isFood ? '<span class="text-[9px] font-extrabold bg-amber-100 text-amber-900 px-1.5 py-0.2 rounded border border-amber-200 hidden sm:inline-block"><i class="fa-solid fa-star text-amber-500"></i> Top Pick</span>' : ''}
+                                        ${isFood ? '<span class="text-[9px] font-extrabold bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded border border-emerald-300"><i class="fa-solid fa-leaf text-emerald-600"></i> Veg Meal</span>' : ''}
+                                        ${item.isMustDo && !isFood ? '<span class="text-[9px] font-extrabold bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded border border-amber-200"><i class="fa-solid fa-star text-amber-500"></i> Top Pick</span>' : ''}
                                     </div>
-                                    <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium mt-0.5">
-                                        <i class="fa-regular fa-clock mr-1 text-slate-400"></i>${item.timeSlot} • <span class="text-slate-700 font-semibold">${item.type}</span>
+                                    <!-- Attraction Name: 100% Fully Visible on Mobile (Never Truncated) -->
+                                    <h3 class="text-xs sm:text-sm font-extrabold text-slate-900 leading-snug break-words">
+                                        ${item.name}
+                                    </h3>
+                                    <!-- Time & Subtype -->
+                                    <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium mt-1 flex items-center gap-1.5 flex-wrap">
+                                        <span class="inline-flex items-center"><i class="fa-regular fa-clock mr-1 text-slate-400"></i>${item.timeSlot}</span>
+                                        <span class="text-slate-300">•</span>
+                                        <span class="text-slate-700 font-semibold">${item.type}</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0">
+                            <div class="flex items-center space-x-1 sm:space-x-1.5 flex-shrink-0 self-start pt-0.5">
                                 ${!isFood ? `
                                     <span class="hidden sm:inline-block text-[10px] font-bold px-2 py-0.5 rounded-full border ${motionBadgeClass}">
                                         <i class="fa-solid fa-shield-heart mr-1"></i>${item.motionLevel} (${item.motionScore}/5)
@@ -1586,13 +1591,13 @@
                                         Eggs OK
                                     </span>
                                 `}
-                                <span class="text-[10px] sm:text-[11px] font-black px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">
+                                <span class="text-[10px] sm:text-[11px] font-black px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 flex-shrink-0">
                                     ⭐ ${item.enjoymentScore}
                                 </span>
-                                <button onclick="event.stopPropagation(); toggleWishlistItem('${item.id}')" title="Add to Wishlist" class="w-7 h-7 rounded-lg ${isChecked ? 'bg-purple-100 text-purple-700 border-purple-300' : 'bg-slate-100 text-slate-400 hover:text-purple-600'} border flex items-center justify-center transition">
+                                <button onclick="event.stopPropagation(); toggleWishlistItem('${item.id}')" title="Add to Wishlist" class="w-7 h-7 rounded-lg ${isChecked ? 'bg-purple-100 text-purple-700 border-purple-300' : 'bg-slate-100 text-slate-400 hover:text-purple-600'} border flex items-center justify-center transition flex-shrink-0">
                                     <i class="fa-solid ${isChecked ? 'fa-square-check' : 'fa-square'} text-xs"></i>
                                 </button>
-                                <div class="w-6 h-6 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center">
+                                <div class="w-6 h-6 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center flex-shrink-0">
                                     <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]" id="chevron-${item.id}"></i>
                                 </div>
                             </div>
@@ -1777,12 +1782,12 @@
                                 </span>
                                 <ul class="space-y-1.5 text-[11px] text-slate-700">
                                     ${item.dishes.map(d => `
-                                        <li class="flex items-center justify-between gap-2 p-1.5 rounded-lg bg-white border border-emerald-100 shadow-2xs">
-                                            <div class="min-w-0">
-                                                <span class="font-bold text-slate-900 block truncate">${d.name}</span>
-                                                <span class="text-[10px] text-slate-500 block truncate">${d.note}</span>
+                                        <li class="flex items-start justify-between gap-2 p-2 rounded-lg bg-white border border-emerald-100 shadow-2xs">
+                                            <div class="min-w-0 flex-1">
+                                                <span class="font-bold text-slate-900 block leading-snug break-words">${d.name}</span>
+                                                <span class="text-[10px] text-slate-500 block leading-tight mt-0.5 break-words">${d.note}</span>
                                             </div>
-                                            <span class="text-[10px] font-black text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 flex-shrink-0 whitespace-nowrap">
+                                            <span class="text-[10px] font-black text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 flex-shrink-0 whitespace-nowrap self-start">
                                                 ${d.cost}
                                             </span>
                                         </li>
@@ -1827,16 +1832,16 @@
 
                 html += `
                     <div class="p-3 bg-white rounded-xl border ${isChecked ? 'border-purple-300 bg-purple-50/30' : 'border-slate-200'} shadow-xs flex items-center justify-between gap-3 cursor-pointer hover:border-purple-400 transition" onclick="toggleWishlistItem('${item.id}')">
-                        <div class="flex items-center space-x-2.5 min-w-0">
-                            <div class="w-6 h-6 rounded-md ${isChecked ? 'bg-purple-600 text-white' : 'bg-slate-100 text-slate-400'} flex items-center justify-center text-xs flex-shrink-0 transition">
+                        <div class="flex items-start space-x-2.5 min-w-0 flex-1">
+                            <div class="w-6 h-6 rounded-md ${isChecked ? 'bg-purple-600 text-white' : 'bg-slate-100 text-slate-400'} flex items-center justify-center text-xs flex-shrink-0 mt-0.5 transition">
                                 <i class="fa-solid ${isChecked ? 'fa-check' : 'fa-plus'}"></i>
                             </div>
-                            <div class="min-w-0">
-                                <div class="text-xs font-bold text-slate-900 truncate ${isChecked ? 'line-through text-slate-400' : ''}">${item.name}</div>
-                                <div class="text-[10px] text-slate-500 truncate">${item.landLabel} • ${item.type || 'Stop'}</div>
+                            <div class="min-w-0 flex-1">
+                                <div class="text-xs font-bold text-slate-900 leading-snug break-words ${isChecked ? 'line-through text-slate-400' : ''}">${item.name}</div>
+                                <div class="text-[10px] text-slate-500 leading-tight mt-0.5 break-words">${item.landLabel} • ${item.type || 'Stop'}</div>
                             </div>
                         </div>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isChecked ? 'bg-purple-100 text-purple-800' : 'bg-slate-100 text-slate-600'}">
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isChecked ? 'bg-purple-100 text-purple-800' : 'bg-slate-100 text-slate-600'} flex-shrink-0 self-start">
                             ${isChecked ? 'Completed' : 'To Do'}
                         </span>
                     </div>
