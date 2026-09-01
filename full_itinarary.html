@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- iOS Full-screen Web App Capability -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Universal Orlando">
+    <meta name="theme-color" content="#ffffff">
+    <title>Deep & Nishita's Universal Orlando Master Plan</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Plus Jakarta Sans / Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 58vh;
+            min-height: 380px;
+            max-height: 520px;
+            background: #f1f5f9;
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .map-grid {
+            background-image: 
+                linear-gradient(rgba(100, 116, 139, 0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(100, 116, 139, 0.07) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        @keyframes pinPulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.6); }
+            70% { transform: scale(1.18); box-shadow: 0 0 0 14px rgba(37, 99, 235, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+        }
+
+        .active-pin {
+            animation: pinPulse 2s infinite;
+            z-index: 40 !important;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Smooth tab transition */
+        .tab-btn.active {
+            background-color: #2563eb;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+        .tab-btn:not(.active) {
+            background-color: #ffffff;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+        .tab-btn:not(.active):hover {
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Accordion rotation */
+        .rotate-chevron {
+            transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .accordion-open .rotate-chevron {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col custom-scrollbar bg-slate-50 text-slate-800">
+
+    <!-- Top Sticky Header -->
+    <header class="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+            
+            <!-- Logo / Trip Info -->
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold text-base shadow-md shadow-blue-500/20 flex-shrink-0">
+                    <i class="fa-solid fa-compass"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <h1 class="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight">
+                            Deep & Nishita's Universal Master Plan
+                        </h1>
+                        <span class="text-[10px] font-bold px-2 py-0.2 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                            Aug 28 – Sep 02, 2026
+                        </span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 font-medium mt-0.5 flex items-center gap-1.5 flex-wrap">
+                        <span><i class="fa-solid fa-heart text-rose-500 mr-1"></i>Deep & Nishita</span>
+                        <span>•</span>
+                        <span><i class="fa-solid fa-hotel text-indigo-500 mr-1"></i>Omni ChampionsGate</span>
+                        <span>•</span>
+                        <span><i class="fa-solid fa-leaf text-emerald-600 mr-1"></i>100% Vegetarian</span>
+                        <span>•</span>
+                        <span><i class="fa-solid fa-wand-magic-sparkles text-purple-500 mr-1"></i>Wands & Butterbeer</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- View Switcher -->
+            <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 w-full md:w-auto overflow-x-auto">
+                <button onclick="setViewMode('itinerary')" id="viewTab-itinerary" class="flex-1 md:flex-none px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-blue-600 text-white shadow-sm whitespace-nowrap">
+                    <i class="fa-solid fa-list-check"></i> Master Timeline
+                </button>
+                <button onclick="setViewMode('dining')" id="viewTab-dining" class="flex-1 md:flex-none px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900 whitespace-nowrap">
+                    <i class="fa-solid fa-utensils text-emerald-600"></i> Veg Food & Wands
+                </button>
+                <button onclick="setViewMode('map')" id="viewTab-map" class="flex-1 md:flex-none px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900 whitespace-nowrap">
+                    <i class="fa-solid fa-map-location-dot text-blue-600"></i> Route Maps
+                </button>
+                <button onclick="setViewMode('safety')" id="viewTab-safety" class="flex-1 md:flex-none px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900 whitespace-nowrap">
+                    <i class="fa-solid fa-shield-heart text-rose-500"></i> Safety Guide
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-3.5 sm:px-6 lg:px-8 py-4 space-y-4">
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 1: MASTER EXPANDABLE TIMELINE ITINERARY -->
+        <!-- ========================================================================= -->
+        <div id="section-itinerary" class="space-y-4">
+
+            <!-- Day Selector & Action Bar -->
+            <div class="bg-white p-3 sm:p-3.5 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5">
+                
+                <!-- Day Filter Buttons -->
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5" id="dayFilterGroup">
+                    <button onclick="filterDay('all')" id="dayFilter-all" class="px-3 py-1 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm transition whitespace-nowrap">
+                        All 4 Days
+                    </button>
+                    <button onclick="filterDay('day1')" id="dayFilter-day1" class="px-3 py-1 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 transition whitespace-nowrap">
+                        Day 1: IOA & Universal (Sat)
+                    </button>
+                    <button onclick="filterDay('day2')" id="dayFilter-day2" class="px-3 py-1 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 transition whitespace-nowrap">
+                        Day 2: Volcano Bay (Sun)
+                    </button>
+                    <button onclick="filterDay('day3')" id="dayFilter-day3" class="px-3 py-1 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 transition whitespace-nowrap">
+                        Day 3: Omni & CityWalk (Mon)
+                    </button>
+                    <button onclick="filterDay('day4')" id="dayFilter-day4" class="px-3 py-1 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 transition whitespace-nowrap">
+                        Day 4: Epic Universe (Tue)
+                    </button>
+                </div>
+
+                <!-- Global Expand / Collapse Button -->
+                <div class="flex items-center gap-1.5">
+                    <button onclick="toggleAllTimelineItems(true)" class="flex-1 md:flex-none px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 text-xs font-bold hover:bg-slate-100 transition flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-angles-down text-blue-600 text-[10px]"></i> Expand All
+                    </button>
+                    <button onclick="toggleAllTimelineItems(false)" class="flex-1 md:flex-none px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 text-xs font-bold hover:bg-slate-100 transition flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-angles-up text-slate-500 text-[10px]"></i> Collapse All
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- DAY 1: ISLANDS OF ADVENTURE & UNIVERSAL STUDIOS FLORIDA -->
+            <div id="dayCard-day1" class="day-group bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-blue-600">
+                
+                <!-- Day Section Header -->
+                <div class="p-3.5 sm:p-4 bg-gradient-to-r from-blue-50/80 via-white to-indigo-50/40 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-blue-600 text-white shadow-sm">
+                                Day 1 • Saturday, Aug 29
+                            </span>
+                            <span class="text-[11px] bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-bolt text-amber-500"></i> Express Pass Active
+                            </span>
+                        </div>
+                        <h3 class="text-sm sm:text-base font-black text-slate-900 mt-1">
+                            Islands of Adventure (AM) → Hogwarts Express (1:15 PM) → Universal Studios (PM)
+                        </h3>
+                    </div>
+                    <div class="text-[11px] text-slate-500 font-semibold">
+                        8:00 AM Rope Drop • Lunch @ 1:30 PM • Wand Shopping @ 2:15 PM
+                    </div>
+                </div>
+
+                <!-- Mini Flow Strip: High Level Day 1 Rhythm -->
+                <div class="px-3.5 py-2 bg-slate-50 border-b border-slate-100 text-[11px] text-slate-600 flex items-center gap-2 overflow-x-auto whitespace-nowrap custom-scrollbar">
+                    <span class="font-bold text-slate-800"><i class="fa-solid fa-route text-blue-600 mr-1"></i>Day 1 Flow:</span>
+                    <span class="bg-white px-2 py-0.5 rounded border border-slate-200 font-medium">9:00 AM Hagrid's</span>
+                    <span>→</span>
+                    <span class="bg-amber-50 px-2 py-0.5 rounded border border-amber-200 text-amber-800 font-medium">11:15 AM Butterbeer</span>
+                    <span>→</span>
+                    <span class="bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 text-indigo-800 font-bold">1:15 PM Hogwarts Express</span>
+                    <span>→</span>
+                    <span class="bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 text-emerald-800 font-bold">1:30 PM Leaky Cauldron Lunch</span>
+                    <span>→</span>
+                    <span class="bg-purple-50 px-2 py-0.5 rounded border border-purple-200 text-purple-800 font-bold">2:15 PM Ollivanders Wand</span>
+                    <span>→</span>
+                    <span class="bg-white px-2 py-0.5 rounded border border-slate-200 font-medium">2:50 PM Gringotts</span>
+                    <span>→</span>
+                    <span class="bg-pink-50 px-2 py-0.5 rounded border border-pink-200 text-pink-800 font-medium">3:30 PM Butterbeer Ice Cream</span>
+                    <span>→</span>
+                    <span class="bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 text-indigo-800 font-bold">6:00 PM CityWalk Dinner</span>
+                </div>
+
+                <!-- Timeline Items Container -->
+                <div class="p-2 sm:p-3 space-y-1.5">
+
+                    <!-- IOA PART LABEL -->
+                    <div class="pt-1.5 pb-0.5 px-2 flex items-center justify-between">
+                        <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold text-[10px] border border-emerald-300">
+                            🏝️ PART 1: ISLANDS OF ADVENTURE (IOA) • MORNING (8:00 AM – 1:15 PM)
+                        </span>
+                        <span class="text-[10px] text-slate-400 font-semibold">6 Stops</span>
+                    </div>
+
+                    <!-- 1. Hagrid's -->
+                    <div class="timeline-item rounded-xl border border-slate-200 hover:border-slate-300 bg-white transition overflow-hidden shadow-xs" onclick="toggleTimelineItem(this)">
+                        <div class="p-2.5 sm:p-3 flex items-center justify-between gap-2.5 cursor-pointer">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 font-black text-xs flex items-center justify-center border border-emerald-200 flex-shrink-0">
+                                    01
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800">IOA</span>
+                                        <span class="text-xs font-bold text-slate-900 truncate">Hagrid’s Motorbike Adventure</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-500 font-medium">9:00 AM Rope Drop • Hogsmeade</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <span class="hidden sm:inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                    <i class="fa-solid fa-shield text-emerald-600 mr-1"></i>Low Risk (1/5)
+                                </span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">
+                                    ⭐ 5.0
+                                </span>
+                                <div class="w-6 h-6 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-body hidden px-3.5 pb-3 pt-1 border-t border-slate-100 bg-slate-50/60 space-y-2 text-xs">
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-[11px] bg-white p-2.5 rounded-lg border border-slate-200">
+                                <div><strong>🌟 Enjoyment:</strong> <span class="text-amber-500 font-bold">5/5</span></div>
+                                <div><strong>🤢 Motion Risk:</strong> <span class="text-emerald-600 font-bold">1/5 (Low)</span></div>
+                                <div><strong>🎢 Thrill:</strong> <span class="text-blue-500 font-bold">3.5/5</span></div>
+                                <div><strong>💨 Airflow:</strong> <span class="text-cyan-500 font-bold">5/5 (Open Air)</span></div>
+                            </div>
+                            <p class="text-slate-600 bg-blue-50/60 p-2 rounded-lg border border-blue-100 leading-relaxed text-[11px]">
+                                <strong>💡 Strategy for Deep & Nishita:</strong> Arrive at park gates by 8:00 AM. Motorbike seat offers better forward sightlines and breeze than the sidecar.
+                            </p>
+                            <div class="flex items-center justify-between pt-0.5">
+                                <span class="text-[11px] text-amber-700 font-semibold"><i class="fa-solid fa-person-walking mr-1"></i> Standby Line Only</span>
+                                <a href="https://www.youtube.com/watch?v=TdGbsggU2dg" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="text-[11px] bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-2.5 py-1 rounded-md border border-red-200 font-bold transition flex items-center gap-1">
+                                    <i class="fa-brands fa-youtube text-red-500"></i> POV
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Flight of the Hippogriff -->
+                    <div class="timeline-item rounded-xl border border-slate-200 hover:border-slate-300 bg-white transition overflow-hidden shadow-xs" onclick="toggleTimelineItem(this)">
+                        <div class="p-2.5 sm:p-3 flex items-center justify-between gap-2.5 cursor-pointer">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 font-black text-xs flex items-center justify-center border border-blue-200 flex-shrink-0">
+                                    02
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800">IOA</span>
+                                        <span class="text-xs font-bold text-slate-900 truncate">Flight of the Hippogriff</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-500 font-medium">10:15 AM • Hogsmeade</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <span class="hidden sm:inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                                    <i class="fa-solid fa-bolt text-amber-500 mr-1"></i>Express
+                                </span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">
+                                    ⭐ 4.0
+                                </span>
+                                <div class="w-6 h-6 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-body hidden px-3.5 pb-3 pt-1 border-t border-slate-100 bg-slate-50/60 space-y-2 text-xs">
+                            <p class="text-slate-600 text-[11px] leading-relaxed">
+                                Gentle outdoor family coaster right after Hagrid's. Express Pass skips the standby line.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 3. Hogwarts Castle Walkthrough -->
+                    <div class="timeline-item rounded-xl border border-slate-200 hover:border-slate-300 bg-white transition overflow-hidden shadow-xs" onclick="toggleTimelineItem(this)">
+                        <div class="p-2.5 sm:p-3 flex items-center justify-between gap-2.5 cursor-pointer">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-700 font-black text-xs flex items-center justify-center border border-purple-200 flex-shrink-0">
+                                    03
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800">IOA</span>
+                                        <span class="text-xs font-bold text-slate-900 truncate">Hogwarts Castle Tour (Walking Only)</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-500 font-medium">10:45 AM • Hogsmeade</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">
+                                    Non-Riding Tour
+                                </span>
+                                <div class="w-6 h-6 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-body hidden px-3.5 pb-3 pt-1 border-t border-slate-100 bg-slate-50/60 space-y-2 text-xs">
+                            <p class="text-slate-600 text-[11px] leading-relaxed">
+                                Bypass the disorienting robotic arm ride (Forbidden Journey). Ask team member for the "Castle Tour Walkthrough" to see Dumbledore's office, Defense Against the Dark Arts, and portraits on foot.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 4. Butterbeer & Honeydukes Snack -->
+                    <div class="timeline-item rounded-xl border border-amber-200 bg-amber-50/50 hover:border-amber-300 transition overflow-hidden shadow-xs" onclick="toggleTimelineItem(this)">
+                        <div class="p-2.5 sm:p-3 flex items-center justify-between gap-2.5 cursor-pointer">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 font-black text-xs flex items-center justify-center border border-amber-300 flex-shrink-0">
+                                    <i class="fa-solid fa-beer-mug-empty text-amber-600"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-amber-200 text-amber-900">IOA TREAT</span>
+                                        <span class="text-xs font-bold text-slate-900 truncate">Frozen Butterbeer & Honeydukes</span>
+                                    </div>
+                                    <div class="text-[10px] text-amber-800 font-semibold">11:15 AM Ideal Snack Time • Hogsmeade</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                                    <i class="fa-solid fa-leaf text-emerald-600 mr-1"></i>Veg Treat
+                                </span>
+                                <div class="w-6 h-6 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-body hidden px-3.5 pb-3 pt-1 border-t border-amber-200 bg-white space-y-1 text-xs">
+                            <p class="text-slate-600 text-[11px] leading-relaxed">
+                                <strong>Ideal Snack Time:</strong> Grab your first <strong>Frozen Butterbeer</strong> (refreshing slushie style) at the outdoor barrel cart. Step into <strong>Honeydukes</strong> sweet shop for Chocolate Frogs and Bertie Bott's Beans.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 5. Jurassic Park River -->
+                    <div class="timeline-item rounded-xl border border-slate-200 hover:border-slate-300 bg-white transition overflow-hidden shadow-xs" onclick="toggleTimelineItem(this)">
+                        <div class="p-2.5 sm:p-3 flex items-center justify-between gap-2.5 cursor-pointer">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 font-black text-xs flex items-center justify-center border border-blue-200 flex-shrink-0">
+                                    05
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800">IOA</span>
+                                        <span class="text-xs font-bold text-slate-900 truncate">Jurassic Park River Adventure</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-500 font-medium">11:45 AM • Jurassic Park (Express)</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-cyan-50 text-cyan-700 border border-cyan-200">
+                                    Water Float
+                                </span>
+                                <div class="w-6 h-6 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-body hidden px-3.5 pb-3 pt-1 border-t border-slate-100 bg-slate-50/60 space-y-2 text-xs">
+                            <p class="text-slate-600 text-[11px] leading-relaxed">
+                                Gentle, peaceful dinosaur river float ending with one straight water splash drop. Use Express Pass.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 6. Kong -->
+                    <div class="timeline-item rounded-xl border border-slate-200 hover:border-slate-300 bg-white transition overflow-hidden shadow-xs" onclick="toggleTimelineItem(this)">
+                        <div class="p-2.5 sm:p-3 flex items-center justify-between gap-2.5 cursor-pointer">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 font-black text-xs flex items-center justify-center border border-blue-200 flex-shrink-0">
+                                    06
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800">IOA</span>
+                                        <span class="text-xs font-bold text-slate-900 truncate">Skull Island: Reign of Kong</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-500 font-medium">12:20 PM • Skull Island (Express)</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <div class="w-6 h-6 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-body hidden px-3.5 pb-3 pt-1 border-t border-slate-100 bg-slate-50/60 space-y-2 text-xs">
+                            <p class="text-slate-600 text-[11px]">Large open-air safari bus. Look forward at the giant King Kong animatronic.</p>
+                        </div>
+                    </div>
+
+                    <!-- 7. Popeye Barges -->
+                    <div class="timeline-item rounded-xl border border-slate-200 hover:border-slate-300 bg-white transition overflow-hidden shadow-xs" onclick="toggleTimelineItem(this)">
+                        <div class="p-2.5 sm:p-3 flex items-center justify-between gap-2.5 cursor-pointer">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 font-black text-xs flex items-center justify-center border border-blue-200 flex-shrink-0">
+                                    07
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800">IOA</span>
+                                        <span class="text-xs font-bold text-slate-900 truncate">Popeye & Bluto’s Bilge-Rat Barges</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-500 font-medium">12:50 PM • Toon Lagoon (Express)</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-cyan-50 text-cyan-700 border border-cyan-200">Soak Fun</span>
+                                <div class="w-6 h-6 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-body hidden px-3.5 pb-3 pt-1 border-t border-slate-100 bg-slate-50/60 space-y-2 text-xs">
+                            <p class="text-slate-600 text-[11px]">Hilarious water raft ride. Put phones in center dry bin. Perfect cooling-off ride before boarding the Hogwarts Express!</p>
+                        </div>
+                    </div>
+
+                    <!-- FEATURED TRAIN TRANSFER -->
+                    <div class="pt-2 pb-0.5 px-2 flex items-center justify-between">
+                        <span class="px-2 py-0.5 rounded bg-indigo-600 text-white font-extrabold text-[10px] shadow-sm">
+                            🚂 PARK TRANSFER: HOGWARTS EXPRESS • 1:15 PM – 1:30 PM
+                        </span>
+                        <span class="text-[10px] text-indigo-700 font-bold">IOA → USF</span>
+                    </div>
+
+                    <!-- 8. Hogwarts Express Train -->
+                    <div class="timeline-item rounded-xl border-2 border-indigo-300 bg-gradient-to-r from-indigo-50/90 via-white to-blue-50/90 hover:border-indigo-400 transition overflow-hidden shadow-sm" onclick="toggleTimelineItem(this)">
+                        <div class="p-2.5 sm:p-3 flex items-center justify-between gap-2.5 cursor-pointer">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white font-black text-xs flex items-center justify-center shadow-xs flex-shrink-0">
+                                    <i class="fa-solid fa-train text-sm"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-indigo-600 text-white">TRAIN</span>
+                                        <span class="text-xs font-extrabold text-slate-900 truncate">Hogwarts Express (IOA → USF)</span>
+                                    </div>
+                                    <div class="text-[10px] text-indigo-700 font-bold">1:15 PM Departure • Hogsmeade to King's Cross London</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800">
+                                    0.0 Nausea
+                                </span>
+                                <div class="w-6 h-6 rounded-md bg-indigo-100 text-indigo-700 flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-body hidden px-3.5 pb-3 pt-1 border-t border-indigo-200 bg-white space-y-2 text-xs">
+                            <p class="text-slate-600 text-[11px] leading-relaxed">
+                                Board at Hogsmeade. Express Pass accepted! Relax in private, air-conditioned cabins as you ride the train to King's Cross Station. Walk right out into Diagon Alley for lunch and wand shopping!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- USF PART LABEL -->
+                    <div class="pt-2 pb-0.5 px-2 flex items-center justify-between">
+                        <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-extrabold text-[10px] border border-blue-300">
+                            🎬 PART 2: UNIVERSAL STUDIOS FLORIDA (USF) • AFTERNOON (1:30 PM – 5:00 PM)
+                        </span>
+                        <span class="text-[10px] text-slate-400 font-semibold">Lunch, Wands & Rides</span>
+                    </div>
+
+                    <!-- 9. The Leaky Cauldron Lunch -->
+                    <div class="timeline-item rounded-xl border border-emerald-300 bg-emerald-50/60 hover:border-emerald-400 transition overflow-hidden shadow-xs" onclick="toggleTimelineItem(this)">
+                        <div class="p-2.5 sm:p-3 flex items-center justify-between gap-2.5 cursor-pointer">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white font-black text-xs flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-solid fa-utensils text-sm"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-emerald-700 text-white">VEG LUNCH</span>
+                                        <span class="text-xs font-black text-slate-900 truncate">The Leaky Cauldron (Diagon Alley)</span>
+                                    </div>
+                                    <div class="text-[10px] text-emerald-800 font-bold">1:30 PM – 2:15 PM • Ideal Peak Heat Escape</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white text-emerald-800 border border-emerald-300">
+                                    Top Veg Pick
+                                </span>
+                                <div class="w-6 h-6 rounded-md bg-emerald-100 text-emerald-800 flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-body hidden px-3.5 pb-3 pt-1 border-t border-emerald-200 bg-white space-y-1.5 text-xs">
+                            <p class="text-slate-700 text-[11px] leading-relaxed">
+                                <strong>Top Vegetarian Menu Items:</strong> <strong>Vegan Irish Stew</strong> with crusty English bread and the <strong>Ploughman's Platter</strong> (artisan English cheeses, crusty loaf, apple, pickle, salad). Fully air-conditioned haven during the 1:30 PM heat peak!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 10. Ollivanders Wand Shopping -->
+                    <div class="timeline-item rounded-xl border border-purple-300 bg-purple-50/60 hover:border-purple-400 transition overflow-hidden shadow-xs" onclick="toggleTimelineItem(this)">
+                        <div class="p-2.5 sm:p-3 flex items-center justify-between gap-2.5 cursor-pointer">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-purple-600 text-white font-black text-xs flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-purple-700 text-white">WAND SHOPPING</span>
+                                        <span class="text-xs font-black text-slate-900 truncate">Ollivanders Wand Shop & Spell Casting</span>
+                                    </div>
+                                    <div class="text-[10px] text-purple-800 font-bold">2:15 PM – 2:50 PM • Diagon Alley</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white text-purple-800 border border-purple-300">
+                                    Interactive
+                                </span>
+                                <div class="w-6 h-6 rounded-md bg-purple-100 text-purple-800 flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-body hidden px-3.5 pb-3 pt-1 border-t border-purple-200 bg-white space-y-1.5 text-xs">
+                            <p class="text-slate-700 text-[11px] leading-relaxed">
+                                <strong>Right after lunch:</strong> Experience the iconic wand choosing ceremony inside Ollivanders. Choose an <strong>Interactive Wand</strong> (includes map sensor) to cast spells at 25+ magical window locations throughout Diagon Alley & Knockturn Alley!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 11. Gringotts -->
+                    <div class="timeline-item rounded-xl border border-slate-200 hover:border-slate-300 bg-white transition overflow-hidden shadow-xs" onclick="toggleTimelineItem(this)">
+                        <div class="p-2.5 sm:p-3 flex items-center justify-between gap-2.5 cursor-pointer">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 font-black text-xs flex items-center justify-center border border-blue-200 flex-shrink-0">
+                                    11
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-blue-100 text-blue-800">USF</span>
+                                        <span class="text-xs font-bold text-slate-900 truncate">Escape from Gringotts</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-500 font-medium">2:50 PM • Diagon Alley (Express)</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">⭐ 5.0</span>
+                                <div class="w-6 h-6 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-body hidden px-3.5 pb-3 pt-1 border-t border-slate-100 bg-slate-50/60 space-y-2 text-xs">
+                            <p class="text-slate-600 text-[11px]">Indoor vault coaster hybrid. Pro-Tip: Slide 3D glasses down during screen spinning to avoid visual motion fatigue.</p>
+                        </div>
+                    </div>
+
+                    <!-- 12. Florean Fortescue's Butterbeer Ice Cream -->
+                    <div class="timeline-item rounded-xl border border-pink-200 bg-pink-50/40 hover:border-pink-300 transition overflow-hidden shadow-xs" onclick="toggleTimelineItem(this)">
+                        <div class="p-2.5 sm:p-3 flex items-center justify-between gap-2.5 cursor-pointer">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-pink-100 text-pink-800 font-black text-xs flex items-center justify-center border border-pink-300 flex-shrink-0">
+                                    <i class="fa-solid fa-ice-cream text-pink-600"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-pink-200 text-pink-900">DESSERT</span>
+                                        <span class="text-xs font-bold text-slate-900 truncate">Florean Fortescue's Butterbeer Ice Cream</span>
+                                    </div>
+                                    <div class="text-[10px] text-pink-800 font-semibold">3:30 PM Treat • Diagon Alley</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-pink-100 text-pink-800">Must-Try</span>
+                                <div class="w-6 h-6 rounded-md bg-pink-100 text-pink-800 flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-body hidden px-3.5 pb-3 pt-1 border-t border-pink-200 bg-white space-y-1 text-xs">
+                            <p class="text-slate-600 text-[11px]">
+                                Famous <strong>Butterbeer Soft-Serve Ice Cream</strong> with butterscotch ribbon swirl. Also try Earl Grey & Lavender or Clotted Cream!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 13. Revenge of the Mummy -->
+                    <div class="timeline-item rounded-xl border border-slate-200 hover:border-slate-300 bg-white transition overflow-hidden shadow-xs" onclick="toggleTimelineItem(this)">
+                        <div class="p-2.5 sm:p-3 flex items-center justify-between gap-2.5 cursor-pointer">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 font-black text-xs flex items-center justify-center border border-blue-200 flex-shrink-0">
+                                    13
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-blue-100 text-blue-800">USF</span>
+                                        <span class="text-xs font-bold text-slate-900 truncate">Revenge of the Mummy</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-500 font-medium">3:45 PM • New York (Express)</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-cyan-50 text-cyan-700 border border-cyan-200">AC Haven</span>
+                                <div class="w-6 h-6 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-body hidden px-3.5 pb-3 pt-1 border-t border-slate-100 bg-slate-50/60 space-y-2 text-xs">
+                            <p class="text-slate-600 text-[11px]">Indoor dark coaster with zero inversions, smooth launch, and physical fire effects. Free lockers outside.</p>
+                        </div>
+                    </div>
+
+                    <!-- 14. Bourne Stuntacular -->
+                    <div class="timeline-item rounded-xl border border-slate-200 hover:border-slate-300 bg-white transition overflow-hidden shadow-xs" onclick="toggleTimelineItem(this)">
+                        <div class="p-2.5 sm:p-3 flex items-center justify-between gap-2.5 cursor-pointer">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 font-black text-xs flex items-center justify-center border border-emerald-200 flex-shrink-0">
+                                    14
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-blue-100 text-blue-800">USF</span>
+                                        <span class="text-xs font-bold text-slate-900 truncate">The Bourne Stuntacular (Live Show)</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-500 font-medium">4:15 PM • Hollywood</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">Seated Theater</span>
+                                <div class="w-6 h-6 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-body hidden px-3.5 pb-3 pt-1 border-t border-slate-100 bg-slate-50/60 space-y-2 text-xs">
+                            <p class="text-slate-600 text-[11px]">Award-winning stunt show in a cool air-conditioned auditorium. Zero motion sickness.</p>
+                        </div>
+                    </div>
+
+                    <!-- 15. Men in Black -->
+                    <div class="timeline-item rounded-xl border border-slate-200 hover:border-slate-300 bg-white transition overflow-hidden shadow-xs" onclick="toggleTimelineItem(this)">
+                        <div class="p-2.5 sm:p-3 flex items-center justify-between gap-2.5 cursor-pointer">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 font-black text-xs flex items-center justify-center border border-blue-200 flex-shrink-0">
+                                    15
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-blue-100 text-blue-800">USF</span>
+                                        <span class="text-xs font-bold text-slate-900 truncate">MEN IN BLACK Alien Attack</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-500 font-medium">5:00 PM • World Expo (Express)</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">Laser Blaster</span>
+                                <div class="w-6 h-6 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-body hidden px-3.5 pb-3 pt-1 border-t border-slate-100 bg-slate-50/60 space-y-2 text-xs">
+                            <p class="text-slate-600 text-[11px]">Laser target game. Hold down the trigger continuously for maximum points!</p>
+                        </div>
+                    </div>
+
+                    <!-- 16. CityWalk Evening Dinner -->
+                    <div class="timeline-item rounded-xl border border-indigo-200 bg-indigo-50/40 hover:border-indigo-300 transition overflow-hidden shadow-xs" onclick="toggleTimelineItem(this)">
+                        <div class="p-2.5 sm:p-3 flex items-center justify-between gap-2.5 cursor-pointer">
+                            <div class="flex items-center space-x-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white font-black text-xs flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-solid fa-utensils text-sm"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-indigo-700 text-white">DINNER</span>
+                                        <span class="text-xs font-black text-slate-900 truncate">Universal CityWalk Evening Dinner</span>
+                                    </div>
+                                    <div class="text-[10px] text-indigo-800 font-bold">6:00 PM • The Cowfish or Toothsome Chocolate</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white text-indigo-800 border border-indigo-200">
+                                    CityWalk
+                                </span>
+                                <div class="w-6 h-6 rounded-md bg-indigo-100 text-indigo-800 flex items-center justify-center">
+                                    <i class="fa-solid fa-chevron-down rotate-chevron text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-body hidden px-3.5 pb-3 pt-1 border-t border-indigo-200 bg-white space-y-1.5 text-xs">
+                            <p class="text-slate-700 text-[11px] leading-relaxed">
+                                Walk out to CityWalk for dinner. <strong>The Cowfish</strong> ("Nature Boy" Veggie Burger & Veggie Sushi Rolls) or <strong>The Toothsome Chocolate Emporium</strong> (Artisan Shakes & Truffle Mac).
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- DAY 2: VOLCANO BAY -->
+            <div id="dayCard-day2" class="day-group bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-teal-600">
+                <div class="p-3.5 sm:p-4 bg-gradient-to-r from-teal-50/80 to-emerald-50/40 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-teal-600 text-white shadow-sm">
+                            Day 2 • Sunday, Aug 30
+                        </span>
+                        <h3 class="text-sm sm:text-base font-black text-slate-900 mt-1">Universal Volcano Bay Water Theme Park</h3>
+                    </div>
+                    <div class="text-[11px] text-slate-500 font-semibold">10:00 AM – 6:00 PM • Lunch @ 12:30 PM</div>
+                </div>
+
+                <div class="p-2 sm:p-3 space-y-1.5">
+                    <div class="timeline-item rounded-xl border border-slate-200 bg-white p-2.5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded">10:00 AM</span>
+                            <span class="text-xs font-extrabold text-slate-900 ml-2">Krakatau Aqua Coaster (TapuTapu Check-In)</span>
+                        </div>
+                        <span class="text-[10px] text-slate-500 font-medium">Volcano Base</span>
+                    </div>
+                    <div class="timeline-item rounded-xl border border-slate-200 bg-white p-2.5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded">10:30 AM</span>
+                            <span class="text-xs font-extrabold text-slate-900 ml-2">Kopiko Wai Winding Lazy River</span>
+                        </div>
+                        <span class="text-[10px] text-emerald-700 font-bold">Zero Sickness</span>
+                    </div>
+                    <div class="timeline-item rounded-xl border border-emerald-200 bg-emerald-50/50 p-2.5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">12:30 PM (LUNCH)</span>
+                            <span class="text-xs font-black text-slate-900 ml-2">Kohola Reef / Bambu Veggie Island Burgers</span>
+                        </div>
+                        <span class="text-[10px] text-emerald-800 font-bold">Veg Lunch</span>
+                    </div>
+                    <div class="timeline-item rounded-xl border border-slate-200 bg-white p-2.5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded">2:15 PM</span>
+                            <span class="text-xs font-extrabold text-slate-900 ml-2">Krakatau Coaster Return Window & TeAwa Torrent River</span>
+                        </div>
+                        <span class="text-[10px] text-cyan-700 font-bold">Rapid Waves</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DAY 3: OMNI RESORT REST & CITYWALK -->
+            <div id="dayCard-day3" class="day-group bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-indigo-600">
+                <div class="p-3.5 sm:p-4 bg-gradient-to-r from-indigo-50/80 to-purple-50/40 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-indigo-600 text-white shadow-sm">
+                            Day 3 • Monday, Aug 31
+                        </span>
+                        <h3 class="text-sm sm:text-base font-black text-slate-900 mt-1">Omni ChampionsGate Rest & CityWalk Dining</h3>
+                    </div>
+                    <div class="text-[11px] text-slate-500 font-semibold">Resort Pool Day • Dinner @ 6:00 PM</div>
+                </div>
+
+                <div class="p-2 sm:p-3 space-y-1.5">
+                    <div class="timeline-item rounded-xl border border-slate-200 bg-white p-2.5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">Morning & Afternoon</span>
+                            <span class="text-xs font-extrabold text-slate-900 ml-2">Omni Resort 850-ft Lazy River & Infinity Pool</span>
+                        </div>
+                        <span class="text-[10px] text-emerald-700 font-bold">Recharge</span>
+                    </div>
+                    <div class="timeline-item rounded-xl border border-indigo-200 bg-indigo-50/50 p-2.5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold text-indigo-800 bg-indigo-100 px-2 py-0.5 rounded">6:00 PM (DINNER)</span>
+                            <span class="text-xs font-black text-slate-900 ml-2">CityWalk: The Cowfish / Antojitos Mexican</span>
+                        </div>
+                        <span class="text-[10px] text-indigo-800 font-bold">Free Parking</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DAY 4: EPIC UNIVERSE -->
+            <div id="dayCard-day4" class="day-group bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden border-l-4 border-l-purple-600">
+                <div class="p-3.5 sm:p-4 bg-gradient-to-r from-purple-50/80 to-pink-50/40 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-purple-600 text-white shadow-sm">
+                            Day 4 • Tuesday, Sep 01
+                        </span>
+                        <h3 class="text-sm sm:text-base font-black text-slate-900 mt-1">Universal Epic Universe Grand Tour</h3>
+                    </div>
+                    <div class="text-[11px] text-slate-500 font-semibold">9:00 AM – 9:00 PM • Lunch @ 11:30 AM</div>
+                </div>
+
+                <div class="p-2 sm:p-3 space-y-1.5">
+                    <div class="timeline-item rounded-xl border border-slate-200 bg-white p-2.5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded">9:00 AM</span>
+                            <span class="text-xs font-extrabold text-slate-900 ml-2">Mario Kart: Bowser’s Challenge (Super Nintendo)</span>
+                        </div>
+                        <span class="text-[10px] text-purple-700 font-bold">Rope Drop #1</span>
+                    </div>
+                    <div class="timeline-item rounded-xl border border-slate-200 bg-white p-2.5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded">10:30 AM</span>
+                            <span class="text-xs font-extrabold text-slate-900 ml-2">Yoshi’s Adventure (Scenic Kingdom Track)</span>
+                        </div>
+                        <span class="text-[10px] text-emerald-700 font-bold">Zero Nausea</span>
+                    </div>
+                    <div class="timeline-item rounded-xl border border-emerald-200 bg-emerald-50/50 p-2.5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">11:30 AM (LUNCH)</span>
+                            <span class="text-xs font-black text-slate-900 ml-2">Toadstool Cafe (Super Mushroom Soup Bowl)</span>
+                        </div>
+                        <span class="text-[10px] text-emerald-800 font-bold">Veg Lunch</span>
+                    </div>
+                    <div class="timeline-item rounded-xl border border-slate-200 bg-white p-2.5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded">12:45 PM</span>
+                            <span class="text-xs font-extrabold text-slate-900 ml-2">Monsters Unchained (Dark Universe) & Paris Harry Potter</span>
+                        </div>
+                        <span class="text-[10px] text-purple-700 font-bold">Animatronics</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 2: VEGETARIAN DINING, BUTTERBEER & SHOPPING GUIDE -->
+        <!-- ========================================================================= -->
+        <div id="section-dining" class="hidden space-y-4">
+            
+            <!-- Butterbeer Special Spotlight Card -->
+            <div class="bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 p-4 sm:p-5 rounded-2xl text-white shadow-md space-y-3">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-amber-400/50 pb-2.5">
+                    <div>
+                        <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/30 tracking-wide">
+                            🍺 Harry Potter Must-Try Experience
+                        </span>
+                        <h2 class="text-base sm:text-lg font-black tracking-tight mt-0.5">
+                            Butterbeer Guide (100% Vegetarian)
+                        </h2>
+                    </div>
+                    <span class="text-xs bg-white text-amber-900 font-extrabold px-2.5 py-0.5 rounded-lg shadow-xs">
+                        Available in IOA & USF
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-slate-900">
+                    <div class="bg-white/95 backdrop-blur-md p-3 rounded-xl shadow-xs border border-amber-200 text-xs">
+                        <div class="font-black text-amber-800 uppercase flex items-center gap-1 mb-1 text-[11px]">
+                            <i class="fa-solid fa-snowflake text-blue-500"></i> 1. Frozen Butterbeer (Top Summer Pick)
+                        </div>
+                        <p class="text-slate-600 text-[11px] leading-relaxed">
+                            Slushie style with butterscotch notes and creamy marshmallow head. Top drink for Florida heat!
+                        </p>
+                        <span class="text-[10px] font-bold text-amber-700 block mt-1">11:15 AM @ Hogsmeade Street Cart</span>
+                    </div>
+
+                    <div class="bg-white/95 backdrop-blur-md p-3 rounded-xl shadow-xs border border-amber-200 text-xs">
+                        <div class="font-black text-amber-800 uppercase flex items-center gap-1 mb-1 text-[11px]">
+                            <i class="fa-solid fa-beer-mug-empty text-amber-600"></i> 2. Cold Butterbeer (Classic)
+                        </div>
+                        <p class="text-slate-600 text-[11px] leading-relaxed">
+                            Fizzy carbonated shortbread & cream soda topped with thick foam. Authentic film taste.
+                        </p>
+                        <span class="text-[10px] font-bold text-amber-700 block mt-1">1:30 PM @ The Leaky Cauldron</span>
+                    </div>
+
+                    <div class="bg-white/95 backdrop-blur-md p-3 rounded-xl shadow-xs border border-amber-200 text-xs">
+                        <div class="font-black text-amber-800 uppercase flex items-center gap-1 mb-1 text-[11px]">
+                            <i class="fa-solid fa-ice-cream text-pink-500"></i> 3. Butterbeer Soft-Serve
+                        </div>
+                        <p class="text-slate-600 text-[11px] leading-relaxed">
+                            Ribboned soft-serve ice cream with rich butterscotch swirl. Absolute culinary must-try!
+                        </p>
+                        <span class="text-[10px] font-bold text-pink-700 block mt-1">3:30 PM @ Florean Fortescue's (USF)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shopping Highlights & Interactive Wands Card -->
+            <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                <div class="flex items-center gap-2.5 border-b border-slate-100 pb-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-sm border border-purple-100">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-sm sm:text-base font-bold text-slate-900">Must-Do Wand Shopping & Spells</h2>
+                        <p class="text-[11px] text-slate-500">Where to buy interactive wands and trigger storefront spell effects</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div class="text-purple-700 font-bold text-xs mb-1 flex items-center gap-1">
+                            <i class="fa-solid fa-wand-sparkles"></i> Ollivanders Wand Shop
+                        </div>
+                        <p class="text-slate-600 text-[11px] leading-relaxed">
+                            <strong>Ideal Time: 2:15 PM</strong> (Diagon Alley in USF or Hogsmeade in IOA). Choose an <strong>Interactive Wand</strong> (includes map sensor) to cast spells at 25+ windows!
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div class="text-pink-600 font-bold text-xs mb-1 flex items-center gap-1">
+                            <i class="fa-solid fa-candy-cane"></i> Honeydukes Sweet Shop
+                        </div>
+                        <p class="text-slate-600 text-[11px] leading-relaxed">
+                            <strong>Ideal Time: 11:15 AM</strong> (Hogsmeade in IOA). Chocolate Frogs with holographic wizard cards and Bertie Bott's Beans.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div class="text-amber-600 font-bold text-xs mb-1 flex items-center gap-1">
+                            <i class="fa-solid fa-masks-theater"></i> Weasleys' Wizard Wheezes
+                        </div>
+                        <p class="text-slate-600 text-[11px] leading-relaxed">
+                            <strong>Ideal Time: 2:30 PM</strong> (Diagon Alley in USF). 3-story joke shop with Pygmy Puffs and prank novelty items.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complete Vegetarian Dining Guide by Park -->
+            <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                <div class="flex items-center gap-2.5 border-b border-slate-100 pb-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm border border-emerald-100">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-sm sm:text-base font-bold text-slate-900">Verified Vegetarian Meal Guide</h2>
+                        <p class="text-[11px] text-slate-500">Curated vegetarian dishes across all parks and CityWalk</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                    
+                    <div class="bg-emerald-50/40 p-3 rounded-xl border border-emerald-200 space-y-1.5">
+                        <span class="font-extrabold text-emerald-800 text-xs block">🏝️ Islands of Adventure (IOA)</span>
+                        <div class="bg-white p-2 rounded-lg border border-emerald-100 text-[11px] text-slate-700">
+                            <strong>Three Broomsticks:</strong> Mushroom & Spinach Pasty, Fresh Corn on the cob, Baked Potatoes, Garden Salad.
+                        </div>
+                        <div class="bg-white p-2 rounded-lg border border-emerald-100 text-[11px] text-slate-700">
+                            <strong>Mythos Restaurant:</strong> Mezze Platter with hummus & pita, Mediterranean Gnocchi, Souvlaki Couscous.
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50/40 p-3 rounded-xl border border-blue-200 space-y-1.5">
+                        <span class="font-extrabold text-blue-800 text-xs block">🎬 Universal Studios Florida (USF)</span>
+                        <div class="bg-white p-2 rounded-lg border border-blue-100 text-[11px] text-slate-700">
+                            <strong>The Leaky Cauldron (1:30 PM):</strong> Vegan Irish Stew with crusty bread, Ploughman’s Platter with English cheeses.
+                        </div>
+                        <div class="bg-white p-2 rounded-lg border border-blue-100 text-[11px] text-slate-700">
+                            <strong>Florean Fortescue's:</strong> Butterbeer Soft-Serve Ice Cream, Earl Grey Lavender.
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-50/40 p-3 rounded-xl border border-indigo-200 space-y-1.5">
+                        <span class="font-extrabold text-indigo-800 text-xs block">🌃 Universal CityWalk (Day 1 & Day 3 Dinners)</span>
+                        <div class="bg-white p-2 rounded-lg border border-indigo-100 text-[11px] text-slate-700">
+                            <strong>The Cowfish (6:00 PM):</strong> "Nature Boy" Veggie Burger, Tree Hugger Veggie Sushi Roll, Edamame.
+                        </div>
+                        <div class="bg-white p-2 rounded-lg border border-indigo-100 text-[11px] text-slate-700">
+                            <strong>The Toothsome Chocolate Emporium:</strong> Truffle Mac & Cheese, Wild Mushroom Gnocchi, Giant Shakes.
+                        </div>
+                    </div>
+
+                    <div class="bg-teal-50/40 p-3 rounded-xl border border-teal-200 space-y-1.5">
+                        <span class="font-extrabold text-teal-800 text-xs block">🌋 Volcano Bay & 🪐 Epic Universe</span>
+                        <div class="bg-white p-2 rounded-lg border border-teal-100 text-[11px] text-slate-700">
+                            <strong>Volcano Bay:</strong> Island Veggie Burger, Tropical Quinoa Salads, Fresh Fruit Boats.
+                        </div>
+                        <div class="bg-white p-2 rounded-lg border border-teal-100 text-[11px] text-slate-700">
+                            <strong>Epic Universe:</strong> Super Mushroom Soup in collectible mushroom bowl at Toadstool Cafe (Nintendo).
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 3: INTERACTIVE VISUAL ROUTE MAP -->
+        <!-- ========================================================================= -->
+        <div id="section-map" class="hidden space-y-4">
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-2.5 bg-white p-3 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex flex-wrap gap-1.5 w-full md:w-auto" id="parkTabs">
+                    <button onclick="switchPark('ioa')" id="tab-ioa" class="tab-btn active px-3.5 py-1.5 rounded-xl font-bold text-xs transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-hat-wizard text-emerald-500"></i> Islands of Adventure
+                    </button>
+                    <button onclick="switchPark('usf')" id="tab-usf" class="tab-btn px-3.5 py-1.5 rounded-xl font-bold text-xs transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-clapperboard text-blue-500"></i> Universal Studios
+                    </button>
+                    <button onclick="switchPark('vb')" id="tab-vb" class="tab-btn px-3.5 py-1.5 rounded-xl font-bold text-xs transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-volcano text-teal-500"></i> Volcano Bay
+                    </button>
+                    <button onclick="switchPark('eu')" id="tab-eu" class="tab-btn px-3.5 py-1.5 rounded-xl font-bold text-xs transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-globe text-purple-500"></i> Epic Universe
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                
+                <div class="lg:col-span-7 flex flex-col space-y-2.5">
+                    <div class="map-container map-grid relative flex flex-col justify-between shadow-sm" id="mapContainer">
+                        <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" id="mapSvgPath"></svg>
+                        <div class="absolute inset-0 z-20 pointer-events-auto" id="pinsContainer"></div>
+
+                        <div class="p-3 z-30 flex flex-col sm:flex-row justify-between items-start pointer-events-none gap-2">
+                            <div class="bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-200 shadow-md">
+                                <span class="text-[9px] uppercase tracking-wider text-slate-500 font-bold block" id="parkLabelSub">Sat, Aug 29 • 9:00 AM - 9:00 PM</span>
+                                <span class="text-xs sm:text-sm font-extrabold text-slate-900" id="parkLabelTitle">Islands of Adventure Map</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 z-30 flex flex-col sm:flex-row justify-between items-start sm:items-end pointer-events-none gap-2">
+                            <div class="bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-200 text-[11px] text-slate-700 max-w-xs shadow-md">
+                                <span class="text-amber-600 font-bold"><i class="fa-solid fa-lightbulb mr-1"></i> Tip:</span>
+                                <span id="parkQuickTip" class="font-medium">Rope drop Hagrid's via Seuss Landing immediately at 9:00 AM.</span>
+                            </div>
+                            <div class="flex gap-1 pointer-events-auto">
+                                <button onclick="zoomMap(1.1)" class="w-7 h-7 rounded-lg bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 flex items-center justify-center font-bold text-xs shadow-sm">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button onclick="resetZoom()" class="px-2.5 h-7 rounded-lg bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 flex items-center justify-center font-bold text-xs shadow-sm">
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 flex flex-col space-y-2.5">
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-md border-l-4 border-l-indigo-600" id="detailCard">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div>
+                                <span id="detailBadge" class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                                    Step #1
+                                </span>
+                                <h3 id="detailTitle" class="text-sm font-extrabold text-slate-900 mt-1">Hagrid’s Motorbike Adventure</h3>
+                            </div>
+                            <span id="detailLocation" class="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">
+                                Hogsmeade
+                            </span>
+                        </div>
+
+                        <p id="detailDescription" class="text-[11px] text-slate-600 mb-2.5 leading-relaxed">
+                            Smooth outdoor steel coaster with fresh air and zero inversions.
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-1.5 text-[11px] mb-2.5">
+                            <div class="bg-slate-50 p-2 rounded-lg border border-slate-200">
+                                <span class="text-slate-400 text-[9px] block font-bold uppercase">Motion Risk</span>
+                                <span id="detailMotion" class="font-extrabold text-emerald-700">Low Risk</span>
+                            </div>
+                            <div class="bg-slate-50 p-2 rounded-lg border border-slate-200">
+                                <span class="text-slate-400 text-[9px] block font-bold uppercase">Queue</span>
+                                <span id="detailExpress" class="font-extrabold text-amber-700">Standby Line</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                            <span id="detailStrategy" class="text-[11px] text-indigo-700 font-semibold">Rope drop through Seuss Landing.</span>
+                            <a id="detailPovLink" href="https://www.youtube.com/watch?v=TdGbsggU2dg" target="_blank" rel="noopener noreferrer" class="text-[11px] bg-red-50 hover:bg-red-600 text-red-700 hover:text-white px-2.5 py-1 rounded-md border border-red-200 font-bold transition flex items-center gap-1 shadow-xs">
+                                <i class="fa-brands fa-youtube text-red-500"></i> POV
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5 overflow-y-auto max-h-[260px] pr-1 custom-scrollbar" id="stepsList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 4: SAFETY & MOTION SICKNESS PROTOCOL -->
+        <!-- ========================================================================= -->
+        <div id="section-safety" class="hidden space-y-4">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                <div class="flex items-center gap-2.5 border-b border-slate-100 pb-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm border border-emerald-100">
+                        <i class="fa-solid fa-shield-heart"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-sm sm:text-base font-bold text-slate-900">Deep & Nishita's Motion Sickness Golden Rules</h2>
+                        <p class="text-[11px] text-slate-500">Pro strategies to stay energized and 100% nausea-free</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div class="text-blue-600 font-bold text-xs mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-pills"></i> 1. Medication Timing
+                        </div>
+                        <p class="text-slate-600 text-[11px] leading-relaxed">
+                            Take Less-Drowsy Dramamine or Ginger Chews <strong>45-60 minutes BEFORE</strong> arriving at park turnstiles.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div class="text-emerald-600 font-bold text-xs mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-glasses"></i> 2. The 3D Glasses Trick
+                        </div>
+                        <p class="text-slate-600 text-[11px] leading-relaxed">
+                            On Gringotts, simply slide off 3D glasses during spinning projection screens to instantly stop visual disorientation.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div class="text-amber-600 font-bold text-xs mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-sun"></i> 3. Midday Heat Break
+                        </div>
+                        <p class="text-slate-600 text-[11px] leading-relaxed">
+                            Orlando heat peaks from 1:00 – 4:00 PM. We scheduled indoor AC shows (Bourne) and sit-down dining during these hours.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-6 text-center text-[11px] text-slate-500 font-medium space-y-0.5">
+        <div class="text-slate-800 font-bold flex items-center justify-center gap-1">
+            <i class="fa-solid fa-heart text-rose-500"></i> Personalized Master Plan for Deep & Nishita
+        </div>
+        <div>Omni ChampionsGate Resort Base • Universal Orlando Resort • Aug 28 – Sep 02, 2026</div>
+    </footer>
+
+    <!-- Interactive Logic Script -->
+    <script>
+        function toggleTimelineItem(elem) {
+            const body = elem.querySelector('.accordion-body');
+            if (!body) return;
+            const isHidden = body.classList.contains('hidden');
+            
+            if (isHidden) {
+                body.classList.remove('hidden');
+                elem.classList.add('accordion-open');
+            } else {
+                body.classList.add('hidden');
+                elem.classList.remove('accordion-open');
+            }
+        }
+
+        function toggleAllTimelineItems(expand) {
+            const items = document.querySelectorAll('.timeline-item');
+            items.forEach(item => {
+                const body = item.querySelector('.accordion-body');
+                if (body) {
+                    if (expand) {
+                        body.classList.remove('hidden');
+                        item.classList.add('accordion-open');
+                    } else {
+                        body.classList.add('hidden');
+                        item.classList.remove('accordion-open');
+                    }
+                }
+            });
+        }
+
+        function filterDay(dayId) {
+            const dayGroups = document.querySelectorAll('.day-group');
+            const buttons = document.querySelectorAll('#dayFilterGroup button');
+
+            buttons.forEach(btn => {
+                btn.className = "px-3 py-1 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 transition whitespace-nowrap";
+            });
+
+            const activeBtn = document.getElementById(`dayFilter-${dayId}`);
+            if (activeBtn) {
+                activeBtn.className = "px-3 py-1 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm transition whitespace-nowrap";
+            }
+
+            dayGroups.forEach(group => {
+                if (dayId === 'all') {
+                    group.classList.remove('hidden');
+                } else {
+                    if (group.id === `dayCard-${dayId}`) {
+                        group.classList.remove('hidden');
+                    } else {
+                        group.classList.add('hidden');
+                    }
+                }
+            });
+        }
+
+        const parkData = {
+            ioa: {
+                title: "Islands of Adventure (IOA)",
+                sub: "Sat, Aug 29 • Morning: 9:00 AM - 1:15 PM • Express Pass Active",
+                tip: "Rope drop Hagrid's via Seuss Landing immediately at 9:00 AM.",
+                guide: "Turn right at Port of Entry through Seuss Landing to reach Hogsmeade first. After Hagrid's, loop into Jurassic Park, Skull Island, and Toon Lagoon before taking the Hogwarts Express to USF.",
+                svgPaths: [
+                    "M 350 470 L 520 400 L 530 200 L 350 120 L 220 180 L 160 310"
+                ],
+                steps: [
+                    {
+                        id: 1,
+                        name: "[IOA] Hagrid’s Magical Motorbike",
+                        land: "Hogsmeade",
+                        x: 550, y: 190,
+                        type: "must-do",
+                        time: "9:00 AM",
+                        motion: "Low Risk (High Airflow)",
+                        express: "No (Standby Only)",
+                        desc: "Smooth outdoor steel coaster with high airflow. Zero inversions.",
+                        strategy: "Arrive at turnstiles by 8:00 AM. Rope drop through Seuss Landing.",
+                        videoUrl: "https://www.youtube.com/watch?v=TdGbsggU2dg"
+                    },
+                    {
+                        id: 2,
+                        name: "[IOA] Flight of the Hippogriff",
+                        land: "Hogsmeade",
+                        x: 580, y: 140,
+                        type: "must-do",
+                        time: "10:15 AM",
+                        motion: "Low Risk",
+                        express: "Yes",
+                        desc: "Gentle outdoor family coaster with great castle views.",
+                        strategy: "Use Express Pass line.",
+                        videoUrl: "https://www.youtube.com/watch?fX0qMRx4Ufs"
+                    },
+                    {
+                        id: 3,
+                        name: "[IOA] Hogwarts Castle Tour",
+                        land: "Hogsmeade",
+                        x: 490, y: 150,
+                        type: "caution",
+                        time: "10:45 AM",
+                        motion: "Tour: Safe / Ride: Skip",
+                        express: "N/A (Castle Tour)",
+                        desc: "Walking tour of Hogwarts castle without riding the robotic vehicle.",
+                        strategy: "Request non-riding Castle Tour at entrance.",
+                        videoUrl: "https://www.youtube.com/watch?v=1YXiSQmCoNg"
+                    },
+                    {
+                        id: 4,
+                        name: "[IOA] Jurassic Park River Adventure",
+                        land: "Jurassic Park",
+                        x: 350, y: 120,
+                        type: "express",
+                        time: "11:45 AM",
+                        motion: "Low/Moderate",
+                        express: "Yes",
+                        desc: "Scenic water boat ride ending with a smooth splash drop.",
+                        strategy: "Use Express Pass line.",
+                        videoUrl: "https://www.youtube.com/watch?v=CHvejAdOGe8"
+                    },
+                    {
+                        id: 5,
+                        name: "[IOA] Skull Island: Reign of Kong",
+                        land: "Skull Island",
+                        x: 220, y: 180,
+                        type: "express",
+                        time: "12:20 PM",
+                        motion: "Low/Moderate",
+                        express: "Yes",
+                        desc: "Tracked safari truck through animatronics and 3D screens.",
+                        strategy: "Use Express Pass line.",
+                        videoUrl: "https://www.youtube.com/watch?v=FwWrkJlmBc0"
+                    },
+                    {
+                        id: 6,
+                        name: "[IOA] Popeye & Bluto’s Barges",
+                        land: "Toon Lagoon",
+                        x: 160, y: 310,
+                        type: "express",
+                        time: "12:50 PM",
+                        motion: "Low Risk",
+                        express: "Yes",
+                        desc: "Circular raft water ride through rapids (refreshing splash).",
+                        strategy: "Use Express Pass line.",
+                        videoUrl: "https://www.youtube.com/watch?v=ZmltWRgt_Vc"
+                    },
+                    {
+                        id: 7,
+                        name: "[IOA → USF] Hogwarts Express Train",
+                        land: "Hogsmeade Station",
+                        x: 520, y: 240,
+                        type: "must-do",
+                        time: "1:15 PM",
+                        motion: "Zero Risk",
+                        express: "Yes",
+                        desc: "Relaxing scenic train connecting Hogsmeade to King's Cross in USF.",
+                        strategy: "Take this train to transfer parks for vegetarian lunch in Diagon Alley.",
+                        videoUrl: "https://www.youtube.com/watch?v=IKZ6mSo6G04"
+                    }
+                ]
+            },
+
+            usf: {
+                title: "Universal Studios Florida (USF)",
+                sub: "Sat, Aug 29 • Afternoon: 1:30 PM - 5:00 PM • Express Pass Active",
+                tip: "Enter USF via Hogwarts Express at King's Cross. Head straight to Diagon Alley for vegetarian lunch at The Leaky Cauldron.",
+                guide: "Exit King's Cross → Diagon Alley (Lunch, Butterbeer Ice Cream, Wand Shopping, Gringotts) → San Francisco → New York (Mummy) → Hollywood (Bourne Stuntacular).",
+                svgPaths: [
+                    "M 550 180 L 520 220 L 380 200 L 320 320 L 480 430 L 380 460"
+                ],
+                steps: [
+                    {
+                        id: 1,
+                        name: "[USF] King’s Cross & Diagon Alley Lunch",
+                        land: "London Waterfront",
+                        x: 550, y: 180,
+                        type: "must-do",
+                        time: "1:30 PM",
+                        motion: "Zero Risk",
+                        express: "Yes",
+                        desc: "Arrival point from IOA train. Walk into Diagon Alley for lunch and wand shopping.",
+                        strategy: "Head into Diagon Alley for lunch at The Leaky Cauldron.",
+                        videoUrl: "https://www.youtube.com/watch?v=IKZ6mSo6G04"
+                    },
+                    {
+                        id: 2,
+                        name: "[USF] Escape from Gringotts",
+                        land: "Diagon Alley",
+                        x: 500, y: 200,
+                        type: "caution",
+                        time: "2:50 PM",
+                        motion: "Moderate",
+                        express: "Yes",
+                        desc: "Indoor dark coaster hybrid. Smooth physical track.",
+                        strategy: "Slide off 3D glasses during projection scenes if feeling dizzy.",
+                        videoUrl: "https://www.youtube.com/watch?v=N8FSuOjoy8w"
+                    },
+                    {
+                        id: 3,
+                        name: "[USF] Revenge of the Mummy",
+                        land: "New York",
+                        x: 380, y: 200,
+                        type: "express",
+                        time: "3:45 PM",
+                        motion: "Low/Moderate",
+                        express: "Yes",
+                        desc: "Indoor dark coaster with zero inversions and smooth track.",
+                        strategy: "Use Express Pass line. Enjoy AC refuge.",
+                        videoUrl: "https://www.youtube.com/watch?v=WYI4ljAx4lk"
+                    },
+                    {
+                        id: 4,
+                        name: "[USF] The Bourne Stuntacular",
+                        land: "Hollywood",
+                        x: 480, y: 430,
+                        type: "must-do",
+                        time: "4:15 PM",
+                        motion: "Zero Risk",
+                        express: "Yes",
+                        desc: "High-tech live stunt show with physical actors and LED screen.",
+                        strategy: "Air-conditioned indoor theater seating.",
+                        videoUrl: "https://www.youtube.com/watch?v=wZCxiXCNzCI"
+                    },
+                    {
+                        id: 5,
+                        name: "[USF] MEN IN BLACK Alien Attack",
+                        land: "World Expo",
+                        x: 580, y: 320,
+                        type: "express",
+                        time: "5:00 PM",
+                        motion: "Low Risk",
+                        express: "Yes",
+                        desc: "Interactive laser shooting dark ride vehicle.",
+                        strategy: "Use Express Pass line.",
+                        videoUrl: "https://www.youtube.com/watch?v=5vh9TZEyc0U"
+                    }
+                ]
+            },
+
+            vb: {
+                title: "Universal Volcano Bay",
+                sub: "Sun, Aug 30 • 10:00 AM - 6:00 PM • TapuTapu Virtual Queue",
+                tip: "Tap into Krakatau Aqua Coaster virtual line immediately upon arrival at 10:00 AM.",
+                guide: "Tap Krakatau first → Relax in Kopiko Wai River → Wave pool → Krakatau ride time → TeAwa River.",
+                svgPaths: [
+                    "M 350 220 L 250 350 L 350 420 L 520 380 L 500 240"
+                ],
+                steps: [
+                    {
+                        id: 1,
+                        name: "[VB] Krakatau Aqua Coaster Check-In",
+                        land: "Volcano Base",
+                        x: 350, y: 220,
+                        type: "must-do",
+                        time: "10:00 AM",
+                        motion: "Low Risk",
+                        express: "TapuTapu",
+                        desc: "Magnetic water coaster in 4-person canoes. Very smooth.",
+                        strategy: "Tap wearable band at entrance at 10:00 AM.",
+                        videoUrl: "https://www.youtube.com/watch?v=j6LmQlUPwT4"
+                    },
+                    {
+                        id: 2,
+                        name: "[VB] Kopiko Wai Winding River",
+                        land: "River Village",
+                        x: 250, y: 350,
+                        type: "must-do",
+                        time: "10:30 AM",
+                        motion: "Zero Risk",
+                        express: "Open",
+                        desc: "Relaxing lazy river passing through illuminated lava caves.",
+                        strategy: "Enjoy floating while waiting for Krakatau return window.",
+                        videoUrl: "https://www.youtube.com/watch?v=0VSJFI6pCU0"
+                    },
+                    {
+                        id: 3,
+                        name: "[VB] TeAwa The Fearless River",
+                        land: "Rainforest Village",
+                        x: 500, y: 240,
+                        type: "must-do",
+                        time: "2:00 PM",
+                        motion: "Low Risk",
+                        express: "Open",
+                        desc: "Fast-flowing torrent river with choppy waves. Life vests provided.",
+                        strategy: "Great active river experience.",
+                        videoUrl: "https://www.youtube.com/watch?v=0VSJFI6pCU0"
+                    }
+                ]
+            },
+
+            eu: {
+                title: "Universal Epic Universe",
+                sub: "Tue, Sep 01 • 9:00 AM - 9:00 PM • Newest Theme Park",
+                tip: "Hub-and-spoke layout. Enter Super Nintendo World first at rope drop.",
+                guide: "Celestial Hub → Super Nintendo World → Dark Universe → Wizarding World Paris → Isle of Berk.",
+                svgPaths: [
+                    "M 350 320 L 220 420 L 200 180 L 520 180 L 540 400"
+                ],
+                steps: [
+                    {
+                        id: 1,
+                        name: "[Epic] Mario Kart: Bowser’s Challenge",
+                        land: "Super Nintendo World",
+                        x: 220, y: 420,
+                        type: "must-do",
+                        time: "9:00 AM",
+                        motion: "Low Risk",
+                        express: "Standby",
+                        desc: "Interactive dark ride with augmented reality visors.",
+                        strategy: "Rope drop directly from main park hub.",
+                        videoUrl: "https://www.youtube.com/watch?v=2ruAqduHXwc"
+                    },
+                    {
+                        id: 2,
+                        name: "[Epic] Yoshi’s Adventure",
+                        land: "Super Nintendo World",
+                        x: 260, y: 450,
+                        type: "must-do",
+                        time: "10:30 AM",
+                        motion: "Zero Risk",
+                        express: "Standby",
+                        desc: "Gentle omnimover ride offering elevated views of Mushroom Kingdom.",
+                        strategy: "Ideal gentle ride.",
+                        videoUrl: "https://www.youtube.com/watch?v=ckgyiqxdBU0"
+                    },
+                    {
+                        id: 3,
+                        name: "[Epic] Monsters Unchained: Frankenstein",
+                        land: "Dark Universe",
+                        x: 200, y: 180,
+                        type: "express",
+                        time: "11:45 AM",
+                        motion: "Low/Moderate",
+                        express: "Standby",
+                        desc: "Dark ride featuring world-class animatronics.",
+                        strategy: "Enter Dark Universe portal off central hub.",
+                        videoUrl: "https://www.youtube.com/watch?v=7AbnllQNN4o"
+                    }
+                ]
+            }
+        };
+
+        let currentParkKey = 'ioa';
+        let zoomScale = 1.0;
+
+        function setViewMode(mode) {
+            const itinerarySec = document.getElementById('section-itinerary');
+            const diningSec = document.getElementById('section-dining');
+            const mapSec = document.getElementById('section-map');
+            const safetySec = document.getElementById('section-safety');
+            const itBtn = document.getElementById('viewTab-itinerary');
+            const dinBtn = document.getElementById('viewTab-dining');
+            const mapBtn = document.getElementById('viewTab-map');
+            const safetyBtn = document.getElementById('viewTab-safety');
+
+            [itBtn, dinBtn, mapBtn, safetyBtn].forEach(b => {
+                b.className = "flex-1 md:flex-none px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900 whitespace-nowrap";
+            });
+
+            itinerarySec.classList.add('hidden');
+            diningSec.classList.add('hidden');
+            mapSec.classList.add('hidden');
+            safetySec.classList.add('hidden');
+
+            if (mode === 'itinerary') {
+                itinerarySec.classList.remove('hidden');
+                itBtn.className = "flex-1 md:flex-none px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-blue-600 text-white shadow-sm whitespace-nowrap";
+            } else if (mode === 'dining') {
+                diningSec.classList.remove('hidden');
+                dinBtn.className = "flex-1 md:flex-none px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-emerald-600 text-white shadow-sm whitespace-nowrap";
+            } else if (mode === 'map') {
+                mapSec.classList.remove('hidden');
+                mapBtn.className = "flex-1 md:flex-none px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-blue-600 text-white shadow-sm whitespace-nowrap";
+                renderParkMap();
+            } else if (mode === 'safety') {
+                safetySec.classList.remove('hidden');
+                safetyBtn.className = "flex-1 md:flex-none px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-rose-600 text-white shadow-sm whitespace-nowrap";
+            }
+        }
+
+        function switchPark(parkKey) {
+            currentParkKey = parkKey;
+            ['ioa', 'usf', 'vb', 'eu'].forEach(key => {
+                const btn = document.getElementById(`tab-${key}`);
+                if (key === parkKey) {
+                    btn.className = "tab-btn active px-3.5 py-1.5 rounded-xl font-bold text-xs transition-all flex items-center gap-1.5";
+                } else {
+                    btn.className = "tab-btn px-3.5 py-1.5 rounded-xl font-bold text-xs transition-all flex items-center gap-1.5";
+                }
+            });
+            renderParkMap();
+        }
+
+        function renderParkMap() {
+            const data = parkData[currentParkKey];
+            document.getElementById('parkLabelTitle').innerText = data.title;
+            document.getElementById('parkLabelSub').innerText = data.sub;
+            document.getElementById('parkQuickTip').innerText = data.tip;
+
+            const svgPathContainer = document.getElementById('mapSvgPath');
+            let pathHtml = '';
+            if (data.svgPaths) {
+                data.svgPaths.forEach(pathD => {
+                    pathHtml += `<path d="${pathD}" fill="none" stroke="#2563eb" stroke-width="3" stroke-dasharray="6,6" opacity="0.7"/>`;
+                });
+            }
+            svgPathContainer.innerHTML = pathHtml;
+
+            const pinsContainer = document.getElementById('pinsContainer');
+            let pinsHtml = '';
+            data.steps.forEach((step, index) => {
+                let bgColor = "bg-emerald-500";
+                let borderColor = "border-white";
+                let icon = step.id;
+
+                if (step.type === 'express') {
+                    bgColor = "bg-blue-600";
+                } else if (step.type === 'caution') {
+                    bgColor = "bg-amber-500";
+                }
+
+                pinsHtml += `
+                    <div onclick="selectStep(${index})" 
+                         id="pin-${index}" 
+                         style="left: ${step.x / 700 * 100}%; top: ${step.y / 520 * 100}%; transform: translate(-50%, -50%) scale(${zoomScale});"
+                         class="absolute cursor-pointer group transition-transform duration-200">
+                        <div class="w-6 h-6 rounded-full ${bgColor} ${borderColor} border-2 text-white font-black text-xs flex items-center justify-center shadow-md group-hover:scale-125 transition-transform">
+                            ${icon}
+                        </div>
+                    </div>
+                `;
+            });
+            pinsContainer.innerHTML = pinsHtml;
+
+            const stepsContainer = document.getElementById('stepsList');
+            let listHtml = '';
+            data.steps.forEach((step, index) => {
+                listHtml += `
+                    <div onclick="selectStep(${index})" 
+                         id="step-item-${index}"
+                         class="bg-white p-2.5 rounded-xl border border-slate-200 hover:border-slate-300 hover:shadow-xs cursor-pointer transition flex items-center justify-between text-xs">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-5 h-5 rounded-md bg-slate-100 text-slate-700 font-extrabold text-[10px] flex items-center justify-center border border-slate-200">
+                                ${step.id}
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-[11px]">${step.name}</h4>
+                                <span class="text-[10px] text-slate-500">${step.time} • ${step.land}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            stepsContainer.innerHTML = listHtml;
+            selectStep(0);
+        }
+
+        function selectStep(index) {
+            const data = parkData[currentParkKey];
+            const step = data.steps[index];
+            if (!step) return;
+
+            data.steps.forEach((_, idx) => {
+                const pinElem = document.getElementById(`pin-${idx}`);
+                const listElem = document.getElementById(`step-item-${idx}`);
+                if (pinElem) pinElem.classList.remove('active-pin');
+                if (listElem) {
+                    listElem.classList.remove('bg-blue-50/60', 'border-blue-500');
+                    listElem.classList.add('border-slate-200');
+                }
+            });
+
+            const activePin = document.getElementById(`pin-${index}`);
+            const activeListItem = document.getElementById(`step-item-${index}`);
+            if (activePin) activePin.classList.add('active-pin');
+            if (activeListItem) {
+                activeListItem.classList.add('bg-blue-50/60', 'border-blue-500');
+                activeListItem.classList.remove('border-slate-200');
+            }
+
+            document.getElementById('detailTitle').innerText = step.name;
+            document.getElementById('detailLocation').innerText = step.land;
+            document.getElementById('detailDescription').innerText = step.desc;
+            document.getElementById('detailMotion').innerText = step.motion;
+            document.getElementById('detailExpress').innerText = step.express;
+            document.getElementById('detailStrategy').innerText = step.strategy;
+            
+            const povLink = document.getElementById('detailPovLink');
+            if (step.videoUrl) {
+                povLink.href = step.videoUrl;
+                povLink.classList.remove('hidden');
+            } else {
+                povLink.classList.add('hidden');
+            }
+
+            const badgeElem = document.getElementById('detailBadge');
+            badgeElem.innerText = `Step #${step.id} • ${step.type.toUpperCase()}`;
+        }
+
+        function zoomMap(factor) {
+            zoomScale *= factor;
+            if (zoomScale > 1.4) zoomScale = 1.4;
+            renderParkMap();
+        }
+
+        function resetZoom() {
+            zoomScale = 1.0;
+            renderParkMap();
+        }
+
+        window.onload = function() {
+            setViewMode('itinerary');
+        };
+    </script>
+</body>
+</html>
